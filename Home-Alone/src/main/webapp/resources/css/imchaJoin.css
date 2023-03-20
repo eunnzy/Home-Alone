@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+.list-group-item{background-color:transparent}
+
+ .id_input_re_1 {
+ 	color : green;
+ 	display : none;
+ 	}
+ .id_input_re_2 {
+ 	color : red;
+ 	display : none;
+ }
+ 
+.nickname_input_re_1 {
+ 	color : green;
+ 	display : none;
+ 	}
+ .nickname_input_re_2 {
+ 	color : red;
+ 	display : none;
+ }
+ 
+ .pwck_input_re_1 {
+ 	color : green;
+ 	display : none;
+ }
+ 
+ .pwck_input_re_2 {
+ 	color : red;
+ 	display : none;
+ }
+ 
+ .final_id_ck{
+ 	display : none;
+ }
+  .final_pw_ck{
+ 	display : none;
+ }
+  .final_pwck_ck{
+ 	display : none;
+ }
+  .final_nickname_ck{
+ 	display : none;
+ }
+  .final_phone_ck{
+ 	display : none;
+ }
+  .final_adress_ck{
+ 	display : none;
+ }
+ 
+ .form-id, .form-password, .form-passwordCheck, .form-control_1,.form-control_2,
+ .form-control_3, .id-input, .password-input, .form-nickname 
+  {display:block;width:100%;padding:1rem 1.5rem;
+font-size:1rem;font-weight:400;line-height:1.5;color:#7b8ab8;
+background-color:#f0f5fa;background-clip:padding-box;border:0 solid 
+#bed1e6;-webkit-appearance:none;-moz-appearance:none;appearance:none;
+border-radius:.375rem;
+box-shadow:inset 2px 2px 8px rgba(55,94,148,.3),inset -3px -2px 5px 
+rgba(255,255,255,.8);
+transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}

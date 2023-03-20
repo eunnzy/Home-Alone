@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.guardian.myhome.mapper.RevMapper">
+  
+    <resultMap type="com.guardian.myhome.vo.ReservationVO" id="revMap">
+    	<result property="revNum" column="rev_num" />
+ 		<result property="lessorId" column="LESSOR_ID" />
+ 		<result property="imchaId" column="IMCHA_ID" />
+ 		<result property="homeNum" column="home_num" />
+ 		<result property="revDate" column="revDate" />
+ 		<result property="revState" column="revState" />
+ 	</resultMap>
+  
+  	<insert id="insertRev" parameterType="com.guardian.myhome.vo.ReservationVO">
+  		insert into Home_Reserv_tb (rev_num, LESSOR_ID, IMCHA_ID, home_num, revDate)
+  		values ((select nvl(max(rev_num), 0) + 1 from Home_Reserv_tb), #{lessorId}, #{imchaId}, #{homeNum}, (TO_DATE(#{revDate}, 'YYYY-MM-DD HH24:MI')) )
+  	</insert>
+  	
+  	<select id="getRevByImchaId" resultMap="revMap">
+  		select * from Home_Reserv_tb where IMCHA_ID = #{imchaId}
+  	</select>
+  	
+  	<delete id="delete">
+ 		delete from Home_Reserv_tb where IMCHA_ID = #{imchaId} and rev_num = #{revNum}
+ 	</delete>
+ 	
+ 	<select id="getRevByLessor" resultMap="revMap">
+  		select * from Home_Reserv_tb where LESSOR_ID = #{lessorId} and revState != 2
+  	</select>
+  	
+  	<update id="reject">
+ 		update Home_Reserv_tb set revState = 2 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<update id="changeRevState">
+ 		update Home_Reserv_tb set revState = 1 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<select id="invaildDate" resultMap="revMap">
+ 		SELECT *
+	    FROM Home_Reserv_tb
+	    WHERE revDate BETWEEN TO_DATE(#{revDate}, 'YYYY-MM-DD') AND TO_DATE(#{revDate})+1
+
+ 	</select>
+  </mapper>

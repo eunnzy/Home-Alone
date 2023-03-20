@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guardian.myhome.mapper.BoardMapper">
+
+	<!-- 검색 -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach  item="type" collection="typeArr"> 
+				<trim prefix="OR">
+					<choose>
+					
+						<when test="type == 'T'.toString()" >
+							title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()" >
+							content like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'N'.toString()" >
+							nickname like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'G'.toString()" >
+							CATEGORY = #{keyword}
+						</when>
+						
+					</choose>
+				</trim>
+			</foreach> 
+		</trim>
+	</sql>
+	
+	<!-- 로그인 전 리스트 -->
+	<select id="beforeBoard" resultType="com.guardian.myhome.vo.BoardVO">
+		<![CDATA[
+		SELECT A.* 
+		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE 
+		]]>
+		
+		<include refid="criteria"></include>
+		
+		<![CDATA[
+		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')
+		) A WHERE rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<!-- 로그인 전 갯수 -->
+	<select id="beforeBoardCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		(SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
+		<include refid="criteria"></include>
+		BNO > 0 AND CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')
+	</select>
+	
+	<!-- 로그인 후 리스트 -->
+	<select id="afterBoard" resultType="com.guardian.myhome.vo.BoardVO">
+		<![CDATA[
+		SELECT A.* 
+		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE 
+		]]>
+		
+		<include refid="criteria"></include>
+		
+		<![CDATA[
+		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido1 = #{sido1} AND gugun1 = #{gugun1}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
+		) A WHERE rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<!-- 로그인 후 갯수 -->
+	<select id="afterBoardCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		(SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
+		<include refid="criteria"></include>
+		BNO > 0 AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido1 = #{sido1} AND gugun1 = #{gugun1}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
+	</select>
+	
+	<!-- 내가쓴글 -->
+	<select id="getMyboard" resultType="com.guardian.myhome.vo.BoardVO">
+		<![CDATA[
+		SELECT A.* 
+		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE 
+		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaid}
+		) A WHERE rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<!-- 내가쓴글 갯수 -->
+ 	<select id="getMyboardCount" resultType="int">
+ 		SELECT COUNT(*) FROM 
+		(SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaid}) A 
+		WHERE BNO > 0 
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long"> SELECT SEQ_BNO.NEXTVAL FROM dual </selectKey>
+		INSERT INTO Board (BNO, IMCHA_ID, TITLE, CATEGORY, CONTENT) VALUES (#{bno}, #{imchaid}, #{title}, #{category}, #{content})
+	</insert>
+	
+	<!-- 조회 -->
+	<select id="read" parameterType="map" resultType="com.guardian.myhome.vo.BoardVO">
+		SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND bno = #{bno}
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="delete">
+		DELETE FROM Board WHERE bno = #{bno}
+	</delete>
+	
+	<!-- 수정 -->
+	<update id="update">
+		UPDATE Board SET TITLE=#{title}, CONTENT=#{content}, CATEGORY=#{category}, UPDATEDATE = SYSDATE WHERE bno = #{bno}
+	</update>
+	
+	<!-- 좋아요 증가  -->
+	<update id="likesUp">
+		UPDATE Board SET likes = likes+1 WHERE bno = #{bno}
+	</update>
+	
+	<!-- 좋아요 감소  -->
+	<update id="likesDown">
+		UPDATE Board SET likes = likes-1 WHERE bno = #{bno}
+	</update>
+	
+	<!-- 조회수 증가  -->
+	<update id="viewsUp">
+		UPDATE Board SET views = views+1 WHERE bno = #{bno}
+	</update>
+	
+	<!-- 댓글수 증가  -->
+	<update id="replysUp">
+		UPDATE Board SET replys = replys+1 WHERE bno = #{bno}
+	</update>
+	
+	<!-- 댓글수 감소  -->
+	<update id="replysDown">
+		UPDATE Board SET replys = replys-1 WHERE bno = #{bno}
+	</update>
+	
+</mapper>

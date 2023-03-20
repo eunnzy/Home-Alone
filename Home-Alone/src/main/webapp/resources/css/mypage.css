@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.mypage {
+	margin-top:7rem;
+}
+
+.lessor-button, .imcha-button {
+	margin-top: 7rem;
+	border: none;
+	background-color:#f0f5fa;
+	border-radius: 12px;
+	width: 10rem;
+	height:7rem;
+	box-shadow: 0 5px 7px lightgray, 0 6px 8px lightgray;
+}
+
+.lessor-div, .imcha-div{
+	margin-bottom: 10px;
+}
+
+img {
+	width:50px; height:50px;
+}

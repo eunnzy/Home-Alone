@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guardian.myhome.mapper.AlarmBoardAttachMapper">
+	
+	<!-- 파일 업로드 등록 -->
+	<insert id="abinsert">
+		INSERT INTO ABoard_attach (ano, uuid, uploadPath, fileName, filetype)
+		VALUES (#{ano}, #{uuid}, #{uploadPath}, #{fileName}, #{fileType})
+	</insert>
+	
+	<!-- 업로드 중 취소 --> 
+	<delete id="abdelete">
+		DELETE FROM ABoard_attach WHERE uuid = #{uuid}
+	</delete>
+	
+	<!-- 게시물의 파일 조회 -->
+	<select id="abfindByBno" resultType="com.guardian.myhome.vo.AlarmBoardAttachVO">
+		SELECT * FROM ABoard_attach WHERE ano = #{ano}
+	</select>
+	
+	<!-- 게시물의 모든 파일 삭제 -->
+	<delete id="abdeleteAll">
+		DELETE ABoard_attach WHERE ano = #{ano}
+	</delete>
+	
+	<!-- 이전 업로드 파일 확인 -->
+	<select id="abgetOldFiles" resultType="com.guardian.myhome.vo.AlarmBoardAttachVO">
+		SELECT * FROM ABoard_attach WHERE uploadpath = to_char(SYSDATE -1, 'yyyy/mm/dd')
+	</select>
+	
+</mapper>

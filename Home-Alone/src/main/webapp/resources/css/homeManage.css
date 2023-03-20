@@ -1,0 +1,8 @@
+.homeTitle {
+    		width:635px;
+    		white-space: no-wrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display:inline-block;
+			-webkit-line-clamp: 1;
+ }

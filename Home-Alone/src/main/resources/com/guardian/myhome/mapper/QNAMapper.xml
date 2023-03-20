@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.guardian.myhome.mapper.QNAMapper">
+   
+ 	
+ 	<resultMap type="com.guardian.myhome.vo.QNAAdminVO" id="adminMap">
+    	<result property="aqNum" column="aq_num" />
+ 		<result property="lessorId" column="LESSOR_ID" />
+ 		<result property="aqTitle" column="aq_title" />
+ 		<result property="aqDate" column="aq_date" />
+ 		<result property="aqContent" column="aq_content" />
+ 	</resultMap>
+ 	
+ 	<!-- 회원 qna -->
+ 	
+ 	 <resultMap type="com.guardian.myhome.vo.QNAImchaVO" id="imchaMap">
+    	<result property="iqNum" column="iq_num" />
+ 		<result property="imchaId" column="IMCHA_ID" />
+ 		<result property="homeNum" column="home_num" />
+ 		<result property="iqTitle" column="iq_title" />
+ 		<result property="iqDate" column="iq_date" />
+ 		<result property="iqContent" column="iq_content" />
+ 	</resultMap>
+ 	
+ 	
+ 	<insert id="insertQNAImcha" parameterType="com.guardian.myhome.vo.QNAImchaVO">
+ 		insert into IMCHA_qna_tb (iq_num, IMCHA_ID, home_num, iq_title, iq_date, iq_content) 
+ 					values ((select nvl(max(iq_num), 0) + 1 from IMCHA_qna_tb), #{imchaId}, #{homeNum}, #{iqTitle}, SYSDATE, #{iqContent})
+ 	</insert>
+ 	
+<!--  	<update id="updateQNAImcha" parameterType="com.guardian.myhome.vo.QNAImchaVO">
+ 		update IMCHA_qna_tb set iq_title=#{iqTitle}, iq_date=SYSDATE, iq_content=#{iqContent}
+ 				where iq_num=#{iqNum}
+ 	</update> -->
+ 	
+ 	<select id="imchaList" resultMap="imchaMap">
+ 		select * from IMCHA_qna_tb where IMCHA_ID=#{imchaId}
+ 	</select>
+ 	
+ 	<delete id="deleteQNAImcha">
+ 		delete from IMCHA_qna_tb where IMCHA_ID=#{imchaId} and iq_num = #{iqNum}
+ 	</delete>
+ 	
+ 	<select id="getBoard" resultMap="imchaMap">
+ 		select * from IMCHA_qna_tb where iq_num = #{iqNum}
+ 	</select>
+ 	
+ 	<select id="getAnswer" resultMap="lessorMap">
+ 		select * from lessor_qna_tb where iq_num= #{iqNum}
+ 	</select>
+ 	
+ 	<!-- 중개인 qna -->
+ 	
+ 	
+	<resultMap type="com.guardian.myhome.vo.QNALessorVO" id="lessorMap">
+    	<result property="lqNum" column="lq_num" />
+ 		<result property="iqNum" column="iq_num" />
+ 		<result property="imchaId" column="IMCHA_ID" />
+ 		<result property="lessorId" column="LESSOR_ID" />
+ 		<result property="lqDate" column="lq_date" />
+ 		<result property="lqAnswer" column="lq_answer" />
+ 		<result property="answerStatus" column="answer_status" />
+ 	</resultMap>
+ 	
+ 	
+ 	<insert id="insertQNALessor" parameterType="com.guardian.myhome.vo.QNALessorVO">
+ 		insert into lessor_qna_tb (lq_num, iq_num, IMCHA_ID, LESSOR_ID, lq_date, lq_answer, answer_status) 
+ 					values ((select nvl(max(lq_num), 0) + 1 from lessor_qna_tb), #{iqNum}, #{imchaId}, #{lessorId}, #{lqDate}, #{lqAnswer}, #{answerStatus})
+ 	</insert>
+ 	
+ 	<select id="lessorList" resultMap="lessorMap">
+ 		select * from lessor_qna_tb where LESSOR_ID=#{lessorId}
+ 	</select>
+ 	
+ 	<delete id="deleteQNALessor">
+ 		delete from lessor_qna_tb where LESSOR_ID=#{lessorId} and lq_num = #{lqNum}
+ 	</delete>
+ 	
+ 	<update id="checkAnswer">
+ 		update lessor_qna_tb set answerStatus = 1 where LESSOR_ID = #{lessorId} and lq_num = #{lqNum}
+ 	</update>
+ 	
+  	
+  </mapper>

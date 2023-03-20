@@ -1,0 +1,164 @@
+body {
+	background-color: white;
+}
+.homeImg-div > .carousel-item > img{
+	border: 1px solid gray;
+	width: 100%;
+	min-width: 100%;
+	min-height: 500px;
+}
+#sirenBtn, #likeBtn, #qnaBtn {
+	cursor: pointer;
+}
+.side-content {
+	position: sticky;
+	top: 5px;
+}
+.reserv-modal, .report-modal, .qna-modal {
+	position: fixed;
+	width:100%;
+	height:100%;
+	background-color: rgba(255, 255, 255, 0.7);
+	align-items: center;
+	justify-content:center;
+	top: 0;
+	left:0;
+	display: none;
+	z-index:100;
+}
+.reserv-wrap, .report-wrap, .qna-wrap {
+	background-color: rgba( 69, 139, 197, 0.75);
+	box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37);
+	border-radius: 10px;
+	backdrop-filter: blur( 13.5px );
+    -webkit-backdrop-filter: blur( 13.5px );
+    padding: 10px;
+	top: 50%;
+	left: 50%;
+	width: 400px;
+    height: 500px;
+}
+.reserv-close, .report-close, .qna-close {
+	display: inline;
+	float: right;
+	font-size: 22px;
+	font-weight: 600;
+	color: white;
+	cursor: pointer;
+}
+.reserv-title, .report-title, .qna-title {
+	display: inline;
+	float: left;
+	color: white;
+	font-size: 25px;
+	font-weight: 700;
+	margin-left: 5px;
+}
+.reserv-content, .report-content, .qna-content {
+	color: white;
+	margin-top: 40px;
+}
+.reserv-content > td {
+	color: white;
+}
+
+/* .qna-content {
+	color: white;
+	margin-top: 40px;
+	width: 15rem;
+	height: 25rem;
+} */
+
+.timeTable{
+	width: 100%;
+	margin-bottom : 30px;
+	
+}
+.timeTable td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-bottom: 5px;	
+	text-align: center;
+}
+
+.timeSelect {
+    padding: 15px 10px;
+    
+}
+.timeSelect input[type=radio]{
+    display: none;
+    width:66px;
+    height:41px;
+    text-align: center;
+    border-radius: 10px;
+}
+.timeSelect input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    height: 25px;
+    width: 75px;
+    /* border: 1px solid #BEE9FB; */
+    line-height: 24px;
+    text-align: center;
+    font-weight:bold;
+    font-size:13px;
+    border-radius: 10px;
+}
+.timeSelect input[type=radio]+label{
+    background-color: #fff;
+    color: #333;
+    border-radius: 10px;
+    text-align: center;
+}
+.timeSelect input[type=radio]:checked+label{
+    background-color: #BEE9FB;
+    color: #000;
+    border-radius: 10px;
+    text-align: center;
+}
+.option-list {
+	display: flex;
+}
+.option-icon-wrapper {
+	display: block;
+	width: 80px;
+	height: 80px;
+	border: 1px solid #8c8c8c;
+	border-radius: 3px;
+	text-align: center;
+	font-size: 13px;
+	color: gray;
+	margin-right: 10px;
+}
+
+.option-icon {
+	width: 60px;
+	height: 60px;
+	padding: 10px;
+	margin: auto;
+}
+.option-icon > img {
+	width: 100%;
+	height: 100%;
+}
+
+.option-icon > label{
+	padding: 5px;
+	border: 1px solid gray;
+	border-radius: 3px;
+}
+
+.timeSelect input[type=radio]:disabled+label{
+	background-color: #808080;
+    
+}
+.home-detail{
+	background-color: rgba(199, 199, 199, 0.3);
+	border-radius: 7px;
+	padding: 10px;
+	height: auto;
+}
+.home-title {
+	font-size: 18px;
+	font-weight: 700;
+}

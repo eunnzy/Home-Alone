@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+.list-group-item{background-color:transparent}
+
+ .id_input_re_1 {
+ 	color : green;
+ 	display : none;
+ 	}
+ .id_input_re_2 {
+ 	color : red;
+ 	display : none;
+ }
+ 
+.nickname_input_re_1 {
+ 	color : green;
+ 	display : none;
+ 	}
+ .nickname_input_re_2 {
+ 	color : red;
+ 	display : none;
+ }
+ 
+ .pwck_input_re_1 {
+ 	color : green;
+ 	display : none;
+ }
+ 
+ .pwck_input_re_2 {
+ 	color : red;
+ 	display : none;
+ }
+ 
+ .final_id_ck{
+ 	display : none;
+ }
+  .final_pw_ck{
+ 	display : none;
+ }
+  .final_pwck_ck{
+ 	display : none;
+ }
+  .final_nickname_ck{
+ 	display : none;
+ }
+  .final_phone_ck{
+ 	display : none;
+ }
+  .final_adress_ck{
+ 	display : none;
+ }
+ 
+ .form-id, .form-password, .form-passwordCheck, .form-control_1,.form-control_2,
+ .form-control_3, .id-input, .password-input, .form-nickname 
+  {display:block;width:100%;padding:1rem 1.5rem;
+font-size:1rem;font-weight:400;line-height:1.5;color:#7b8ab8;
+background-color:#f0f5fa;background-clip:padding-box;border:0 solid 
+#bed1e6;-webkit-appearance:none;-moz-appearance:none;appearance:none;
+border-radius:.375rem;
+box-shadow:inset 2px 2px 8px rgba(55,94,148,.3),inset -3px -2px 5px 
+rgba(255,255,255,.8);
+transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}
+
+body {margin: 10px}
+.where {
+  display: block;
+  margin: 25px 15px;
+  font-size: 11px;
+  color: #000;
+  text-decoration: none;
+  font-family: verdana;
+  font-style: italic;
+} 
+
+.filebox input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}
+
+.filebox label {
+  display: inline-block;
+  padding: .5em .75em;
+  color: #999;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+}
+
+/* named upload */
+.filebox .upload-name {
+  display: inline-block;
+  padding: .5em .75em;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #f5f5f5;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.filebox.bs3-primary label {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+
+.input-form {
+  max-width: 680px;
+
+  margin-top: 80px;
+  padding: 32px;
+
+  background: #fff;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+}
