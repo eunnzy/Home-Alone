@@ -349,7 +349,6 @@ function removeMarker() {
 // 돈(관리비, 월세, 보증금 등) 단위 변환
 function convertMoney(money) {	
 	let convert = ""; 
-	money = money / 10000;
 	if(money == 0) {
 		convert = "없음";
 	}else if(money >= 10000) {

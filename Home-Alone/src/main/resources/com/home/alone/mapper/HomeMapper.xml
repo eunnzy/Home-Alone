@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ 
+ <mapper namespace="com.home.alone.mapper.HomeMapper">
+ 	
+ 	<!-- 매물 등록  -->
+ 	 <insert id="insertHome"  parameterType="com.home.alone.vo.HomeVO">
+ 		insert into Home_tb(home_num, home_type, addr1, addr2, addr3, latitude, longitude, home_area, rent_type, rent_periods,
+ 						rent_unit, room_count, floor, total_floor ,home_title, home_detail, lessor_id) 
+ 		values((select nvl(max(home_num), 0) + 1 from Home_tb), #{homeType}, #{addr1}, #{addr2}, #{addr3}, #{latitude}, #{longitude}, #{homeArea},
+ 				 #{rentType}, #{rentPeriods}, #{rentUnit}, #{roomCount}, #{floor}, #{totalFloor}, #{homeTitle}, #{homeDetail}, #{lessorId})
+ 		<selectKey keyProperty="homeNum" resultType="com.home.alone.vo.HomeVO"  order="AFTER">	 <!-- 삽입 후 매물 번호 반환 -->
+ 			select Max(home_num) as homeNum From Home_tb
+ 		</selectKey>
+ 	</insert>
+ 	
+ 	<insert id="insertHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
+ 		insert into Home_Option_tb(home_num, washer, telev, micro_wav, gas_range, induction, desk, bed, aircon, fridge, shoes, closet, door_lock, bidet)
+ 		values(#{homeNum},
+	 		<if test="washer != 'Y' "> 'N', </if>
+	 		<if test="washer == 'Y' "> #{washer}, </if>
+	 		<if test="telev != 'Y' "> 'N', </if>
+	 		<if test="telev == 'Y' "> #{telev}, </if>
+	 		<if test="microWav != 'Y' "> 'N', </if>
+	 		<if test="microWav == 'Y' "> #{microWav}, </if>
+	 		<if test="gasRange != 'Y' "> 'N', </if>
+	 		<if test="gasRange == 'Y' "> #{gasRange}, </if>
+	 		<if test="induction != 'Y' "> 'N', </if>
+	 		<if test="induction == 'Y' "> #{induction}, </if>
+	 		<if test="desk != 'Y' "> 'N', </if>
+	 		<if test="desk == 'Y' "> #{desk}, </if>
+	 		<if test="bed != 'Y' "> 'N', </if>
+	 		<if test="bed == 'Y' "> #{bed}, </if>
+	 		<if test="aircon != 'Y' "> 'N', </if>
+	 		<if test="aircon == 'Y' "> #{aircon}, </if>
+	 		<if test="fridge != 'Y' "> 'N', </if>
+	 		<if test="fridge == 'Y' "> #{fridge}, </if>
+	 		<if test="shoes != 'Y' "> 'N', </if>
+	 		<if test="shoes == 'Y' "> #{shoes}, </if>
+	 		<if test="closet != 'Y' "> 'N', </if>
+	 		<if test="closet == 'Y' "> #{closet}, </if>
+	 		<if test="doorLock != 'Y' "> 'N', </if>
+	 		<if test="doorLock == 'Y' "> #{doorLock}, </if>
+	 		<if test="bidet != 'Y' "> 'N' </if>
+	 		<if test="bidet == 'Y' "> #{bidet} </if>
+ 		)
+ 	</insert>
+ 	
+ 	<insert id="insertHomeAddInfo" parameterType="com.home.alone.vo.HomeAddInfoVO">
+ 		insert into Home_AddInfo_tb(home_num, parking, pet, balcony, elevator, move_date)
+ 		values(#{homeNum}, #{parking}, 
+	 		<if test="pet != 'Y' "> 'N', </if>
+	 		<if test="pet == 'Y' "> #{pet}, </if>
+	 		<if test="balcony != 'Y' "> 'N', </if>
+	 		<if test="balcony == 'Y' "> #{balcony}, </if>
+	 		<if test="elevator != 'Y' "> 'N', </if>
+	 		<if test="elevator == 'Y' "> #{elevator}, </if>
+ 			#{moveDate} ) 
+ 	</insert>
+ 	
+ 	<insert id="insertHomeImgList" parameterType="java.util.List">
+ 		<foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+ 		into Home_Img_tb(home_num, home_img_name, home_img_path) 
+ 		values
+ 			(#{item.homeNum}, #{item.homeImgName}, #{item.homeImgPath})
+ 		</foreach>
+ 	</insert>
+ 	
+ 	
+ 	<insert id="insertHomePrice" parameterType="com.home.alone.vo.HomePriceVO">
+ 		insert into Home_Price_tb(home_num, deposit, monthly, admin_cost)  
+ 		values (#{homeNum}, #{deposit}, #{monthly}, #{adminCost})
+ 	</insert>
+ 	
+ 	<!-- 매물 신고 삽입 -->
+	<insert id="insertHomeReport" parameterType="com.home.alone.vo.HomeReportVO">
+		insert into Home_Report_tb(report_num, home_num, imcha_id, report_type, report_content) 
+		values ((select nvl(max(report_num), 0) + 1 from Home_Report_tb), #{homeNum}, #{imchaId}, #{reportType}, #{reportContent} )
+	</insert>
+ 	
+	
+	<select id="selectHomeInBoundsList" resultType="com.home.alone.vo.HomePreviewVO" parameterType="hashmap">
+			select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
+			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
+			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
+			from Home_tb 
+			join Home_AddInfo_tb using(home_num)
+			join Home_Price_tb using(home_num) 
+			where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) 
+	</select>
+	
+ 	
+ 	<select id="selectHomeDetail" resultType="com.home.alone.vo.HomeDetailVO">
+		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
+			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, rent_unit AS rentUnit, room_count AS roomCount, 
+			   admin_cost AS adminCost, floor, total_floor AS totalFloor, home_title AS homeTitle, home_detail AS homeDetail, 
+			   lessor_id AS lessorId, jgs_name AS jgsName, jgs_num AS jgsNum, phone, name, lessor_addr1 as lessorAddr1, 
+               lessor_addr2 as lessorAddr2, lessor_addr3 as lessorAddr3 
+		from Home_tb 
+			join Home_Price_tb using(home_num) 
+			join lessor_tb using (lessor_id)
+		where home_num = #{homeNum}
+	</select>
+	
+	
+	 <select id="selectHomeOption" resultType="com.home.alone.vo.HomeOptionVO">
+ 		select washer, telev, micro_wav AS microWav, gas_range AS gasRange, induction, desk, bed,
+				aircon, fridge, shoes, closet, door_lock AS doorLock, bidet
+ 		from Home_Option_tb 
+ 		where home_num = #{homeNum}
+ 	</select>
+ 	
+ 	<select id="selectHomeAddInfo" resultType="com.home.alone.vo.HomeAddInfoVO">
+ 		select parking, pet, balcony, elevator, move_date AS moveDate 
+ 		from Home_AddInfo_tb
+ 		where home_num = #{homeNum}
+ 	</select>
+	
+	 <select id="selectHomeOptionList" resultType="java.lang.String">
+ 		select option_name AS optionName from Home_Option_tb where home_num = #{homeNum}
+ 	</select>
+	
+	 	
+ 	<select id="selectHomeImgList" resultType="com.home.alone.vo.HomeImgVO">
+ 		select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath  
+ 		from Home_Img_tb where home_num = #{homeNum}
+ 	</select>
+	
+	<select id="selectHomeNumByOptionCheck" resultType="java.lang.Integer" parameterType="java.util.List">
+ 			select  <![CDATA[distinct]]> home_num As homeNum from Home_option_tb 
+ 			where option_name in 
+ 			<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+ 		</foreach>
+	</select>
+	
+	
+	<!--  옵션관련  -->
+	<insert id="insertOption" parameterType="com.home.alone.vo.HomeOptionVO">
+		insert into Home_Option_tb(option_num, home_num, option_name) 
+		values ((select nvl(max(option_num), 0) + 1 from Home_Option_tb),  #{homeNum}, #{optionName})
+	</insert>
+	
+	
+	<!-- 매물 사진 등록  -->
+ 	<insert id="insertHomeImg" parameterType="com.home.alone.vo.HomeImgVO">
+ 		insert into Home_Img_tb(img_num, home_num, home_img_name, home_img_path) 
+ 		values((select nvl(max(img_num), 0) + 1 from Home_Img_tb), #{homeNum}, #{homeImgName}, #{homeImgPath})
+ 	</insert>
+
+ 	
+	<select id="selectPreviewHomeImg" resultType="com.home.alone.vo.HomeImgVO"> <!-- 미리보기 사진 -->
+			select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath 
+			from (select * from Home_Img_tb where home_num = #{homeNum})
+			where <![CDATA[ rownum <2 ]]>
+	</select>
+
+
+
+ 	<delete id="deleteHomeImg">
+		delete from Home_Img_tb where home_num = #{homeNum}
+	</delete>
+	
+	<delete id="deleteHomeOption">
+		delete from Home_Option_tb where home_num = #{homeNum}
+	</delete>
+ 	
+ 	<update id="updateHome" parameterType="com.home.alone.vo.HomeVO">
+ 		update Home_tb 
+ 		set home_type=#{homeType}, addr1=#{addr1}, addr2=#{addr2}, addr3=#{addr3}, 
+ 			latitude=#{latitude}, longitude = #{longitude}, home_area = #{homeArea}, rent_type=#{rentType},
+ 			rent_periods=#{rentPeriods}, room_count=#{roomCount}, parking=#{parking}, pet=#{pet}, elevator=#{elevator},
+ 			balcony=#{balcony}, moveDate=#{moveDate}, floor=#{floor}, home_title=#{homeTitle}, home_detail=#{homeDetail}
+ 		where home_num=#{homeNum}
+ 		
+ 	</update>
+ 	
+ 	<update id="updateHomePrice" parameterType="com.home.alone.vo.HomePriceVO">
+ 		update Home_Price_tb set deposit = #{deposit}, monthly = #{monthly}, admin_cost = #{adminCost} where home_num = #{homeNum}
+ 	</update>
+ 	
+ 	<select id="selectListByLessorId" resultType="com.home.alone.vo.HomePreviewVO">
+ 		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,
+					rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, admin_cost AS adminCost, 
+					home_title AS homeTitle, home_valid AS homeValid, lessor_id AS lessorId
+		from Home_tb
+			join Home_Price_tb using(home_num)
+		where lessor_id=#{lessorId, jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	
+  	<select id="selectReportHomeList" resultType="com.home.alone.vo.HomeReportVO">
+ 		select report_num AS reportNum, home_num AS homeNum, imcha_id AS imchaId, report_type AS reportType, report_content AS reportContent, report_regdate AS reportRegDate, home_valid AS homeValid 
+ 		from Home_Report_tb 
+ 			join Home_tb using(home_num) 
+ 	</select>
+ 	
+ 	<delete id="deleteHome">
+ 		delete from Home_tb where home_num = #{homeNum}
+ 	</delete>
+ 	
+ </mapper>
+ 

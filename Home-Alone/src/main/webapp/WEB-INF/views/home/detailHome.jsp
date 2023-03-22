@@ -93,7 +93,7 @@
 					    		중개사 등록번호:  ${home.jgsNum} <br>
 						    	 대표명 : ${home.jgsName }  <br>
 						    	전화번호: ${home.phone }  <br>
-						    	주소:  ${home.lessorAddr }</div>
+						    	주소:  ${home.lessorAddr}</div>
 				    		</div>
 				    		<hr>
 						   	<div class="col mb-3">
@@ -131,19 +131,28 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td width="30%">${home.rentType}</td>
+								<td> 거래 유형</td>
+								<td> ${home.rentType }</td>
+							</tr>
+							<tr>
 								<c:choose>
 									<c:when test="${home.rentType == '월세'}">
-										<td>${home.deposit} / ${home.monthly}</td>
+										<td width="30%">보증금 / 월세  </td>
+										<td>${home.deposit} / ${home.monthly} 만원</td>
 									</c:when>
 									<c:otherwise>
-										<td>${home.deposit}원</td>
+										<td width="30%">보증금 </td>
+										<td>${home.deposit}만원</td>
 									</c:otherwise>
 								</c:choose>
 							</tr>
 							<tr>
+								<td> 임대 기간</td>
+								<td> ${home.rentPeriods }${home.rentUnit }</td>
+							</tr>
+							<tr>
 								<td>관리비</td>
-								<td>${home.adminCost}원</td>
+								<td>${home.adminCost}만원</td>
 							</tr>
 							<tr>
 								<td>주차</td>
@@ -188,21 +197,42 @@
 							</tr>
 							<tr>
 								<td>엘리베이터</td>
-								<td>${home.elevator }</td>
+								<c:choose>
+									<c:when test="${home.elevator == 'Y' }">
+										<td>가능</td>
+									</c:when>
+									<c:otherwise>
+										<td>불가능</td>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 							<tr>
 								<td>발코니 / 베란다</td>
-								<td>${home.balcony }</td>
+								<c:choose>
+									<c:when test="${home.balcony == 'Y' }">
+										<td>가능</td>
+									</c:when>
+									<c:otherwise>
+										<td>불가능</td>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 							<tr>
 								<td>반려 동물</td>
-								<td>${home.pet }</td>
+								<c:choose>
+									<c:when test="${home.pet == 'Y' }">
+										<td>가능</td>
+									</c:when>
+									<c:otherwise>
+										<td>불가능</td>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 							<tr>
 								<td>층</td>
 								<td><c:choose>
 										<c:when test="${home.floor > 0 }">
-											 ${home.floor}층
+											${home.totalFloor }층  중 ${home.floor}층
 										</c:when>
 										<c:otherwise>
 											 지하 
