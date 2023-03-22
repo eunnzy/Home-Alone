@@ -49,11 +49,6 @@ public class HomeDAOImpl implements HomeDAO{
 	}
 
 	@Override
-	public int insertHomeOptionList(List<HomeOptionVO> homeOptionList) {
-		return sqlSession.insert(HOMEMAPPER + "insertHomeOptionList", homeOptionList);
-	}
-
-	@Override
 	public int insertHomeReport(HomeReportVO homeReportVO) {
 		return sqlSession.insert(HOMEMAPPER + "insertHomeReport", homeReportVO);
 	}
@@ -79,19 +74,28 @@ public class HomeDAOImpl implements HomeDAO{
 	}
 
 	@Override
-	public List<String> selectHomeOptionList(int homeNum) {
-		return sqlSession.selectList(HOMEMAPPER + "selectHomeOptionList", homeNum);
-	}
-
-	@Override
 	public int updateHome(HomeVO homeVO) {
 		return sqlSession.update(HOMEMAPPER + "updateHome", homeVO);
 	}
 	
 	@Override
+	public int updateHomeAddInfo(HomeAddInfoVO homeAddInfoVO) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(HOMEMAPPER + "updateHomeAddInfo", homeAddInfoVO);
+	}
+
+	@Override
+	public int updateHomeOption(HomeOptionVO homeOptionVO) {
+		return sqlSession.update(HOMEMAPPER + "updateHomeOption", homeOptionVO);
+	}
+
+	
+	@Override
 	public int updateHomePrice(HomePriceVO homePriceVO) {
 		return sqlSession.update(HOMEMAPPER + "updateHomePrice", homePriceVO);
 	}
+	
+	
 
 	@Override
 	public int deleteHomeImg(int homeNum) {
@@ -128,6 +132,7 @@ public class HomeDAOImpl implements HomeDAO{
 	public HomeOptionVO selectHomeOption(int homeNum) {
 		return sqlSession.selectOne(HOMEMAPPER +"selectHomeOption", homeNum);
 	}
+
 
 
 

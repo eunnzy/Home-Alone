@@ -16,11 +16,9 @@ public interface HomeService {
 	List<HomeVO> selectAllHomeList();	// 모든 매물 리스트
 	Map<String, Object> selectHomeDetail(int homeNum);	// 매물 상세 정보 반환 
 	String convertMoneyUnit(long money); 
-	HomeImgVO previewHomeImg(int homeNum);	// 매물 미리보기시 나올 사진
 	int modifyHomeInfo(Map<String, Object> modifyHome);	// 매물 정보 수정
 	int reportHome(HomeReportVO homeReportVO);	// 매물 신고
-	
 	List<HomeReportVO> selectReportHomeList();
-	public List<HomePreviewVO> getListByLessorId(LessorVO vo);
-	public int deleteHome(int homeNum);
+	public List<HomePreviewVO> getListByLessorId(LessorVO vo);	// 중개인이 등록한 매물 리스트
+	public int deleteHome(int homeNum);	
 }
