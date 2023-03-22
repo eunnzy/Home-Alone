@@ -20,44 +20,44 @@
  	<insert id="insertHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
  		insert into Home_Option_tb(home_num, washer, telev, micro_wav, gas_range, induction, desk, bed, aircon, fridge, shoes, closet, door_lock, bidet)
  		values(#{homeNum},
-	 		<if test="washer != 'Y' "> 'N', </if>
-	 		<if test="washer == 'Y' "> #{washer}, </if>
-	 		<if test="telev != 'Y' "> 'N', </if>
-	 		<if test="telev == 'Y' "> #{telev}, </if>
-	 		<if test="microWav != 'Y' "> 'N', </if>
-	 		<if test="microWav == 'Y' "> #{microWav}, </if>
-	 		<if test="gasRange != 'Y' "> 'N', </if>
-	 		<if test="gasRange == 'Y' "> #{gasRange}, </if>
-	 		<if test="induction != 'Y' "> 'N', </if>
-	 		<if test="induction == 'Y' "> #{induction}, </if>
-	 		<if test="desk != 'Y' "> 'N', </if>
-	 		<if test="desk == 'Y' "> #{desk}, </if>
-	 		<if test="bed != 'Y' "> 'N', </if>
-	 		<if test="bed == 'Y' "> #{bed}, </if>
-	 		<if test="aircon != 'Y' "> 'N', </if>
-	 		<if test="aircon == 'Y' "> #{aircon}, </if>
-	 		<if test="fridge != 'Y' "> 'N', </if>
-	 		<if test="fridge == 'Y' "> #{fridge}, </if>
-	 		<if test="shoes != 'Y' "> 'N', </if>
-	 		<if test="shoes == 'Y' "> #{shoes}, </if>
-	 		<if test="closet != 'Y' "> 'N', </if>
-	 		<if test="closet == 'Y' "> #{closet}, </if>
-	 		<if test="doorLock != 'Y' "> 'N', </if>
-	 		<if test="doorLock == 'Y' "> #{doorLock}, </if>
-	 		<if test="bidet != 'Y' "> 'N' </if>
-	 		<if test="bidet == 'Y' "> #{bidet} </if>
+	 		<if test='washer != "Y" '> 'N', </if>
+	 		<if test='washer == "Y" '>   #{washer}, </if>
+	 		<if test='telev != "Y" '> 'N', </if>
+	 		<if test='telev == "Y" '> #{telev}, </if>
+	 		<if test='microWav != "Y" '> 'N', </if>
+	 		<if test='microWav == "Y" '>  #{microWav}, </if>
+	 		<if test='gasRange != "Y" '> 'N', </if>
+	 		<if test='gasRange == "Y" '>  #{gasRange}, </if>
+	 		<if test='induction != "Y" '>  'N', </if>
+	 		<if test='induction == "Y" '>  #{induction}, </if>
+	 		<if test='desk != "Y" '> 'N', </if>
+	 		<if test='desk == "Y" '>  #{desk}, </if>
+	 		<if test='bed != "Y" '>  'N', </if>
+	 		<if test='bed == "Y" '>  #{bed}, </if>
+	 		<if test='aircon != "Y"'> 'N', </if>
+	 		<if test='aircon == "Y" '> #{aircon}, </if>
+	 		<if test='fridge != "Y" '> 'N', </if>
+	 		<if test='fridge == "Y" '> #{fridge}, </if>
+	 		<if test='shoes != "Y" '> 'N', </if>
+	 		<if test='shoes == "Y" '> #{shoes}, </if>
+	 		<if test='closet != "Y" '>  'N', </if>
+	 		<if test='closet == "Y" '>  #{closet}, </if>
+	 		<if test='doorLock != "Y" '>'N', </if>
+	 		<if test='doorLock == "Y" '> #{doorLock}, </if>
+	 		<if test='bidet != "Y" '> 'N' </if>
+	 		<if test='bidet == "Y" '> #{bidet} </if>
  		)
  	</insert>
  	
  	<insert id="insertHomeAddInfo" parameterType="com.home.alone.vo.HomeAddInfoVO">
  		insert into Home_AddInfo_tb(home_num, parking, pet, balcony, elevator, move_date)
  		values(#{homeNum}, #{parking}, 
-	 		<if test="pet != 'Y' "> 'N', </if>
-	 		<if test="pet == 'Y' "> #{pet}, </if>
-	 		<if test="balcony != 'Y' "> 'N', </if>
-	 		<if test="balcony == 'Y' "> #{balcony}, </if>
-	 		<if test="elevator != 'Y' "> 'N', </if>
-	 		<if test="elevator == 'Y' "> #{elevator}, </if>
+	 		<if test='pet != "Y" '> 'N', </if>
+	 		<if test='pet == "Y" '> #{pet}, </if>
+	 		<if test='balcony != "Y" '> 'N', </if>
+	 		<if test='balcony == "Y" '> #{balcony}, </if>
+	 		<if test='elevator != "Y" '> 'N', </if>
+	 		<if test='elevator == "Y" '> #{elevator}, </if>
  			#{moveDate} ) 
  	</insert>
  	
@@ -119,10 +119,6 @@
  		where home_num = #{homeNum}
  	</select>
 	
-	 <select id="selectHomeOptionList" resultType="java.lang.String">
- 		select option_name AS optionName from Home_Option_tb where home_num = #{homeNum}
- 	</select>
-	
 	 	
  	<select id="selectHomeImgList" resultType="com.home.alone.vo.HomeImgVO">
  		select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath  
@@ -136,13 +132,6 @@
 			#{item}
  		</foreach>
 	</select>
-	
-	
-	<!--  옵션관련  -->
-	<insert id="insertOption" parameterType="com.home.alone.vo.HomeOptionVO">
-		insert into Home_Option_tb(option_num, home_num, option_name) 
-		values ((select nvl(max(option_num), 0) + 1 from Home_Option_tb),  #{homeNum}, #{optionName})
-	</insert>
 	
 	
 	<!-- 매물 사진 등록  -->
@@ -159,32 +148,75 @@
 	</select>
 
 
-
  	<delete id="deleteHomeImg">
 		delete from Home_Img_tb where home_num = #{homeNum}
 	</delete>
 	
-	<delete id="deleteHomeOption">
-		delete from Home_Option_tb where home_num = #{homeNum}
-	</delete>
- 	
+ 	<!-- 매물 기본 정보 테이블 수정 -->
  	<update id="updateHome" parameterType="com.home.alone.vo.HomeVO">
  		update Home_tb 
  		set home_type=#{homeType}, addr1=#{addr1}, addr2=#{addr2}, addr3=#{addr3}, 
  			latitude=#{latitude}, longitude = #{longitude}, home_area = #{homeArea}, rent_type=#{rentType},
- 			rent_periods=#{rentPeriods}, room_count=#{roomCount}, parking=#{parking}, pet=#{pet}, elevator=#{elevator},
- 			balcony=#{balcony}, moveDate=#{moveDate}, floor=#{floor}, home_title=#{homeTitle}, home_detail=#{homeDetail}
+ 			rent_periods=#{rentPeriods}, rent_unit=#{rentUnit}, room_count=#{roomCount}, floor=#{floor}, total_floor=#{totalFloor}, 
+ 			home_title=#{homeTitle}, home_detail=#{homeDetail}
  		where home_num=#{homeNum}
  		
  	</update>
  	
+ 	<!-- 매물 추가 정보 테이블 수정 -->
+ 	<update id="updateHomeAddInfo" parameterType="com.home.alone.vo.HomeAddInfoVO">
+ 		update Home_AddInfo_tb
+ 		set parking=#{parking}, 
+	 		<if test='pet != "Y" '> pet='N', </if>
+	 		<if test='pet == "Y" '> pet=#{pet}, </if>
+	 		<if test='balcony != "Y" '> balcony='N', </if>
+	 		<if test='balcony == "Y" '> balcony=#{balcony}, </if>
+	 		<if test='elevator != "Y" '> elevator='N', </if>
+	 		<if test='elevator == "Y" '> elevator=#{elevator}, </if>
+ 			move_date=#{moveDate} 
+ 		where home_num = #{homeNum}
+ 	</update>
+ 	
+ 	<!-- 매물 옵션 정보 테이블 수정 -->
+ 	<update id="updateHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
+ 		update Home_Option_tb
+ 		set <if test='washer != "Y" '>  washer ='N', </if>
+	 		<if test='washer == "Y" '>  washer = #{washer}, </if>
+	 		<if test='telev != "Y" '> telev = 'N', </if>
+	 		<if test='telev == "Y" '> telev = #{telev}, </if>
+	 		<if test='microWav != "Y" '> micro_wav = 'N', </if>
+	 		<if test='microWav == "Y" '> micro_wav = #{microWav}, </if>
+	 		<if test='gasRange != "Y" '> gas_range = 'N', </if>
+	 		<if test='gasRange == "Y" '> gas_range = #{gasRange}, </if>
+	 		<if test='induction != "Y" '> induction = 'N', </if>
+	 		<if test='induction == "Y" '> induction = #{induction}, </if>
+	 		<if test='desk != "Y" '>  desk = 'N', </if>
+	 		<if test='desk == "Y" '> desk = #{desk}, </if>
+	 		<if test='bed != "Y" '>  bed = 'N', </if>
+	 		<if test='bed == "Y" '> bed = #{bed}, </if>
+	 		<if test='aircon != "Y"'> aircon = 'N', </if>
+	 		<if test='aircon == "Y" '> aircon = #{aircon}, </if>
+	 		<if test='fridge != "Y" '> fridge = 'N', </if>
+	 		<if test='fridge == "Y" '> fridge = #{fridge}, </if>
+	 		<if test='shoes != "Y" '> shoes = 'N', </if>
+	 		<if test='shoes == "Y" '> shoes = #{shoes}, </if>
+	 		<if test='closet != "Y" '> closet = 'N', </if>
+	 		<if test='closet == "Y" '> closet = #{closet}, </if>
+	 		<if test='doorLock != "Y" '> door_lock = 'N', </if>
+	 		<if test='doorLock == "Y" '> door_lock = #{doorLock}, </if>
+	 		<if test='bidet != "Y" '> bidet = 'N' </if>
+	 		<if test='bidet == "Y" '> bidet = #{bidet} </if>
+ 		where home_num = #{homeNum}
+ 	</update>
+ 	
+ 	<!-- 매물 가격 정보 테이블 수정 -->
  	<update id="updateHomePrice" parameterType="com.home.alone.vo.HomePriceVO">
  		update Home_Price_tb set deposit = #{deposit}, monthly = #{monthly}, admin_cost = #{adminCost} where home_num = #{homeNum}
  	</update>
  	
  	<select id="selectListByLessorId" resultType="com.home.alone.vo.HomePreviewVO">
  		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,
-					rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, admin_cost AS adminCost, 
+					rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, rent_unit as rentUnit, admin_cost AS adminCost, 
 					home_title AS homeTitle, home_valid AS homeValid, lessor_id AS lessorId
 		from Home_tb
 			join Home_Price_tb using(home_num)

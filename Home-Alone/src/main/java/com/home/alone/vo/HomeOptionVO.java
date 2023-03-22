@@ -13,18 +13,18 @@ import lombok.NoArgsConstructor;
 public class HomeOptionVO {
 	private int homeNum;
 //	private String optionName;
-	private char washer;
-	private char telev;
-	private char microWav;
-	private char gasRange;
-	private char induction;
-	private char desk;
-	private char bed;
-	private char aircon;
-	private char fridge;
-	private char shoes;
-	private char closet;
-	private char doorLock;
-	private char bidet;
+	private String washer;
+	private String telev;
+	private String microWav;
+	private String gasRange;
+	private String induction;
+	private String desk;
+	private String bed;
+	private String aircon;
+	private String fridge;
+	private String shoes;
+	private String closet;
+	private String doorLock;
+	private String bidet;
 	
 }

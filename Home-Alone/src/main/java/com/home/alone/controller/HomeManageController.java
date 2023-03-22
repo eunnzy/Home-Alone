@@ -164,13 +164,13 @@ public class HomeManageController {
 						homeAddVO.setParking(Integer.parseInt((String) homeData.get(key)));
 						break;
 					case "pet": 
-						homeAddVO.setPet('Y');
+						homeAddVO.setPet((String) homeData.get(key));
 						break;
 					case "elevator":
-						homeAddVO.setElevator('Y'); 
+						homeAddVO.setElevator((String) homeData.get(key)); 
 						break;
 					case "balcony": 
-						homeAddVO.setBalcony('Y'); 
+						homeAddVO.setBalcony((String) homeData.get(key)); 
 						break;
 					case "moveDate": 
 						try {
@@ -227,9 +227,9 @@ public class HomeManageController {
 		Map<String, Object> home = homeService.selectHomeDetail(homeNum);	// 원래 정보 가져오기
 		System.out.println("detailHome: " + home);
 		
-		home.put("deposit", (int)home.get("deposit")/10000);
-		home.put("monthly", (int)home.get("monthly")/10000);
-		home.put("adminCost", (int)home.get("adminCost")/10000);
+//		home.put("deposit", (int)home.get("deposit"));
+//		home.put("monthly", (int)home.get("monthly"));
+//		home.put("adminCost", (int)home.get("adminCost"));
 		model.addAttribute("home", home);
 		return "home/manage/modifyHome";
 	}
@@ -293,20 +293,38 @@ public class HomeManageController {
 					case "rentPeriods": 
 						homeVO.setRentPeriods(Integer.parseInt((String) homeData.get(key))); 
 						break;
+					case "rentUnit": 
+						homeVO.setRentUnit((String) homeData.get(key)); 
+						break;
 					case "roomCount" : 
 						homeVO.setRoomCount(Integer.parseInt((String) homeData.get(key))); 
+						break;
+					case "floor": 
+						homeVO.setFloor(Integer.parseInt((String) homeData.get(key))); 
+						break;
+					case "totalFloor": 
+						homeVO.setTotalFloor(Integer.parseInt((String) homeData.get(key))); 
+						break;
+					case "homeTitle": 
+						homeVO.setHomeTitle((String)homeData.get(key));
+						break;
+					case "homeDetail": 
+						homeVO.setHomeDetail((String)homeData.get(key)); 
+						break;
+					case "adminCost": 
+						homePriceVO.setAdminCost(Integer.parseInt(String.valueOf(homeData.get(key)))); 
 						break;
 					case "parking": 
 						homeAddVO.setParking(Integer.parseInt((String) homeData.get(key)));
 						break;
 					case "pet": 
-						homeAddVO.setPet('Y');
+						homeAddVO.setPet((String) homeData.get(key));
 						break;
 					case "elevator":
-						homeAddVO.setElevator('Y'); 
+						homeAddVO.setElevator((String) homeData.get(key)); 
 						break;
 					case "balcony": 
-						homeAddVO.setBalcony('Y'); 
+						homeAddVO.setBalcony((String) homeData.get(key)); 
 						break;
 					case "moveDate": 
 						try {
@@ -319,15 +337,6 @@ public class HomeManageController {
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
-						break;
-					case "floor": 
-						homeVO.setFloor(Integer.parseInt((String) homeData.get(key))); 
-						break;
-					case "homeTitle": 
-						homeVO.setHomeTitle((String)homeData.get(key));
-						break;
-					case "homeDetail": 
-						homeVO.setHomeDetail((String)homeData.get(key)); 
 						break;
 					case "optionList":
 						homeOptionList = (List<String>)homeData.get(key);
@@ -353,9 +362,11 @@ public class HomeManageController {
 		System.out.println("homeImgList: " + homeImgList);
 		System.out.println("homeOptionList: " + homeOptionList);
 		
+		
 		modifyMap.put("homeVO", homeVO);
 		modifyMap.put("homePriceVO", homePriceVO);
 		modifyMap.put("homeImgList", homeImgList);
+		modifyMap.put("homeAddInfo", homeAddVO);
 		modifyMap.put("homeOptionList", homeOptionList);
 		
 		int result = homeService.modifyHomeInfo(modifyMap);// 매물 정보 수정

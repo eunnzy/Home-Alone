@@ -64,8 +64,6 @@ public class HomeController {
 		System.out.println("detailHome: " + home);
 		
 		model.addAttribute("home", home);
-//		model.addAttribute("addInfo", (HomeAddInfoVO)map.get("addInfo"));
-//		model.addAttribute("optionList", (List<String>)map.get("optionList"));
 		
 		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
 		System.out.println("imcha " + imcha);

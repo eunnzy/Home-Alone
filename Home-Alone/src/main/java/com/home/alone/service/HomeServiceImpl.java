@@ -56,19 +56,19 @@ public class HomeServiceImpl implements HomeService{
 		homeOptionVO.setHomeNum(homeNum);
 		for(String op: (List<String>)insertMap.get("homeOptionList")) {
 			switch(op) {
-				case "washer": homeOptionVO.setWasher('Y'); break;
-				case "telev": homeOptionVO.setTelev('Y'); break;
-				case "microWav": homeOptionVO.setMicroWav('Y'); break;
-				case "gasRange": homeOptionVO.setGasRange('Y'); break;
-				case "induction": homeOptionVO.setInduction('Y'); break;
-				case "desk": homeOptionVO.setDesk('Y'); break;
-				case "bed": homeOptionVO.setBed('Y'); break;
-				case "aircon": homeOptionVO.setAircon('Y'); break;
-				case "fridge": homeOptionVO.setFridge('Y'); break;
-				case "shoes": homeOptionVO.setShoes('Y'); break;
-				case "closet": homeOptionVO.setCloset('Y'); break;
-				case "doorLock": homeOptionVO.setDoorLock('Y'); break;
-				case "bidet": homeOptionVO.setBidet('Y'); break;
+				case "washer": homeOptionVO.setWasher("Y"); break;
+				case "telev": homeOptionVO.setTelev("Y"); break;
+				case "microWav": homeOptionVO.setMicroWav("Y"); break;
+				case "gasRange": homeOptionVO.setGasRange("Y"); break;
+				case "induction": homeOptionVO.setInduction("Y"); break;
+				case "desk": homeOptionVO.setDesk("Y"); break;
+				case "bed": homeOptionVO.setBed("Y"); break;
+				case "aircon": homeOptionVO.setAircon("Y"); break;
+				case "fridge": homeOptionVO.setFridge("Y"); break;
+				case "shoes": homeOptionVO.setShoes("Y"); break;
+				case "closet": homeOptionVO.setCloset("Y"); break;
+				case "doorLock": homeOptionVO.setDoorLock("Y"); break;
+				case "bidet": homeOptionVO.setBidet("Y"); break;
 			}
 		}
 		System.out.println(homeOptionVO);
@@ -115,19 +115,19 @@ public class HomeServiceImpl implements HomeService{
 			HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);
 			List<String> optionList = new ArrayList<>();
 			
-			if(homeOptionVO.getWasher() == 'Y') optionList.add("washer");
-			if(homeOptionVO.getTelev() == 'Y') optionList.add("telev");
-			if(homeOptionVO.getMicroWav() == 'Y') optionList.add("microWav");
-			if(homeOptionVO.getGasRange() == 'Y') optionList.add("gasRange");
-			if(homeOptionVO.getInduction() == 'Y') optionList.add("induction");
-			if(homeOptionVO.getDesk() == 'Y') optionList.add("desk");
-			if(homeOptionVO.getBed() == 'Y') optionList.add("bed");
-			if(homeOptionVO.getAircon() == 'Y') optionList.add("aircon");
-			if(homeOptionVO.getFridge() == 'Y') optionList.add("fridge");
-			if(homeOptionVO.getShoes() == 'Y') optionList.add("shoes");
-			if(homeOptionVO.getCloset() == 'Y') optionList.add("closet");
-			if(homeOptionVO.getDoorLock() == 'Y') optionList.add("doorLock");
-			if(homeOptionVO.getBidet() == 'Y') optionList.add("bidet");
+			if(homeOptionVO.getWasher().equals("Y")) optionList.add("washer");
+			if(homeOptionVO.getTelev().equals("Y")) optionList.add("telev");
+			if(homeOptionVO.getMicroWav().equals("Y")) optionList.add("microWav");
+			if(homeOptionVO.getGasRange().equals("Y")) optionList.add("gasRange");
+			if(homeOptionVO.getInduction().equals("Y")) optionList.add("induction");
+			if(homeOptionVO.getDesk().equals("Y")) optionList.add("desk");
+			if(homeOptionVO.getBed().equals("Y")) optionList.add("bed");
+			if(homeOptionVO.getAircon().equals("Y")) optionList.add("aircon");
+			if(homeOptionVO.getFridge().equals("Y")) optionList.add("fridge");
+			if(homeOptionVO.getShoes().equals("Y")) optionList.add("shoes");
+			if(homeOptionVO.getCloset().equals("Y")) optionList.add("closet");
+			if(homeOptionVO.getDoorLock().equals("Y")) optionList.add("doorLock");
+			if(homeOptionVO.getBidet().equals("Y")) optionList.add("bidet");
 			
 			homeInBoundsList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
 			homeInBoundsList.get(i).setOptionList(optionList);
@@ -149,33 +149,23 @@ public class HomeServiceImpl implements HomeService{
 		
 		List<String> optionList = new ArrayList<>();
 		
-		if(homeOptionVO.getWasher() == 'Y') optionList.add("washer");
-		if(homeOptionVO.getTelev() == 'Y') optionList.add("telev");
-		if(homeOptionVO.getMicroWav() == 'Y') optionList.add("microWav");
-		if(homeOptionVO.getGasRange() == 'Y') optionList.add("gasRange");
-		if(homeOptionVO.getInduction() == 'Y') optionList.add("induction");
-		if(homeOptionVO.getDesk() == 'Y') optionList.add("desk");
-		if(homeOptionVO.getBed() == 'Y') optionList.add("bed");
-		if(homeOptionVO.getAircon() == 'Y') optionList.add("aircon");
-		if(homeOptionVO.getFridge() == 'Y') optionList.add("fridge");
-		if(homeOptionVO.getShoes() == 'Y') optionList.add("shoes");
-		if(homeOptionVO.getCloset() == 'Y') optionList.add("closet");
-		if(homeOptionVO.getDoorLock() == 'Y') optionList.add("doorLock");
-		if(homeOptionVO.getBidet() == 'Y') optionList.add("bidet");
+		if(homeOptionVO.getWasher().equals("Y")) optionList.add("washer");
+		if(homeOptionVO.getTelev().equals("Y")) optionList.add("telev");
+		if(homeOptionVO.getMicroWav().equals("Y")) optionList.add("microWav");
+		if(homeOptionVO.getGasRange().equals("Y")) optionList.add("gasRange");
+		if(homeOptionVO.getInduction().equals("Y")) optionList.add("induction");
+		if(homeOptionVO.getDesk().equals("Y")) optionList.add("desk");
+		if(homeOptionVO.getBed().equals("Y")) optionList.add("bed");
+		if(homeOptionVO.getAircon().equals("Y")) optionList.add("aircon");
+		if(homeOptionVO.getFridge().equals("Y")) optionList.add("fridge");
+		if(homeOptionVO.getShoes().equals("Y")) optionList.add("shoes");
+		if(homeOptionVO.getCloset().equals("Y")) optionList.add("closet");
+		if(homeOptionVO.getDoorLock().equals("Y")) optionList.add("doorLock");
+		if(homeOptionVO.getBidet().equals("Y")) optionList.add("bidet");
 
 		System.out.println("optionList : ");
 		System.out.println(optionList);
 		
-		// Map<String, Object> homeDetailMap = new HashMap<>();
-		
-//		homeDetailMap.put("home", homeDetailVO);
-//		homeDetailMap.put("addInfo", homeAddInfoVO);
-//		homeDetailMap.put("optionList", optionList);
-		
-//		HomeDetailVO homeDetailVO = homeDAO.selectHomeDetail(homeNum);
-//		homeDetailVO.setOptionList(homeDAO.selectHomeOptionList(homeNum));
-//		homeDetailVO.setHomeImgList(homeDAO.selectHomeImgList(homeNum));
-//		
 		Map<String, Object> home = new HashMap<>();
 		home.put("homeNum", homeDetailVO.getHomeNum());
 		home.put("homeType", homeDetailVO.getHomeType());
@@ -233,12 +223,6 @@ public class HomeServiceImpl implements HomeService{
 		return convert;
 	}
 	
-	@Override
-	public HomeImgVO previewHomeImg(int homeNum) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public List<HomeVO> selectAllHomeList() {
@@ -257,7 +241,7 @@ public class HomeServiceImpl implements HomeService{
 		HomeVO homeVO = (HomeVO)modifyHome.get("homeVO");
 		homeDAO.updateHome(homeVO);
 		
-		// 매물 사진 수정
+		// 매물 사진 삭제 (사진은 수정 개념이 X) 
 		System.out.println((List<HomeImgVO>)modifyHome.get("homeImgList"));
 		List<HomeImgVO> homeImgList = (List<HomeImgVO>)modifyHome.get("homeImgList");
 		if(homeImgList != null) {
@@ -266,22 +250,35 @@ public class HomeServiceImpl implements HomeService{
 				homeImgList.get(i).setHomeNum(homeVO.getHomeNum());
 			System.out.println(homeImgList);
 		}
-		
 		homeDAO.insertHomeImgList(homeImgList);
 		
 		// 매물 옵션 수정
-		List<HomeOptionVO> homeOptionList = new ArrayList<>();
-		if(homeOptionList != null) {
-			homeDAO.deleteHomeOption(homeVO.getHomeNum());
-			for(String op: (List<String>)modifyHome.get("homeOptionList")) {
-				HomeOptionVO homeOptionVO = new HomeOptionVO();
-				homeOptionVO.setHomeNum(homeVO.getHomeNum());
-				// homeOptionVO.setOptionName(op);
-				homeOptionList.add(homeOptionVO);
+		HomeOptionVO homeOptionVO = new HomeOptionVO();
+		homeOptionVO.setHomeNum(homeVO.getHomeNum());
+		for(String op: (List<String>)modifyHome.get("homeOptionList")) {
+			switch(op) {
+				case "washer": homeOptionVO.setWasher("Y"); break;
+				case "telev": homeOptionVO.setTelev("Y"); break;
+				case "microWav": homeOptionVO.setMicroWav("Y"); break;
+				case "gasRange": homeOptionVO.setGasRange("Y"); break;
+				case "induction": homeOptionVO.setInduction("Y"); break;
+				case "desk": homeOptionVO.setDesk("Y"); break;
+				case "bed": homeOptionVO.setBed("Y"); break;
+				case "aircon": homeOptionVO.setAircon("Y"); break;
+				case "fridge": homeOptionVO.setFridge("Y"); break;
+				case "shoes": homeOptionVO.setShoes("Y"); break;
+				case "closet": homeOptionVO.setCloset("Y"); break;
+				case "doorLock": homeOptionVO.setDoorLock("Y"); break;
+				case "bidet": homeOptionVO.setBidet("Y"); break;
 			}
 		}
-		System.out.println(homeOptionList);
-		homeDAO.insertHomeOptionList(homeOptionList);
+		System.out.println(homeOptionVO);
+		homeDAO.updateHomeOption(homeOptionVO);
+		
+		// 매물 추가 정보 수정
+		HomeAddInfoVO homeAddInfoVO = (HomeAddInfoVO)modifyHome.get("homeAddInfo");
+		homeAddInfoVO.setHomeNum(homeVO.getHomeNum());
+		homeDAO.updateHomeAddInfo(homeAddInfoVO);
 		
 		// 매물 가격 정보 수정
 		HomePriceVO homePriceVO = (HomePriceVO)modifyHome.get("homePriceVO");
@@ -298,7 +295,6 @@ public class HomeServiceImpl implements HomeService{
 
 	@Override
 	public List<HomeReportVO> selectReportHomeList() {
-		
 		return homeDAO.selectReportHomeList();
 	}
 
