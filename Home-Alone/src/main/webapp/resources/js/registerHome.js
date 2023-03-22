@@ -148,6 +148,7 @@ $("#addBtn").on("click",function(e){
 	let deposit = $("input[name=deposit]").val();
 	let monthly = $("input[name=monthly]").val();
 	let rentPeriods =  $("input[name=rentPeriods]").val();
+	let rentUnit =  $("select[name=rentUnit]").val();
 	let roomCount = $("input[name=roomCount]").val();
 	let adminCost = $("input[name=adminCost]").val();
 	let parking = $("input[name=parking]").val();
@@ -156,6 +157,7 @@ $("#addBtn").on("click",function(e){
 	let balcony = $("input[name=balcony]:checked").val();
 	let moveDate = $("input[name=moveDate]").val();
 	let floor = $("input[name=floor]").val();
+	let totalFloor = $("input[name=totalFloor]").val();
 	let homeTitle = $("input[name=homeTitle]").val();
 	let homeDetail = $("textarea[name=homeDetail]").val();
 	
@@ -263,17 +265,19 @@ $("#addBtn").on("click",function(e){
 	    		"longitude": longitude,
 	    		"homeArea" : homeArea,
 	    		"rentType" : rentType,
-	    		"deposit" : deposit  * 10000,
-	    		"monthly" : monthly * 10000,
+	    		"deposit" : deposit,
+	    		"monthly" : monthly,
 	    		"rentPeriods" : rentPeriods,
+	    		"rentUnit" : rentUnit,
 	    		"roomCount" : roomCount,
-	    		"adminCost" : adminCost * 10000,
+	    		"adminCost" : adminCost,
 	    		"parking" : parking,
 	    		"pet" : pet,
 	    		"elevator" : elevator,
 	    		"balcony" : balcony,
 	    		"moveDate" : moveDate,
 	    		"floor" : floor,
+	    		"totalFloor" : totalFloor ,
 	    		"optionList" : optionList,
 	    		"homeImgList": homeImgList,
 	    		"homeTitle" : homeTitle,

@@ -31,12 +31,12 @@
 	    <beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.guardian.myhome.controller" />
-	<context:component-scan base-package="com.guardian.myhome.mapper" />
-	<context:component-scan base-package="com.guardian.myhome.service" />
-	<context:component-scan base-package="com.guardian.myhome.vo" />
-	<context:component-scan base-package="com.guardian.myhome.dao" />
+	<context:component-scan base-package="com.home.alone.controller" />
+	<context:component-scan base-package="com.home.alonee.mapper" />
+	<context:component-scan base-package="com.home.alone.service" />
+	<context:component-scan base-package="com.home.alone.vo" />
+	<context:component-scan base-package="com.home.alone.dao" />
 	
-	<mybatis-spring:scan base-package="com.guardian.myhome.mapper" />
+	<mybatis-spring:scan base-package="com.home.alone.mapper" />
 	
 </beans:beans>

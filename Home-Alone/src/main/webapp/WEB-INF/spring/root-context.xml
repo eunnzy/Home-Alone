@@ -18,12 +18,12 @@
 		<property name="driverClassName"  value="oracle.jdbc.driver.OracleDriver"/>
 		<!-- <property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521/xe"/> -->
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521/xe"/>
-		<property name="username" value="myhome"/>
-		<property name="password" value="myhome"/>
+		<property name="username" value="homeAlone"/>
+		<property name="password" value="homeAlone"/>
 	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="mapperLocations" value="classpath*:com/guardian/myhome/mapper/*.xml" />
+		<property name="mapperLocations" value="classpath*:com/home/alone/mapper/*.xml" />
     	<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
@@ -32,11 +32,11 @@
     </bean>
 	
 	<!-- <context:component-scan base-package="com.guardian.myhome.mapper" /> -->
-	<mybatis-spring:scan base-package="com.guardian.myhome.mapper"/>
-	<context:component-scan base-package="com.guardian.myhome.dao"></context:component-scan>
-	<context:component-scan base-package="com.guardian.myhome.service"></context:component-scan>
+	<mybatis-spring:scan base-package="com.home.alone.mapper"/>
+	<context:component-scan base-package="com.home.alone.dao"></context:component-scan>
+	<context:component-scan base-package="com.home.alone.service"></context:component-scan>
 	
 	<!-- 파일 업로드 관리 -->
-	<context:component-scan base-package="com.guardian.myhome.task"></context:component-scan>
+	<context:component-scan base-package="com.home.alone.task"></context:component-scan>
 	<task:annotation-driven/>
 </beans>

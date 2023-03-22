@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.home.alone.mapper.BoardAttachMapper">
+	
+	<!-- 파일 업로드 등록 -->
+	<insert id="insert">
+		INSERT INTO Board_attach (uuid, uploadPath, fileName, filetype, bno)
+		VALUES (#{uuid}, #{uploadPath}, #{fileName}, #{fileType}, #{bno})
+	</insert>
+	
+	<!-- 업로드 중 취소 --> 
+	<delete id="delete">
+		DELETE FROM Board_attach WHERE uuid = #{uuid}
+	</delete>
+	
+	<!-- 게시물의 파일 조회 -->
+	<select id="findByBno" resultType="com.home.alone.vo.BoardAttachVO">
+		SELECT * FROM Board_attach WHERE bno = #{bno}
+	</select>
+	
+	<!-- 게시물의 모든 파일 삭제 -->
+	<delete id="deleteAll">
+		DELETE Board_attach WHERE bno = #{bno}
+	</delete>
+	
+	<!-- 이전 업로드 파일 확인 -->
+	<select id="getOldFiles" resultType="com.home.alone.vo.BoardAttachVO">
+		SELECT * FROM Board_attach WHERE uploadpath = to_char(SYSDATE -1, 'yyyy/mm/dd')
+	</select>
+	
+</mapper>

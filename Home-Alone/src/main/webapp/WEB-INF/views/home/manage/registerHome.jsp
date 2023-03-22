@@ -180,7 +180,11 @@
 								   		<input class="form-control" type="text" name="rentPeriods">
 							    	</div>
 						    		<div class="col-auto">
-							   			<label>년</label>
+							   			<select class="form-select" name="rentUnit">
+										  <option >기간</option>
+										  <option value="개월">개월</option>
+										  <option value="년">년</option>
+										</select>
 							   		</div>
 						   	 	</div>
                            </td>
@@ -237,22 +241,22 @@
                        <tr>
                            <td> 반려동물  </td>
                            <td class="radio-btn">
-                               <input class="form-check-input" type="radio" name="pet" value="가능"> <label> 가능 </label> 
-                               <input class="form-check-input" type="radio" name="pet" value="불가능"> <label> 불가능 </label> 
+                               <input class="form-check-input" type="radio" name="pet" value="Y"> <label> 가능 </label> 
+                               <input class="form-check-input" type="radio" name="pet" value="N"> <label> 불가능 </label> 
                            </td>
                        </tr>
                        <tr>
                            <td> 엘리베이터  </td>
                            <td class="radio-btn">
-                               <input class="form-check-input" type="radio" name="elevator" value="가능"> <label> 가능 </label> 
-                               <input class="form-check-input" type="radio" name="elevator" value="불가능"> <label> 불가능 </label> 
+                               <input class="form-check-input" type="radio" name="elevator" value="Y"> <label> 가능 </label> 
+                               <input class="form-check-input" type="radio" name="elevator" value="N"> <label> 불가능 </label> 
                            </td>
                        </tr>
                        <tr>
                            <td> 베란다 / 발코니  </td>
                            <td class="radio-btn">    
-                               <input class="form-check-input" type="radio" name="balcony" value="가능"> <label> 가능 </label> 
-                               <input class="form-check-input" type="radio" name="balcony" value="불가능"> <label> 불가능 </label> 
+                               <input class="form-check-input" type="radio" name="balcony" value="Y"> <label> 가능 </label> 
+                               <input class="form-check-input" type="radio" name="balcony" value="N"> <label> 불가능 </label> 
                            </td>
                        </tr>
                        <tr>
@@ -268,14 +272,17 @@
                            <td>
                            		<div class="row mb-3">
 									<div class="col-auto">
-										<label> 해당 층: </label> 
-									</div>                            	
-							    <div class="col-auto">
-							   		 <input class="form-control" type="text" name="floor">
-						    	</div>
-						    	<div class="col-auto">
-							   		<label> * 지하인 경우 ex) -1 </label>
-						    	</div>
+										 <input class="form-control" type="text" name="floor" placeholder="해당 층">  
+									</div>    
+									<div class="col-auto">
+								   		/
+							    	</div>                        	
+								    <div class="col-auto">
+								   		<input class="form-control" type="text" name="totalFloor" placeholder="전체 층">
+							    	</div>
+						    		<div class="col-auto">
+							   			<label> * 지하인 경우 ex) -1 / 10 </label>
+						    		</div>
 						    </div>
                               	
                            </td>
@@ -284,51 +291,55 @@
                            <td>옵션 </td>
                            <td>
                            		<div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="세탁기">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="washer">
 								 	<label class="form-check-label">세탁기</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input"  autocomplete="off" name="optionList" value="TV">
+                                	<input type="checkbox" class="form-check-input"  autocomplete="off" name="optionList" value="telev">
 								 	<label class="form-check-label">TV</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="전자레인지">
+                                 <div class="form-check form-check-inline">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="microWav">
 								 	<label class="form-check-label" >전자레인지 </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="인덕션">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="gasRange">
+								 	<label class="form-check-label" >가스레인지 </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="induction">
 								 	<label class="form-check-label" >인덕션</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="책상">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="desk">
 								 	<label class="form-check-label" >책상 </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="침대">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="bed">
 								 	<label class="form-check-label" >침대 </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="에어컨">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="aircon">
 								 	<label class="form-check-label">에어컨 </label>
                                 </div>
 							 	<div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input"autocomplete="off" name="optionList" value="냉장고">
+                                	<input type="checkbox" class="form-check-input"autocomplete="off" name="optionList" value="fridge">
 								 	<label class="form-check-label">냉장고 </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="신발장">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="shoes">
 								 	<label class="form-check-label">신발장 </label>
                                 </div>
 							 	<div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="옷장">
+                                	<input type="checkbox" class="form-check-input" autocomplete="off" name="optionList" value="closet">
 								 	<label class="form-check-label">옷장 </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input"autocomplete="off" name="optionList" value="도어락">
+                                	<input type="checkbox" class="form-check-input"autocomplete="off" name="optionList" value="doorLock">
 								 	<label class="form-check-label" >도어락 </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="checkbox" class="form-check-input"  autocomplete="off" name="optionList" value="비데">
+                                	<input type="checkbox" class="form-check-input"  autocomplete="off" name="optionList" value="bidet">
 								 	<label  class="form-check-label">비데</label>
                                 </div>
                            </td>
