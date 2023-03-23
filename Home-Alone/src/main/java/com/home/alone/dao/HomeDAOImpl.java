@@ -53,10 +53,14 @@ public class HomeDAOImpl implements HomeDAO{
 		return sqlSession.insert(HOMEMAPPER + "insertHomeReport", homeReportVO);
 	}
 	
-	
 	@Override
 	public List<HomePreviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds) {
 		return sqlSession.selectList(HOMEMAPPER + "selectHomeInBoundsList", mapBounds);
+	}
+
+	@Override
+	public List<HomePreviewVO> selectHomeListByFilter(Map<String, Object> filterData) {
+		return sqlSession.selectList(HOMEMAPPER + "selectHomeListByFilter", filterData);
 	}
 	
 	@Override
@@ -132,9 +136,6 @@ public class HomeDAOImpl implements HomeDAO{
 	public HomeOptionVO selectHomeOption(int homeNum) {
 		return sqlSession.selectOne(HOMEMAPPER +"selectHomeOption", homeNum);
 	}
-
-
-
 
 	
 

@@ -13,6 +13,7 @@ import com.home.alone.vo.LessorVO;
 public interface HomeService {
 	int insertHome(Map<String, Object> insertMap);
 	List<HomePreviewVO> homeInBoundsList(Map<String, Object> mapBounds);
+	List<HomePreviewVO> homeListByFilter(Map<String, Object> filterData);
 	List<HomeVO> selectAllHomeList();	// 모든 매물 리스트
 	Map<String, Object> selectHomeDetail(int homeNum);	// 매물 상세 정보 반환 
 	String convertMoneyUnit(long money); 

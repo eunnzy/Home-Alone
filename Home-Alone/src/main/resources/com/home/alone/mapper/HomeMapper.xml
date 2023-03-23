@@ -18,6 +18,11 @@
  	</insert>
  	
  	<insert id="insertHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
+ 	insert into Home_Option_tb(home_num, option_list)
+ 		values(#{homeNum}, #{optionList})
+ 	</insert>
+ 	
+ 	<!-- <insert id="insertHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
  		insert into Home_Option_tb(home_num, washer, telev, micro_wav, gas_range, induction, desk, bed, aircon, fridge, shoes, closet, door_lock, bidet)
  		values(#{homeNum},
 	 		<if test='washer != "Y" '> 'N', </if>
@@ -47,8 +52,10 @@
 	 		<if test='bidet != "Y" '> 'N' </if>
 	 		<if test='bidet == "Y" '> #{bidet} </if>
  		)
- 	</insert>
+ 	</insert> -->
  	
+ 	
+
  	<insert id="insertHomeAddInfo" parameterType="com.home.alone.vo.HomeAddInfoVO">
  		insert into Home_AddInfo_tb(home_num, parking, pet, balcony, elevator, move_date)
  		values(#{homeNum}, #{parking}, 
@@ -92,6 +99,60 @@
 			where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) 
 	</select>
 	
+	<select id="selectHomeListByFilter" parameterType="hashmap" >
+		select home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
+			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
+			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
+		from Home_tb 
+			join Home_AddInfo_tb using(home_num)
+			join Home_Price_tb using(home_num) 
+			join Home_Option_tb using(home_num) 
+		where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) 
+		<choose>
+			<when test="homeType.size != 0">
+				and homeType in 
+				<foreach item="item" collection="homeType" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</when>
+			<when test="rentType.size != 0">
+				and rentType in 
+				<foreach item="item" collection="rentType" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</when>
+			<when test="deposit != null">
+				and deposit &lt; #{item}
+			</when>
+			<when test="monthly != null">
+				and monthly &lt; #{item}
+			</when>
+			<when test="rentType.size != 0">
+				and rentType in 
+				<foreach item="item" collection="rentType" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</when>
+			<when test="optionList.size != 0">
+				<foreach item="item" collection="optionList" open="(" separator="," close=")">
+				and option_list like '%'|| #{item} ||'%'
+				</foreach>
+			</when>
+			<when test='addInfo.parking gt 0 '>
+				and parking &gt; 0
+			</when>
+			<when test='addInfo.pet == "Y" '>
+				and pet = #{addInfo.pet}
+			</when>
+			<when test='addInfo.elevator == "Y" '>
+				and elevator = #{addInfo.elevator}
+			</when>
+			<when test='addInfo.balcony == "Y" '>
+				and balcony = #{addInfo.balcony}
+			</when>
+		</choose>
+	</select>
+	
  	
  	<select id="selectHomeDetail" resultType="com.home.alone.vo.HomeDetailVO">
 		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
@@ -105,13 +166,18 @@
 		where home_num = #{homeNum}
 	</select>
 	
+	<select id="selectHomeOption" resultType="com.home.alone.vo.HomeOptionVO">
+ 		select option_list as optionList
+ 		from Home_Option_tb
+ 		where home_num = #{homeNum}
+ 	</select>
 	
-	 <select id="selectHomeOption" resultType="com.home.alone.vo.HomeOptionVO">
+	 <!-- <select id="selectHomeOption" resultType="com.home.alone.vo.HomeOptionVO">
  		select washer, telev, micro_wav AS microWav, gas_range AS gasRange, induction, desk, bed,
 				aircon, fridge, shoes, closet, door_lock AS doorLock, bidet
  		from Home_Option_tb 
  		where home_num = #{homeNum}
- 	</select>
+ 	</select> -->
  	
  	<select id="selectHomeAddInfo" resultType="com.home.alone.vo.HomeAddInfoVO">
  		select parking, pet, balcony, elevator, move_date AS moveDate 
@@ -132,6 +198,7 @@
 			#{item}
  		</foreach>
 	</select>
+	
 	
 	
 	<!-- 매물 사진 등록  -->
@@ -180,6 +247,11 @@
  	<!-- 매물 옵션 정보 테이블 수정 -->
  	<update id="updateHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
  		update Home_Option_tb
+ 		set option_list=${optionList}
+ 		where home_num = #{homeNum}
+ 	</update>
+ 	<!-- <update id="updateHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
+ 		update Home_Option_tb
  		set <if test='washer != "Y" '>  washer ='N', </if>
 	 		<if test='washer == "Y" '>  washer = #{washer}, </if>
 	 		<if test='telev != "Y" '> telev = 'N', </if>
@@ -207,7 +279,7 @@
 	 		<if test='bidet != "Y" '> bidet = 'N' </if>
 	 		<if test='bidet == "Y" '> bidet = #{bidet} </if>
  		where home_num = #{homeNum}
- 	</update>
+ 	</update> -->
  	
  	<!-- 매물 가격 정보 테이블 수정 -->
  	<update id="updateHomePrice" parameterType="com.home.alone.vo.HomePriceVO">
