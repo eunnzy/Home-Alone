@@ -3,6 +3,7 @@ package com.home.alone.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +27,6 @@ import com.home.alone.dao.HomeDAO;
 import com.home.alone.service.HomeService;
 import com.home.alone.service.LikeService;
 import com.home.alone.vo.HomeAddInfoVO;
-import com.home.alone.vo.HomeDetailVO;
-import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomeReportVO;
 import com.home.alone.vo.ImchaVO;
@@ -44,12 +44,10 @@ public class HomeController {
 	private HomeService homeService;
 	
 	@Autowired
-	LikeService likeService;
+	private LikeService likeService;
 	
 	@Autowired
 	private HomeDAO homedao;
-	
-	
 	
 	// 매물 상세보기
 	@RequestMapping("/detail")	
@@ -85,7 +83,31 @@ public class HomeController {
 		return "home/detailHome";
 	}
 	
-	
+	@RequestMapping(value="/homeFilter")	// 필터 검색
+	@ResponseBody
+	public List<HomePreviewVO> homeFilter(@RequestBody HashMap<String, Object> filterData) {
+		System.out.println("homeFilter controller");
+		System.out.println(filterData);
+		List<HomePreviewVO> homeList = null;
+		
+		if(filterData.containsKey("addInfo")) {
+			List<String> addInfoList = (List<String>)filterData.get("addInfo");
+			HomeAddInfoVO homeAddInfoVO = new HomeAddInfoVO();
+			for(String str : addInfoList) {
+				switch(str) {
+				case "parking": homeAddInfoVO.setParking(1); break;
+				case "pet" : homeAddInfoVO.setPet("Y"); break;
+				case "elevator" : homeAddInfoVO.setElevator("Y"); break;
+				case "balcony" : homeAddInfoVO.setBalcony("Y"); break;
+				}
+			}
+			filterData.put("addInfo", homeAddInfoVO);	// addInfo 값 변경
+		}
+		
+		homeList = homeService.homeListByFilter(filterData);
+		return homeList;
+	}
+	 
 	// 지도 경계 내의 매물 위치 정보 
 	@RequestMapping(value="/homeInBounds", method = RequestMethod.POST)
 	@ResponseBody

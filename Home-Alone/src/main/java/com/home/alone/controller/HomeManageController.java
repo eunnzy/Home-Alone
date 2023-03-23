@@ -97,8 +97,9 @@ public class HomeManageController {
 		homeVO.setLessorId(lessorVO.getLessorId());
 		HomePriceVO homePriceVO = new HomePriceVO();
 		HomeAddInfoVO homeAddVO = new HomeAddInfoVO();
+		HomeOptionVO homeOptionVO = new HomeOptionVO();
 		
-		List<String> homeOptionList = new ArrayList<>();
+		// List<String> homeOptionList = new ArrayList<>();
 		List<HomeImgVO> homeImgList = new ArrayList<>();
 
 		Map<String, Object> insertMap = new HashMap<>();
@@ -185,7 +186,9 @@ public class HomeManageController {
 						}
 						break;
 					case "optionList":
-						homeOptionList = (List<String>)homeData.get(key);
+						 String optionStr = String.join(", ", (List<String>)homeData.get(key));
+						 homeOptionVO.setOptionList(optionStr);
+						// homeOptionList = (List<String>)homeData.get(key);
 						break;
 					case "homeImgList":
 						for(String img : (List<String>)homeData.get(key)) {
@@ -206,13 +209,13 @@ public class HomeManageController {
 		System.out.println("homeVO: " + homeVO);
 		System.out.println("homePriceVO: " + homePriceVO);
 		System.out.println("homeImgList: " + homeImgList);
-		System.out.println("homeOptionList: " + homeOptionList);
+		System.out.println("homeOptionVO: " + homeOptionVO);
 		
-		insertMap.put("homeVO", homeVO);
-		insertMap.put("homePriceVO", homePriceVO);
+		insertMap.put("home", homeVO);
+		insertMap.put("homePrice", homePriceVO);
 		insertMap.put("homeImgList", homeImgList);
 		insertMap.put("homeAddInfo", homeAddVO);
-		insertMap.put("homeOptionList", homeOptionList);
+		insertMap.put("homeOption", homeOptionVO);
 		
 		int result = homeService.insertHome(insertMap);	// 매물 정보 삽입.
 		
@@ -251,8 +254,9 @@ public class HomeManageController {
 		
 		HomePriceVO homePriceVO = new HomePriceVO();
 		HomeAddInfoVO homeAddVO = new HomeAddInfoVO();
+		HomeOptionVO homeOptionVO = new HomeOptionVO();
 		
-		List<String> homeOptionList = new ArrayList<>();
+//		List<String> homeOptionList = new ArrayList<>();
 		List<HomeImgVO> homeImgList = new ArrayList<>();
 
 		Map<String, Object> modifyMap = new HashMap<>();
@@ -339,8 +343,9 @@ public class HomeManageController {
 						}
 						break;
 					case "optionList":
-						homeOptionList = (List<String>)homeData.get(key);
-						break;
+						 String optionStr = String.join(", ", (List<String>)homeData.get(key));
+						 homeOptionVO.setOptionList(optionStr);
+					break;
 					case "homeImgList":
 						for(String img : (List<String>)homeData.get(key)) {
 							HomeImgVO homeImgVO = new HomeImgVO();
@@ -360,14 +365,14 @@ public class HomeManageController {
 		System.out.println("homeVO: " + homeVO);
 		System.out.println("homePriceVO: " + homePriceVO);
 		System.out.println("homeImgList: " + homeImgList);
-		System.out.println("homeOptionList: " + homeOptionList);
+		System.out.println("homeOptionList: " + homeOptionVO);
 		
 		
-		modifyMap.put("homeVO", homeVO);
-		modifyMap.put("homePriceVO", homePriceVO);
+		modifyMap.put("home", homeVO);
+		modifyMap.put("homePrice", homePriceVO);
 		modifyMap.put("homeImgList", homeImgList);
 		modifyMap.put("homeAddInfo", homeAddVO);
-		modifyMap.put("homeOptionList", homeOptionList);
+		modifyMap.put("homeOption", homeOptionVO);
 		
 		int result = homeService.modifyHomeInfo(modifyMap);// 매물 정보 수정
 		
