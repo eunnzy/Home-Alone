@@ -5,7 +5,6 @@ let optionCheck = [];
 let addInfoCheck = [];
 let deposit = 0;
 let monthly = 0;
-let filterBtnStatus = false;
 
 $(document).ready(function() {
 	$("#filterBtn").click(function() {
@@ -19,7 +18,10 @@ $(document).ready(function() {
 	
 	$("#cancelBtn").click(function() {
 		if($("input[type=checkbox]:checked")) 
-		$("input[type=checkbox]").prop("checked", false);
+			$("input[type=checkbox]").prop("checked", false);
+		
+		$(".filter-content").css("display", "none");
+		getHomeInBounds();
 	});
 	
 	$("#filterApplyBtn").click(function() {
@@ -27,10 +29,6 @@ $(document).ready(function() {
 		rentType=[];
 		optionList=[];
 		addInfo=[];
-		
-		filterBtnStatus = true;
-		console.log("filterApplyBtn func()");
-		console.log("filterBtn" + filterBtnStatus);	
 		
 		$("input[name=homeType]:checked").each(function() {
 			if(!homeType.includes($(this).val())) 
@@ -71,19 +69,7 @@ $(document).ready(function() {
 			monthly = 99999999;
 		}
 		
-		
-		getHomeInBounds();
-		
-		/*$.ajax({
-			url: '/home/homeFilter',
-	    	data : JSON.stringify(filterData),
-	    	type : 'GET',
-	    	dataType : 'json',
-	    	success: function(data) {
-	    	}
-    	});*/
-		
-		// console.log(filterData);
+		getHomeListByFilter();	// 필터 검색 함수 호출 
 		
 		$(".filter-content").css("display", "none");
 	});

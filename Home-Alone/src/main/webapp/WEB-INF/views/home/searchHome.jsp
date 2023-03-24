@@ -67,27 +67,27 @@
        				</div>
      				<div class="home-type mb-4">
      					<div class="form-check form-check-inline">
-                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="원룸">
+                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="O">
 							<label class="form-check-label">원룸</label>
 						</div>
                         <div class="form-check form-check-inline">
-                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="homeType" value="투룸">
+                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="homeType" value="T">
  							<label class="form-check-label">투룸</label>
                         </div>
                         <div class="form-check form-check-inline">
-                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="쓰리룸이상">
+                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="H">
 			 				<label class="form-check-label" >쓰리룸이상 </label>
                         </div>
                         <div class="form-check form-check-inline">
-                         	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="오피스텔">
+                         	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="F">
 	 						<label class="form-check-label" >오피스텔</label>
                         </div>
                         <div class="form-check form-check-inline">
-                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="빌라">
+                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="V">
 					 			<label class="form-check-label" >빌라 </label>
                         </div>
                         <div class="form-check form-check-inline">
-                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="쉐어하우스">
+                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="S">
 					 			<label class="form-check-label" >쉐어하우스 </label>
                         </div>
        				</div>
@@ -100,11 +100,11 @@
        				</div>
      				<div class="rent-Type mb-4">
      					<div class="form-check form-check-inline">
-                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="rentType" value="월세">
+                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="rentType" value="M">
 							<label class="form-check-label">월세</label>
 						</div>
                         <div class="form-check form-check-inline">
-                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="rentType" value="전세">
+                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="rentType" value="J">
  							<label class="form-check-label">전세</label>
                         </div>
        				</div>

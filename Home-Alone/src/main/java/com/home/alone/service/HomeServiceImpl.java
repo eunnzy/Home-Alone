@@ -92,20 +92,6 @@ public class HomeServiceImpl implements HomeService{
 		
 	}
 	
-	// 현재 위치를 기준으로 지도 경계에 존재하는 매물 리스트 반환하기 
-//	@Override 
-//	public List<HomePreviewVO> homeInBoundsList(Map<String, Object> mapBounds) {
-//		List<HomePreviewVO> homeInBoundsList = null;
-//		homeInBoundsList = homeDAO.selectHomeInBoundsList(mapBounds);
-//		
-//		for(int i=0; i<homeInBoundsList.size(); i++) {
-//			int homeNum = homeInBoundsList.get(i).getHomeNum();
-//			homeInBoundsList.get(i).setHomeImgVO(homeDAO.selectPreviewHomeImg(homeNum));
-//		}
-//		
-//		return homeInBoundsList;
-//	}
-	
 	@Override 
 	public List<HomePreviewVO> homeInBoundsList(Map<String, Object> mapBounds) {
 		List<HomePreviewVO> homeInBoundsList = null;
@@ -115,10 +101,13 @@ public class HomeServiceImpl implements HomeService{
 			int homeNum = homeInBoundsList.get(i).getHomeNum();
 			
 			HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);
-			List<String> optionList = Arrays.asList(homeOptionVO.getOptionList().split(", "));
-			
-
-			homeInBoundsList.get(i).setOptionList(optionList);
+			/*
+			 * List<String> optionList =
+			 * Arrays.asList(homeOptionVO.getOptionList().split(", "));
+			 * 
+			 * 
+			 * homeInBoundsList.get(i).setOptionList(optionList);
+			 */
 			homeInBoundsList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
 		}
 		
@@ -130,6 +119,17 @@ public class HomeServiceImpl implements HomeService{
 	public List<HomePreviewVO> homeListByFilter(Map<String, Object> filterData) {
 		List<HomePreviewVO> homeList = null;
 		homeList = homeDAO.selectHomeListByFilter(filterData);
+		
+		
+		for(int i=0; i<homeList.size(); i++) {
+			int homeNum = homeList.get(i).getHomeNum();
+			
+			HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);
+		//	List<String> optionList = Arrays.asList(homeOptionVO.getOptionList().split(", "));
+
+			//homeList.get(i).setOptionList(optionList);
+			homeList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
+		}
 		
 		System.out.println("homeListByFilter");
 		System.out.println(homeList);

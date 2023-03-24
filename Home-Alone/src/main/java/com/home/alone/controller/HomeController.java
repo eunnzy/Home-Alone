@@ -3,6 +3,7 @@ package com.home.alone.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,12 +89,41 @@ public class HomeController {
 	public List<HomePreviewVO> homeFilter(@RequestBody HashMap<String, Object> filterData) {
 		System.out.println("homeFilter controller");
 		System.out.println(filterData);
+		
+		Map<String, Object> filterMap = new HashMap<>();
 		List<HomePreviewVO> homeList = null;
 		
+		System.out.println("filterData.homeType : " + (List<String>)filterData.get("homeType"));
+		
+		if(filterData.containsKey("homeType")) {
+			List<String> homeTypeList = new ArrayList<String>();
+			for(String str : (List<String>)filterData.get("homeType")) {
+				switch(str) {
+				case "O" : homeTypeList.add("원룸"); break;
+				case "T" : homeTypeList.add("투룸"); break;
+				case "H" : homeTypeList.add("쓰리룸이상"); break;
+				case "F" : homeTypeList.add("오피스텔"); break;
+				case "V" : homeTypeList.add("빌라"); break;
+				case "S" : homeTypeList.add("쉐어하우스"); break;
+				}
+			}
+			filterData.put("homeType", homeTypeList);
+		}
+		
+		if(filterData.containsKey("rentType")) {
+			List<String> rentTypeList = new ArrayList<String>();
+			for(String str :  (List<String>)filterData.get("rentType")) {
+				switch(str) {
+				case "M" : rentTypeList.add("월세"); break;
+				case "J" : rentTypeList.add("전세"); break;
+				}
+			}
+			filterData.put("rentType", rentTypeList);
+		}
+		
 		if(filterData.containsKey("addInfo")) {
-			List<String> addInfoList = (List<String>)filterData.get("addInfo");
 			HomeAddInfoVO homeAddInfoVO = new HomeAddInfoVO();
-			for(String str : addInfoList) {
+			for(String str : (List<String>)filterData.get("addInfo")) {
 				switch(str) {
 				case "parking": homeAddInfoVO.setParking(1); break;
 				case "pet" : homeAddInfoVO.setPet("Y"); break;
@@ -103,6 +133,10 @@ public class HomeController {
 			}
 			filterData.put("addInfo", homeAddInfoVO);	// addInfo 값 변경
 		}
+		
+		
+		System.out.println();
+		System.out.println(filterData);
 		
 		homeList = homeService.homeListByFilter(filterData);
 		return homeList;
