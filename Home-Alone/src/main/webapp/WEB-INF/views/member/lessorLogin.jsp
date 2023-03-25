@@ -26,55 +26,44 @@
   </nav>
   <!-- 네브바 끝 -->
 	<div class="container">
-		<div class="login-wrapper">
-			<div class="img-wrap">
-				<div class="img-div">
-					<img class="wave" src="/img/adminhome.png">
-				</div>
-			</div>
-			<div class="content-wrap">
-				<div class="login-content">
-					<form id="login_form" method="post">
-						<img src="/img/homes.png">
-						<h2 class="title">중개인 로그인</h2>
-						<div class="input-div one">
-							<div class="i">
-								<i class="fas fa-user"></i>
-							</div>
-							<div class="div">
-								<h5>ID</h5>
-								<label id="id"></label> <input type="text" class="input"
-									id="lessorId" name="lessorId" required />
-							</div>
+			<div class="login-content ">
+				<form id="login_form" method="post">
+					<img src="/img/homes.png">
+					<h2 class="title">중개인 로그인</h2>
+					<div class="input-div one">
+						<div class="i">
+							<i class="fas fa-user"></i>
 						</div>
-						<div class="input-div pass">
-							<div class="i">
-								<i class="fas fa-lock"></i>
-							</div>
-							<div class="div">
-								<h5>Password</h5>
-								<input type="password" class="input" id="lessorPw"
-									name="lessorPw" required />
-							</div>
+						<div class="div">
+							<h5>ID</h5>
+							<label id="id"></label> <input type="text" class="input"
+								id="lessorId" name="lessorId" required />
 						</div>
-						<div style="display: inline-block; float: left;">
-							<a href="/member/findLessorId" id="findLessorId">아이디</a>
+					</div>
+					<div class="input-div pass">
+						<div class="i">
+							<i class="fas fa-lock"></i>
 						</div>
-						<div style="display: inline-block; float: left;">
-							<p>&</p>
+						<div class="div">
+							<h5>Password</h5>
+							<input type="password" class="input" id="lessorPw"
+								name="lessorPw" required />
 						</div>
-						<div style="display: inline-block; float: left;">
-							<a href="/member/findLessorPw" id="findLessorPw">비밀번호 찾기</a>
-						</div>
-						<div style="float: right;">
-							<a href="/member/lessorJoin">회원가입</a>
-						</div>
-
-						<button type="submit" class="btn2" value="Login">Login</button>
-					</form>
-				</div>
-			</div>
-			
+					</div>
+					<div style="display: inline-block; float: left;">
+						<a href="/member/findLessorId" id="findLessorId">아이디</a>
+					</div>
+					<div style="display: inline-block; float: left;">
+						<p>&</p>
+					</div>
+					<div style="display: inline-block; float: left;">
+						<a href="/member/findLessorPw" id="findLessorPw">비밀번호 찾기</a>
+					</div>
+					<div style="float: right;">
+						<a href="/member/lessorJoin">회원가입</a>
+					</div>
+					<button type="submit" class="btn2" value="Login">Login</button>
+			</form>
 		</div>
 	</div>
 

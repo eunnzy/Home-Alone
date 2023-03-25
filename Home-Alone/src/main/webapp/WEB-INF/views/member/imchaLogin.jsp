@@ -28,17 +28,10 @@
 
   
   <div class="container">
-  	<div class="login-wrapper">
-  		<div class="img-wrap">
-	    	<div class="img-div" >
-	      		<img class="wave" src="/img/adminhome.png">
-	    	</div>
-	    </div>
-    	<div class="content-wrap">
 	    	<div class="login-content">
 			  	<form id="login_form" method="post">
 			        <img src="/img/homes.png">
-			        <h2 class="title">Welcome</h2>
+			        <h2 class="title">일반회원 로그인</h2>
 			              <div class="input-div one">
 			                 <div class="i">
 			                    <i class="fas fa-user"></i>
@@ -73,8 +66,6 @@
 		              <button type="submit" class="btn2" value="Login">Login</button>
 		       	</form> 
 	        </div>
-	       </div>
-        </div>
     </div>
 
 <!--     <script type="text/javascript">

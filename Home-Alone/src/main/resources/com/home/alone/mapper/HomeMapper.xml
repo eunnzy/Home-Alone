@@ -99,7 +99,7 @@
 			where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) 
 	</select>
 	
-	<select id="selectHomeListByFilter" parameterType="hashmap" >
+	<select id="selectHomeListByFilter" parameterType="hashmap" resultType="com.home.alone.vo.HomePreviewVO">
 		select home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
 			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
@@ -110,46 +110,154 @@
 		where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) 
 		<choose>
 			<when test="homeType.size != 0">
-				and homeType in 
+				and home_type in 
 				<foreach item="item" collection="homeType" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				<if test="rentType.size != 0">
+					and rent_type in 
+					<foreach item="item" collection="rentType" open="(" separator="," close=")">
+					#{item}
+					</foreach>
+				</if>
+				<if test="deposit != null">
+					and deposit &lt; #{deposit}
+				</if>
+				<if test="monthly != null">
+					and monthly &lt; #{monthly}
+				</if>
+				<if test="optionList.size != 0">
+					<foreach item="item" collection="optionList" >
+					and option_list like '%'||#{item}||'%'
+					</foreach>
+				</if>
+				<if test='addInfo != null'>
+					<if test='addInfo.parking gt 0 '>
+						and parking &gt; 0
+					</if>
+					<if test='addInfo.pet == "Y" '>
+						and pet = #{addInfo.pet}
+					</if>
+					<if test='addInfo.elevator == "Y" '>
+						and elevator = #{addInfo.elevator}
+					</if>
+					<if test='addInfo.balcony == "Y" '>
+						and balcony = #{addInfo.balcony}
+					</if>
+				</if>
 			</when>
 			<when test="rentType.size != 0">
-				and rentType in 
+				and rent_type in 
 				<foreach item="item" collection="rentType" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				<if test="deposit != null">
+				and deposit &lt; #{deposit}
+				</if>
+				<if test="monthly != null">
+					and monthly &lt; #{monthly}
+				</if>
+				<if test="optionList.size != 0">
+					<foreach item="item" collection="optionList">
+					and option_list like '%'||#{item}||'%'
+					</foreach>
+				</if>
+				<if test='addInfo != null'>
+					<if test='addInfo.parking gt 0 '>
+						and parking &gt; 0
+					</if>
+					<if test='addInfo.pet == "Y" '>
+						and pet = #{addInfo.pet}
+					</if>
+					<if test='addInfo.elevator == "Y" '>
+						and elevator = #{addInfo.elevator}
+					</if>
+					<if test='addInfo.balcony == "Y" '>
+						and balcony = #{addInfo.balcony}
+					</if>
+				</if>
 			</when>
 			<when test="deposit != null">
-				and deposit &lt; #{item}
+				and deposit &lt; #{deposit}
+				<if test="monthly != null">
+					and monthly &lt; #{monthly}
+				</if>
+				<if test="optionList.size != 0">
+					<foreach item="item" collection="optionList">
+					and option_list like '%'||#{item}||'%'
+					</foreach>
+				</if>
+				<if test='addInfo != null'>
+					<if test='addInfo.parking gt 0 '>
+						and parking &gt; 0
+					</if>
+					<if test='addInfo.pet == "Y" '>
+						and pet = #{addInfo.pet}
+					</if>
+					<if test='addInfo.elevator == "Y" '>
+						and elevator = #{addInfo.elevator}
+					</if>
+					<if test='addInfo.balcony == "Y" '>
+						and balcony = #{addInfo.balcony}
+					</if>
+				</if>
 			</when>
 			<when test="monthly != null">
 				and monthly &lt; #{item}
-			</when>
-			<when test="rentType.size != 0">
-				and rentType in 
-				<foreach item="item" collection="rentType" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+				<if test="optionList.size != 0">
+					<foreach item="item" collection="optionList">
+					and option_list like '%'||#{item}||'%'
+					</foreach>
+				</if>
+				<if test='addInfo != null'>
+					<if test='addInfo.parking gt 0 '>
+						and parking &gt; 0
+					</if>
+					<if test='addInfo.pet == "Y" '>
+						and pet = #{addInfo.pet}
+					</if>
+					<if test='addInfo.elevator == "Y" '>
+						and elevator = #{addInfo.elevator}
+					</if>
+					<if test='addInfo.balcony == "Y" '>
+						and balcony = #{addInfo.balcony}
+					</if>
+				</if>
 			</when>
 			<when test="optionList.size != 0">
-				<foreach item="item" collection="optionList" open="(" separator="," close=")">
-				and option_list like '%'|| #{item} ||'%'
+				<foreach item="item" collection="optionList" >
+				and option_list like '%'||#{item}||'%'
 				</foreach>
+				<if test='addInfo != null'>
+					<if test='addInfo.parking gt 0 '>
+						and parking &gt; 0
+					</if>
+					<if test='addInfo.pet == "Y" '>
+						and pet = #{addInfo.pet}
+					</if>
+					<if test='addInfo.elevator == "Y" '>
+						and elevator = #{addInfo.elevator}
+					</if>
+					<if test='addInfo.balcony == "Y" '>
+						and balcony = #{addInfo.balcony}
+					</if>
+				</if>
 			</when>
-			<when test='addInfo.parking gt 0 '>
-				and parking &gt; 0
+			<when test='addInfo != null'>
+				<if test='addInfo.parking gt 0 '>
+					and parking &gt; 0
+				</if>
+				<if test='addInfo.pet == "Y" '>
+					and pet = #{addInfo.pet}
+				</if>
+				<if test='addInfo.elevator == "Y" '>
+					and elevator = #{addInfo.elevator}
+				</if>
+				<if test='addInfo.balcony == "Y" '>
+					and balcony = #{addInfo.balcony}
+				</if>
 			</when>
-			<when test='addInfo.pet == "Y" '>
-				and pet = #{addInfo.pet}
-			</when>
-			<when test='addInfo.elevator == "Y" '>
-				and elevator = #{addInfo.elevator}
-			</when>
-			<when test='addInfo.balcony == "Y" '>
-				and balcony = #{addInfo.balcony}
-			</when>
+			
 		</choose>
 	</select>
 	

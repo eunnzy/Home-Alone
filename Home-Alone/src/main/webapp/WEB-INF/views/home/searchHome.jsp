@@ -19,7 +19,7 @@
 	<div class="map-container">
 		<div class="map_wrap">
 			<div id="map"></div>	<!-- 지도 -->
-			<!-- <ul id="category" style="padding-left:0px;">
+			<ul id="category" style="padding-left:0px;">
 		        <li id="BK9" data-order="0"> 
 		            <span class="category_bg bank"></span>
 		            은행
@@ -44,11 +44,7 @@
 		            <span class="category_bg store"></span>
 		            편의점
 		        </li> 
-		        <li id="CS2" data-order="5"> 
-		            <span class="category_bg store"></span>
-		            편의점
-		        </li>      
-		    </ul> -->
+		    </ul> 
 		</div>
 		<div class="search-div">
 			<div class="search-group-wrap">
@@ -67,27 +63,27 @@
        				</div>
      				<div class="home-type mb-4">
      					<div class="form-check form-check-inline">
-                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="원룸">
+                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="O">
 							<label class="form-check-label">원룸</label>
 						</div>
                         <div class="form-check form-check-inline">
-                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="homeType" value="투룸">
+                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="homeType" value="T">
  							<label class="form-check-label">투룸</label>
                         </div>
                         <div class="form-check form-check-inline">
-                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="쓰리룸이상">
+                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="H">
 			 				<label class="form-check-label" >쓰리룸이상 </label>
                         </div>
                         <div class="form-check form-check-inline">
-                         	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="오피스텔">
+                         	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="F">
 	 						<label class="form-check-label" >오피스텔</label>
                         </div>
                         <div class="form-check form-check-inline">
-                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="빌라">
+                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="V">
 					 			<label class="form-check-label" >빌라 </label>
                         </div>
                         <div class="form-check form-check-inline">
-                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="쉐어하우스">
+                             	<input type="checkbox" class="form-check-input" autocomplete="off" name="homeType" value="S">
 					 			<label class="form-check-label" >쉐어하우스 </label>
                         </div>
        				</div>
@@ -100,17 +96,17 @@
        				</div>
      				<div class="rent-Type mb-4">
      					<div class="form-check form-check-inline">
-                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="rentType" value="월세">
+                           	<input type="checkbox" class="form-check-input" autocomplete="off" name="rentType" value="M">
 							<label class="form-check-label">월세</label>
 						</div>
                         <div class="form-check form-check-inline">
-                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="rentType" value="전세">
+                        	<input type="checkbox" class="form-check-input"  autocomplete="off" name="rentType" value="J">
  							<label class="form-check-label">전세</label>
                         </div>
        				</div>
        				<div class="range-div mt-3 mb-4">
 				        <label for="customRange1" class="form-label d-grid">보증금</label>
-				        <input type="range" name="deposit" min="0" max="3" value="3">
+				        <input type="range" id="deposit" min="0" max="3">
 				        <ul class="deposit-range-ul">
 				        	<li> 0 </li>
 				        	<li> 5000만</li>
@@ -118,7 +114,7 @@
 				        	<li> 최대 </li>
 				        </ul>
 				        <label for="customRange3" class="form-label d-grid">월세</label>
-				        <input type="range" name="monthly" min="0" max="3" value="3"> 
+				        <input type="range" id="monthly" min="0" max="3" > 
 				        <ul class="monthly-range-ul">
 				        	<li> 0 </li>
 				        	<li> 50만</li>

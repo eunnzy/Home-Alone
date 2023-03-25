@@ -2,7 +2,6 @@ var map;
 let homeMarker = [];	// 매물 표시할 마커를 담을 배열
 let categoryStatus=false;
 
-
 $(document).ready(function() { 	// 처음 페이지 들어왔을 때 현재 위치 내 매물 리스트 보여주기 위해*/
 	let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	mapOption = { 
@@ -45,7 +44,6 @@ $(document).ready(function() { 	// 처음 페이지 들어왔을 때 현재 위�
 
 var ps = new kakao.maps.services.Places(); 	// 장소 검색 객체 
 
-
 // 지도 경계에서의 매물 정보 가져오기
 function getHomeInBounds() {
 	let homeList = $(".home-card");  
@@ -75,26 +73,54 @@ function getHomeInBounds() {
 	
 	let mapCenter = map.getCenter();
 	
-	
-	if(filterBtnStatus == false) {
-		// 지도 경계까지의 매물 정보들을 서버에 요청.
-		$.ajax({
-			url: '/home/homeInBounds',
-	    	data : mapBounds,
-	    	type : 'Post',
-	    	dataType : 'json',
-	    	success: function(data) {	
-				let homeList = $(".home-card");  
-					homeList.remove();	// 기존의 리스트 목록 삭제
-				    removeMarker();	// 기존의 마커 제거
-							
-				for(let i=0; i<data.length; i++) {
-					displayHomeList(data[i], i);	// 매물 정보 리스트 출력
-				}
+	// 지도 경계까지의 매물 정보들을 서버에 요청.
+	$.ajax({
+		url: '/home/homeInBounds',
+    	data : mapBounds,
+    	type : 'Post',
+    	dataType : 'json',
+    	success: function(data) {	
+			let homeList = $(".home-card");  
+				homeList.remove();	// 기존의 리스트 목록 삭제
+			    removeMarker();	// 기존의 마커 제거
+						
+			for(let i=0; i<data.length; i++) {
+				displayHomeList(data[i], i);	// 매물 정보 리스트 출력
 			}
-		});
-	}else {
-		let	filterData = {
+		}
+	});
+	
+}
+
+function getHomeListByFilter() {	// filter 적용시 호출되는 함수
+	let homeList = $(".home-card");  
+		homeList.remove();	// 기존의 리스트 목록 삭제
+	    removeMarker();	// 기존의 마커 제거
+	
+	let bounds = map.getBounds();	// 지도 범위 가져오기
+	
+	// 북동쪽 위도 경도
+	let neLat = bounds.getNorthEast().getLat();
+	let neLng = bounds.getNorthEast().getLng();
+	
+	// 남서쪽 위도, 경도
+	let swLat = bounds.getSouthWest().getLat();
+	let swLng = bounds.getSouthWest().getLng();
+	
+	
+	console.log("neLat : " + neLat);
+	console.log("neLng : " + neLng);
+	console.log("swLat : " + swLat);
+	console.log("swLng : " + swLng);
+	
+	let mapBounds = {"neLat" : neLat,
+    				"neLng" : neLng,
+    			 	"swLat" : swLat,
+    			 	"swLng" : swLng };
+	
+	let mapCenter = map.getCenter();
+	
+	let	filterData = {
 				"homeType" : homeType,
 				"rentType" : rentType,
 				"deposit" : deposit,
@@ -107,57 +133,25 @@ function getHomeInBounds() {
 			 	"swLng" : swLng 
 			}	
 			
-			console.log(filterData);
-			$.ajax({
-				type : 'get',
-				url: '/home/homeFilter',
-		    	data : JSON.stringify(filterData),
-				contentType: "application/json",
-		    	success: function(data) {	
-					filterBtnStatus = false;
-					console.log(data);
-					let homeList = $(".home-card");  
-					homeList.remove();	// 기존의 리스트 목록 삭제
-				    removeMarker();	// 기존의 마커 제거
-							
-					for(let i=0; i<data.length; i++) {
-						displayHomeList(data[i], i);	// 매물 정보 리스트 출력
-					}
-				}
-			});
-			filterBtnStatus = false;
-	}
-	
-	// 지도 경계까지의 매물 정보들을 서버에 요청.
-/*	$.ajax({
-		url: '/home/homeInBounds',
-    	data : mapBounds,
-    	type : 'Post',
-    	dataType : 'json',
+	console.log(filterData);
+	$.ajax({
+		type : 'Post',
+		url: '/home/homeFilter',
+    	data : JSON.stringify(filterData),
+		contentType: "application/json; charset=utf8",
     	success: function(data) {	
-    		if(data != null) {
-    			map.setCenter(mapCenter);	// 주어진 영역이 화면 안에 전부 나타날 수 있도록 지도의 중심 좌표와 확대 수준을 설정
-				console.log(data.length);
-				homeData = JSON.parse(JSON.stringify(data));	// 필터 검색을 위한 객체 저장
-				console.log("data 값 : " + homeData);
-				if(filterBtnStatus != true) {
-					let homeList = $(".home-card");  
-						homeList.remove();	// 기존의 리스트 목록 삭제
-					    removeMarker();	// 기존의 마커 제거
-								
-					for(let i=0; i<data.length; i++) {
-						displayHomeList(data[i], i);	// 매물 정보 리스트 출력
-					}
-				}else {
-					filterBtnStatus = false;
-				}
-			}else {
-					alert("해당하는 위치에 매물 정보가 없습니다.");
-				}
-	    	}
-	});*/
+			console.log(data);
+			let homeList = $(".home-card");  
+			homeList.remove();	// 기존의 리스트 목록 삭제
+		    removeMarker();	// 기존의 마커 제거
+					
+			for(let i=0; i<data.length; i++) {
+				displayHomeList(data[i], i);	// 매물 정보 리스트 출력
+			}
+		}
+	});
+	
 }
-
 
 
 // 매물 리스트 출력하기
