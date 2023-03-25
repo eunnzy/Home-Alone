@@ -19,7 +19,7 @@
 	<div class="map-container">
 		<div class="map_wrap">
 			<div id="map"></div>	<!-- 지도 -->
-			<!-- <ul id="category" style="padding-left:0px;">
+			<ul id="category" style="padding-left:0px;">
 		        <li id="BK9" data-order="0"> 
 		            <span class="category_bg bank"></span>
 		            은행
@@ -44,11 +44,7 @@
 		            <span class="category_bg store"></span>
 		            편의점
 		        </li> 
-		        <li id="CS2" data-order="5"> 
-		            <span class="category_bg store"></span>
-		            편의점
-		        </li>      
-		    </ul> -->
+		    </ul> 
 		</div>
 		<div class="search-div">
 			<div class="search-group-wrap">
@@ -110,7 +106,7 @@
        				</div>
        				<div class="range-div mt-3 mb-4">
 				        <label for="customRange1" class="form-label d-grid">보증금</label>
-				        <input type="range" name="deposit" min="0" max="3" value="3">
+				        <input type="range" id="deposit" min="0" max="3">
 				        <ul class="deposit-range-ul">
 				        	<li> 0 </li>
 				        	<li> 5000만</li>
@@ -118,7 +114,7 @@
 				        	<li> 최대 </li>
 				        </ul>
 				        <label for="customRange3" class="form-label d-grid">월세</label>
-				        <input type="range" name="monthly" min="0" max="3" value="3"> 
+				        <input type="range" id="monthly" min="0" max="3" > 
 				        <ul class="monthly-range-ul">
 				        	<li> 0 </li>
 				        	<li> 50만</li>

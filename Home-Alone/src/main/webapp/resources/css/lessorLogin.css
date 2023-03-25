@@ -11,8 +11,6 @@ box-shadow:inset 2px 2px 8px rgba(55,94,148,.3),inset -3px -2px 5px
 rgba(255,255,255,.8);
 transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}
 
-<!-- ------------------------------------------- -->
-
 
 *{
   padding: 0;
@@ -25,36 +23,13 @@ body{
     overflow: hidden;
 }
 
-/* .wave{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width:100%;
-  height: 100%;
-  z-index: -1;
-} */
-
-.container{
-    /* width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap :7rem;
-    padding: 0 2rem; */
-}
-
-/* .img{
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-} */
 
 .login-content{
-	margin-top: 30px;
+	margin-top: 50px;
 	position:relative;
 	width:100%;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: center;
 	align-items: center;
 	text-align: center; 
 }
@@ -65,9 +40,6 @@ body{
 	height:100%;
 }
 
-/* .img img{
-  width: 500px;
-} */
 .img-wrap {
 	width: 50%;
 }
@@ -101,7 +73,7 @@ form{
 }
 
 .login-content .input-div{
-  position: relative;
+  	position: relative;
     display: grid;
     grid-template-columns: 7% 93%;
     margin: 25px 0;
@@ -126,7 +98,7 @@ form{
 
 .input-div > div{
     position: relative;
-  height: 45px;
+  	height: 45px;
 }
 
 .input-div > div > h5{
@@ -222,7 +194,7 @@ a:hover{
   border: none;
   /* background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f); */
   background-color: lightskyblue;
-  background-image: #blue;
+  background-image: blue;
   background-size: 200%;
   font-size: 1.2rem;
   color: #fff;
