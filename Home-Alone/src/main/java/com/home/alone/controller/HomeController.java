@@ -2,6 +2,7 @@ package com.home.alone.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +32,7 @@ import com.home.alone.service.LikeService;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomeReportVO;
+import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.ImchaVO;
 import com.home.alone.vo.LikeVO;
 
@@ -193,6 +196,7 @@ public class HomeController {
 		return result;
 	}
 	
+	
 	@RequestMapping(value="/report", method=RequestMethod.POST) 
 	@ResponseBody
 	public int reportHome(@RequestParam int homeNum, @RequestParam int reportType, @RequestParam String reportContent, HttpServletRequest request) {
@@ -213,6 +217,9 @@ public class HomeController {
 		
 		return homeService.reportHome(homeReportVO);
 	}
+	
+	
+	
 	
 //	// 허위 매물 목록 리스트
 //	@GetMapping("/reportHome")

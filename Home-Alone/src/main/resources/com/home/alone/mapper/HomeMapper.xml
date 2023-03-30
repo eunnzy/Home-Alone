@@ -404,15 +404,57 @@
  	</select>
  	
  	
-  	<select id="selectReportHomeList" resultType="com.home.alone.vo.HomeReportVO">
+  	<select id="selectReportHomeList" resultType="com.home.alone.vo.HomeReportVO">	<!-- 매물 신고 리스트 -->
  		select report_num AS reportNum, home_num AS homeNum, imcha_id AS imchaId, report_type AS reportType, report_content AS reportContent, report_regdate AS reportRegDate, home_valid AS homeValid 
  		from Home_Report_tb 
  			join Home_tb using(home_num) 
  	</select>
  	
- 	<delete id="deleteHome">
+ 	<delete id="deleteHome">	<!-- 매물 삭제 -->
  		delete from Home_tb where home_num = #{homeNum}
  	</delete>
+ 	
+ 	
+ 	<insert id="insertHomeReserv" parameterType="com.home.alone.vo.HomeReservVO">	<!--  예약 신청 -->
+  		insert into Home_Reserv_tb (rev_num, lessor_id, imcha_id, home_num, rev_date, rev_time)
+  		values ((select nvl(max(rev_num), 0) + 1 from Home_Reserv_tb), #{lessorId}, #{imchaId}, #{homeNum}, #{revDate}, #{revTime} )
+  	</insert>
+  	
+  	<select id="selectHomeReservValidTimeList" parameterType="com.home.alone.vo.HomeReservVO" resultType="java.lang.String">
+  		select rev_time
+  		from Home_Reserv_tb
+  		where home_num = #{homeNum} and rev_date = #{revDate}
+  	</select>
+  	
+  	<select id="selectHomeReservListByImchaId" resultType="com.home.alone.vo.HomeReservVO">	<!-- 일반회원(임차인) 예약 목록 -->
+  		select rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime 
+		from Home_Reserv_tb 
+		where imcha_id = #{imchaId}
+  	</select>
+  	
+  	<delete id="deleteHomeReserv">	<!-- 예약 삭제 -->
+ 		delete from Home_Reserv_tb where rev_num = #{revNum}
+ 	</delete>
+ 	
+ 	<select id="selectReservByLessor" resultType="com.home.alone.vo.HomeReservVO">
+  		select 
+  		from Home_Reserv_tb where LESSOR_ID = #{lessorId} and revState != 2
+  	</select>
+  	
+  	<update id="updateReservStatusByLessor">	<!-- 거절 -->
+ 		update Home_Reserv_tb set revState = 2 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<update id="updateRevState">
+ 		update Home_Reserv_tb set revState = 1 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<select id="selectReservDate" resultType="com.home.alone.vo.HomeReservVO">
+ 		SELECT *
+	    FROM Home_Reserv_tb
+	    WHERE revDate BETWEEN TO_DATE(#{revDate}, 'YYYY-MM-DD') AND TO_DATE(#{revDate})+1
+
+ 	</select>
  	
  </mapper>
  

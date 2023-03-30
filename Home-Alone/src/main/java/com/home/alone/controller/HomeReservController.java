@@ -1,54 +1,67 @@
 package com.home.alone.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.home.alone.service.HomeService;
-import com.home.alone.service.ReservationService;
-import com.home.alone.vo.LessorVO;
 import com.home.alone.vo.HomeReservVO;
+import com.home.alone.vo.ImchaVO;
 
 @Controller
-@RequestMapping("home/reservation")
-public class ReservationController {
-	
+@RequestMapping("/home/reserv")
+public class HomeReservController {
 //	@Autowired
 //	RevMapper revMapper;
 //	
+	
 //	@Autowired
 //	ReservationService reservationService;
 //	
-//	@Autowired
-//	HomeService homeService;
-//
-//	// 회원방문예약 신청
-//	@RequestMapping(value="/enroll")
-//	@ResponseBody
-//	public String insertRev(HomeReservVO vo, String revTime, int homeNum, HttpServletResponse response) throws IOException {
-//		Map<String, Object> home =  homeService.selectHomeDetail(homeNum);
-//		System.out.println(home);
-//		vo.setRevDate(vo.getRevDate());
-//		revMapper.insertRev(vo);
-//		response.setContentType("text/html; charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//        out.println("<script>alert('예약이 완료되었습니다.');history.go(-1);</script>");
-//        out.flush();
-//
-//		return "/home/detail";
-//	}
-//	
+	@Autowired
+	HomeService homeService;
+	
+	@PostMapping("/register")
+	@ResponseBody
+	public int reservHome(HomeReservVO revData, HttpServletRequest request) {
+		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");	// 회원 아이디 
+		revData.setImchaId(imcha.getImchaId());
+		System.out.println("revData : " + revData);
+		int result = homeService.reservHome(revData);
+		System.out.println(result);
+		return result;	// 예약 신청
+	}
+	
+	
+	@RequestMapping("/validTimeCheck")
+	@ResponseBody
+	public List<String> reservValidTimeCheck(HomeReservVO revValid) {	// 유효한 예약 시간대만 예약할 수 있도록 확인해주기
+		System.out.println("homeReservVO = " + revValid);
+		
+		List<String> timeList = new ArrayList<>();
+		timeList = homeService.getValidTimeList(revValid);	
+		System.out.println(timeList);
+		
+		return timeList;
+		
+	}
+	
+	
+	@RequestMapping("/list")	// 일반회원 리스트
+	public String reservList() {
+		
+		return "mypage/reservationImcha";
+	}
+
+
 //	// 회원이 보는 예약신청 목록
 //	@RequestMapping("/list")
 //	public String getRevByImchaId(String imchaId, Model model) {
@@ -112,24 +125,4 @@ public class ReservationController {
 //        out.flush();
 //		return "redirect:/home/reservation/lessorList";
 //	}
-//	
-//	// 예약 확정
-//	@RequestMapping("/allow")
-//	public String changeRevState(int homeNum, String imchaId, int revNum, HttpServletResponse response) throws IOException {
-//		revMapper.changeRevState(homeNum, imchaId, revNum);
-//		response.setContentType("text/html; charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//        out.println("<script>alert('예약을 확정하였습니다.');history.go(-1);</script>");
-//        out.flush();
-//		return "redirect:/home/reservation/lessorList";
-//	}
-//	
-//	@RequestMapping("/invaildDate")
-//	@ResponseBody
-//	public List<HomeReservVO> invaildDate(String revDate){
-//		System.out.println(revDate);
-//        List<HomeReservVO>list = revMapper.invaildDate(revDate);
-//        System.out.println(list);
-//        return list;
-//	}
- }
+}

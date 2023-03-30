@@ -1,89 +1,71 @@
 $("#reservModalBtn").click(function() {
-	console.log("버튼 클릭");
+	
 	$(".reserv-modal").css("display", "flex");
 	
-	// 여기다 작성
-})
+	let revDate = $("#revDate").val();	// 방문 날짜
+	let revTime = $("input:radio[name=revTime]:checked").val();
 
-$("#qnaBtn").click(function() {
-	console.log("버튼 클릭");
-	$(".qna-modal").css("display", "flex");
+	$("#revDate").on("change", function(e){	// 날짜 선택할 때
+		revTimeInit();
+		
+		let revValid = { "revDate": $("#revDate").val(), "homeNum" : homeNum};
+		console.log(revValid);
+		
+		$.ajax({
+			url: '/home/reserv/validTimeCheck',
+			data: revValid,
+			type: 'POST',
+			success: function(data){
+				console.log(data);
+				for(let i=0; i<data.length; i++) {
+					console.log(data[i]);
+					changeDisabled(data[i]);	// 이미 예약된 시간대는 예약할 수 없도록
+				}
+			}
+		});
+	});
 	
-	// 여기다 작성
-})
+	$("#reservBtn").on("click", function(e){	// 예약하기 버튼 클릭시
+		let revData = {
+			"revDate" : revDate,
+			"revTime" : revTime,
+			"lessorId" : lessorId,
+			"homeNum" : homeNum
+		};	// 서버로 넘길 데이터	
+		
+		console.log(revData);
+		
+		$.ajax({
+			url: '/home/reserv/register', 
+			data: revData,
+			type: 'POST',
+			success: function (data) { 
+				console.log(data);
+				alert('예약이 완료되었습니다.');
+				changeDisabled(revTime);
+			},
+			error: function () {
+			}
+		});  
+	});
+	
+});
 
-$(".qna-close").click(function() {
-	$(".qna-modal").css("display", "none");
-})
+function changeDisabled(revTime) {	// 라디오버튼 disabled로 변경
+	$('input:radio[name="revTime"]').each(function() {
+		if(this.value ===  revTime) {
+			this.disabled = true;
+		}
+	});
+}
+
+// 사용자가 예약 날짜를 바꾸면 해당 날짜의 시간대를 초기화 해주어야 그 날짜의 예약된 시간 disabled 가능
+function revTimeInit() {	// 시간대 disabled 초기화
+	$('input:radio[name="revTime"]').each(function() {
+	       this.disabled = false;   
+	});
+}
 
 $(".reserv-close").click(function() {
 	$(".reserv-modal").css("display", "none");
 })
-
-
-
-$("#reservBtn").on("click", function(e){
-	console.log($('#enrollDate').val());
-	$.ajax({
-				url: 'reservation/enroll', 
-				data: { 
-				lessorId: lessorId,
-				imchaId : $('#enrollName').val(),
-				homeNum : homeNum,
-				revDate : enrollDate + ' ' + revTime
-				}, 
-				type: 'POST',
-				success: function (param) { 
-				alert('예약이 완료되었습니다.');
-				},
-				error: function () {
-//				alert('네트워크 오류 발생');
-				}
-	});  
-});
-
-//
-//$("#revDate").on("change", function(e){
-//	console.log($("#revDate").val());
-//	$.ajax({
-//		url: 'home/reservation/invaildDate',
-//		data: {"revDate": $("#revDate").val()},
-//		type: 'POST',
-//		success: function(data){
-//			$(data).each(function(){
-//				console.log(data)
-//			});
-//		}
-//		
-//	});
-//});
-
-$('#revDate').on("change", function (){               //버튼 id
-	$("input:radio[name='revTime']").attr("disabled", false);
-	
-    $.ajax({
-        url:"/home/reservation/invaildDate",    //본인 url
-        type:"post",
-        data : {revDate:$('#revDate').val()},    //input date value
-        success:function(data){
-            $(data).each(function(){
-                var date =this.revDate.substr(11,5);
-
-            $('input:radio[name="revTime"]').each(function() {
-
-                       //checked 처리
-
-                      if(this.value ===  date){//checked 처리된 항목의 값
-                            this.disabled = true;      //checked가
-                            console.log("같음");
-//                            $(this).setAttribute("style", "background-color: #808080");
-
-                      }
-
-                 });
-            });
-
-        }
-    });
-
-});
