@@ -24,13 +24,8 @@
             <span class="float-end">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">카테고리</a>
             	<div class="dropdown-menu">
-                 <a class="dropdown-item cate" href="동네소식">동네소식</a>
-                 <a class="dropdown-item cate" href="동네질문">동네질문</a>
-                 <a class="dropdown-item cate" href="동네맛집">동네맛집</a>
-                 <a class="dropdown-item cate" href="도와줘요">도와줘요</a>
                  <a class="dropdown-item cate" href="취미생활">전국취미생활</a>
                  <a class="dropdown-item cate" href="자취꿀팁">전국자취꿀팁</a>
-                 <a class="dropdown-item cate" href="분실실종">전국분실실종</a>
                 </div>
             </span><br><br>
             

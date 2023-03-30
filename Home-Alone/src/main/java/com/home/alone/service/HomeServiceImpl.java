@@ -3,6 +3,7 @@ package com.home.alone.service;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
+import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 import com.home.alone.vo.LessorVO;
 
@@ -298,6 +300,16 @@ public class HomeServiceImpl implements HomeService{
 	@Override
 	public int deleteHome(@Param("homeNum")int homeNum) {
 		return homeDAO.deleteHome(homeNum);
+	}
+
+	@Override
+	public int reservHome(HomeReservVO homeReservVO) {
+		return homeDAO.insertHomeReserv(homeReservVO);
+	}
+
+	@Override
+	public List<String> getValidTimeList(HomeReservVO homeReservVO) {
+		return homeDAO.selectHomeReservValidTimeList(homeReservVO);
 	}
 
 	
