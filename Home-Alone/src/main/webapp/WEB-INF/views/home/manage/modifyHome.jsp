@@ -409,7 +409,7 @@
 
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a94d4863c9f7363e85ad81dac027db86&libraries=services,clusterer,drawing"></script>
-	<script src="/js/modifyHome.js" ></script>
+	<script src="/js/home/modifyHome.js" ></script>
 	<script>
 	// 수정 페이지 시작 -> 기존에 사용자가 첨부한 사진 파일 목록 추가, 선택된 옵션 값들 불러오기.
 	let homeNum = ${home.homeNum};

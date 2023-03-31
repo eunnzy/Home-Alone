@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/bootstrap.min.css" rel="stylesheet"></link>
-	<link href="/css/lessorJoin.css" rel="stylesheet"></link>
+	<link href="/css/memberJoin.css" rel="stylesheet"></link>
     <style>
       .input-form {
         max-width: 680px;
@@ -31,7 +31,7 @@
 </head>
 <body>
   <header>
-		<jsp:include page="../header.jsp"></jsp:include>
+		<jsp:include page="../../header.jsp"></jsp:include>
 	</header>
   
   <div class="container">
@@ -45,9 +45,9 @@
             <div class="mb-3">
               <label for="id_name">아이디</label>
               <div class="id_input_box">
-			      <input type="text" class="form-id" name="lessorId" id="lessorId"  value="${lessor.lessorId}" required>
+			      <input type="text" class="form-control" name="lessorId" id="lessorId"  value="${lessor.lessorId}" required>
 			      <div class="invalid-feedback">아이디를 입력해주세요.
-               		<span class="final_id_ck">아이디를 입력해주세요.</span>
+               		<span class="id_ck">아이디를 입력해주세요.</span>
               	  </div>
               </div>
             </div>
@@ -58,18 +58,18 @@
 
             <div class="mb-3">
               <label for="password">비밀번호</label>
-              <input type="password" class="form-password" name="lessorPw" id="lessorPw" value="${lessor.lessorPw}" required>
+              <input type="password" class="form-control" name="lessorPw" id="lessorPw" value="${lessor.lessorPw}" required>
               <div class="invalid-feedback">
                 비밀번호를 입력해주세요.
               </div>
-              <span class="final_pw_ck">비밀번호를 입력해주세요.</span>
+              <span class="pw_ck">비밀번호를 입력해주세요.</span>
              </div>
             <div class="mb-3">
               <label for="pwck">비밀번호 확인</label>
-              <input type="password" class="form-passwordCheck" name="pwck" id="pwck" placeholder="****" required>
+              <input type="password" class="form-control" name="pwck" id="pwck" placeholder="****" required>
               <div class="invalid-feedback">
                 비밀번호를 입력해주세요.
-                 <span class="final_pwck_ck">비밀번호 확인을 입력해주세요.</span>
+                 <span class="pwck_ck">비밀번호 확인을 입력해주세요.</span>
                </div>
                <span class="pwck_input_re_1">비밀번호가 일치합니다.</span>
                 <span class="pwck_input_re_2">비밀번호가 일치하지 않습니다.</span>
@@ -78,9 +78,9 @@
             <div class="mb-3">
               <label for="lessor_nickname">닉네임</label>
               <div class="id_input_box">
-              <input type="text" class="form-nickname" name="lessorNickName" id="lessorNickName" placeholder="" value="${lessor.lessorNickName}" required>
+              <input type="text" class="form-control" name="lessorNickName" id="lessorNickName" placeholder="" value="${lessor.lessorNickName}" required>
               <div class="invalid-feedback">닉네임을 입력해주세요.
-              	 <span class="final_nickname_ck">닉네임을 입력해주세요.</span>
+              	 <span class="nickname_ck">닉네임을 입력해주세요.</span>
               </div>
               <span class="nickname_input_re_1">사용 가능한 닉네임입니다.</span>
 			  <span class="nickname_input_re_2">닉네임이 이미 존재합니다.</span>
@@ -96,7 +96,7 @@
             <div class="invalid-feedback">
               전화번호를 입력해주세요.
             </div>
-            <span class="final_phone_ck">휴대폰 번호를 입력해주세요.</span>
+            <span class="phone_ck">휴대폰 번호를 입력해주세요.</span>
           </div>
 
 			<div class="mb-3">
@@ -105,7 +105,7 @@
               <div class="invalid-feedback">
                 이름을 입력해주세요.
               </div>
-              <span class="final_nickname_ck">이름을 입력해주세요.</span>
+              <span class="nickname_ck">이름을 입력해주세요.</span>
             </div>
             
             <div class="mb-3">
@@ -114,7 +114,7 @@
 	            <div class="invalid-feedback">
 	              생년월일을 입력해주세요.
 	            </div>
-	            <span class="final_phone_ck">생년월일을 입력해주세요.</span>
+	            <span class="phone_ck">생년월일을 입력해주세요.</span>
           	</div>
           
           	<div class=" mb-3">
@@ -132,7 +132,7 @@
               <div class="invalid-feedback">
                 공인중개사 등록번호를 입력해주세요.
               </div>
-              <span class="final_nickname_ck">공인중개사 등록번호를 입력해주세요.</span>
+              <span class="nickname_ck">공인중개사 등록번호를 입력해주세요.</span>
             </div>
           <div class=" mb-3">
               <label for="user_roll">회원종류</label>
@@ -140,36 +140,36 @@
             </div>
             
             
-   
-       
-
-            <div class="mb-3">
-              <p> </p>
+   			
+   			 <div class="mb-3">
               <label for="address">주소</label>
-              <input type="text" class="form-control_1" name="lessorAddr1" id="lessorAddr1" placeholder="" readonly="readonly" value="${lessor.lessorAddr1}">
-              <div class="invalid-feedback"> 
+              <div class="row mb-3">
+              	<div class="col-8">
+              	  <input type="text" class="form-control" name="lessorAddr1" id="lessorAddr1" placeholder="" value="${lessor.lessorAddr1}" readonly="readonly" >
+              	</div>
+              	<div class="col-4">
+              		<div class="address_button" >
+						<button class="btn btn-md btn-primary" onclick="execution_daum_address()">주소 찾기</span>
+					</div>
+              	</div>
               </div>
-              <div class="address_button" onclick="execution_daum_address()">
-					<span>주소 찾기</span>
-				</div>
-			</div>
+              
+            
 				
 			<div class="mb-3">
-              <input type="text" class="form-control_2" name="lessorAddr2" id="lessorAddr2" placeholder=""  readonly="readonly" value="${lessor.lessorAddr2}">
+              <input type="text" class="form-control" name="lessorAddr2" id="lessorAddr2" placeholder="" value="${lessor.lessorAddr2}" readonly="readonly">
               <div class="invalid-feedback"> 
               </div>
               <br>
               
               <div class="mb-3">
-              <input type="text" class="form-control_3" name="lessorAddr3" id="lessorAddr3" placeholder=""  readonly="readonly" value="${lessor.lessorAddr3}">
+              <input type="text" class="form-control" name="lessorAddr3" id="lessorAddr3" placeholder="" value="${lessor.lessorAddr3}" readonly="readonly">
               <div class="invalid-feedback"> 
               </div>
-              	<span class="final_adress_ck">상세주소를 입력해주세요.</span>
-              </div>
-             </div>
+              <span class="adress_ck">상세주소를 입력해주세요.</span>
+            </div>
+       
 
-
-          
           <hr class="mb-4">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="aggrement" required>
@@ -183,26 +183,6 @@
     </div>
     </div>
   
-    <footer class="my-3 text-center text-small">
-      <p>  &nbsp; </p>
-    </footer>
-
-
-
-
-  <!-- footer -->
-  <div style="background-color: #dbe2f0; text-align: center;">
-    <br><br>
-    <div>
-        <a href="#">이용약관</a>   
-        <a href="#">개인정보처리방침</a>
-        <a href="#">프로젝트소개</a><hr>
-        <a href="https://icons8.com/illustrations/author/zD2oqC8lLBBA">Icons 8</a> from <a href="https://icons8.com/illustrations">Ouch!</a>
-    </div>
-    
-    <br><br><br><br>
-  </div>
- 
 
  <script src="/js/lessorJoin.js" ></script>
  <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

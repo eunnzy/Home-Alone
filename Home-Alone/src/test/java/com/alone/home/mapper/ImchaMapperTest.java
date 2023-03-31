@@ -32,8 +32,8 @@ public class ImchaMapperTest {
 		imcha.setNickname("test");
 		imcha.setPhone("010-1111-1111");
 		imcha.setUserRoll("test");
-		imcha.setSido1("서울시");
-		imcha.setGugun1("강남구");
+		imcha.setSido("서울시");
+		imcha.setGugun("강남구");
 		
 		imchamapper.imchaJoin(imcha);
 	}

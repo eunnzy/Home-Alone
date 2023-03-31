@@ -14,71 +14,60 @@ public class ImchaServiceImpl implements ImchaService {
 	ImchaMapper imchamapper;
 	
 	@Autowired
-	ImchaDAO dao;
+	ImchaDAO imchaDAO;
 	
 	// 회원가입
 	@Override
-	public void imchaJoin(ImchaVO imcha) throws Exception {
-
-		imchamapper.imchaJoin(imcha);
+	public int imchaJoin(ImchaVO imcha) throws Exception {
+		return imchaDAO.insertImcha(imcha);
 	}
 	
 	// 아이디 중복체크
 	@Override
-	public int idCheck(String imchaId) throws Exception {
-		return imchamapper.idCheck(imchaId);
+	public int imchaIdCheck(String imchaId) throws Exception {
+		return imchaDAO.selectImchaIdCheck(imchaId);
 	}
 	
 	// 닉네임 중복체크
 	@Override
 	public int nicknameCheck(String nickname) throws Exception {
-		return imchamapper.nicknameCheck(nickname);
+		return imchaDAO.selectNicknameCheck(nickname);
 	}
 
 	// 로그인
 	@Override
 	public ImchaVO imchaLogin(ImchaVO imcha) throws Exception {
-		
-		return imchamapper.imchaLogin(imcha);
+		return imchaDAO.selectImchaLogin(imcha);
 	}
-	
-	// 아이디찾기
-//	@Override
-//	public ImchaVO findId(ImchaVO imcha) throws Exception {
-//		
-//		return dao.findId(imcha);
-//	}
 	
 	// 아이디 찾기
 	@Override
-	public String findId(ImchaVO imcha) throws Exception {
-		
-		return dao.findId(imcha);
+	public String findImchaId(ImchaVO imcha) throws Exception {
+		return imchaDAO.selectImchaId(imcha);
 	}
 	
 	// 비밀번호 찾기
 	@Override
-	public ImchaVO findPw(ImchaVO imcha) throws Exception {
-		
-		return dao.findPw(imcha);
+	public ImchaVO findImchaPw(ImchaVO imcha) throws Exception {
+		return imchaDAO.selectImchaPw(imcha);
 	}
 	
 	// 비밀번호 변경
 	@Override
-	public ImchaVO updatePw(ImchaVO imcha) throws Exception {
-		
-		return dao.updatePw(imcha);
+	public ImchaVO modifyImchaPw(ImchaVO imcha) throws Exception {
+		return imchaDAO.updateImchaPw(imcha);
 	}
 
+	// 회원 정보 수정
 	@Override
-	public void updateMember(ImchaVO imcha) throws Exception {
-		imchamapper.updateMember(imcha);
-		
+	public int modifyImchaInfo(ImchaVO imcha) throws Exception {
+		return imchaDAO.updateImcha(imcha);
 	}
 
+	// 기존의 회원 정보 가져오기
 	@Override
-	public ImchaVO getMember(ImchaVO imcha) throws Exception {
-		return imchamapper.getMember(imcha);
+	public ImchaVO getImchaInfo(String imchaId) throws Exception {
+		return imchaDAO.selectImchaInfo(imchaId);
 	}
 
 

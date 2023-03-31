@@ -75,7 +75,7 @@
 	</div><br><br><br>
 	
 	<script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="/js/findLessorPw.js" ></script>
+	<script src="/js/member/findLessorPw.js" ></script>
 <!-- 	<script type="text/javascript">
 	$(document).ready(function(){
 		$('#findLessorPw').submit(function(){

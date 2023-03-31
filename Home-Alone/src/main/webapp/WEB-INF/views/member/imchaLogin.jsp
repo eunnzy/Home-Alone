@@ -91,6 +91,6 @@
     });
     </script> -->
     
-    <script src="/js/imchaLogin.js" ></script>
+    <script src="/js/member/imchaLogin.js" ></script>
 </body>
 </html>

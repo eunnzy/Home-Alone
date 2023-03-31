@@ -1,0 +1,111 @@
+@charset "UTF-8";
+
+.list-group-item {
+	background-color: transparent
+}
+
+.id_input_re_1 {
+	color: green;
+	display: none;
+}
+
+.id_input_re_2 {
+	color: red;
+	display: none;
+}
+
+.nickname_input_re_1 {
+	color: green;
+	display: none;
+}
+
+.nickname_input_re_2 {
+	color: red;
+	display: none;
+}
+
+.pwck_input_re_1 {
+	color: green;
+	display: none;
+}
+
+.pwck_input_re_2 {
+	color: red;
+	display: none;
+}
+
+.id_ck {
+	display: none;
+}
+
+.pw_ck {
+	display: none;
+}
+
+.pwck_ck {
+	display: none;
+}
+
+.name_ck {
+	display: none;
+}
+
+.nickname_ck {
+	display: none;
+}
+
+.phone_ck {
+	display: none;
+}
+
+.adress_ck {
+	display: none;
+}
+
+.input-form {
+	max-width: 680px !important;
+	margin-top: 80px !important;
+	padding: 32px;
+	background: #fff;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+}
+
+#result_card img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	padding: 5px;
+	margin-top: 10px;
+	margin: auto;
+}
+
+#result_card {
+	position: relative;
+}
+
+.imgDeleteBtn {
+	position: absolute;
+	top: 0;
+	right: 5%;
+	background-color: #ef7d7d;
+	color: wheat;
+	font-weight: 900;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	line-height: 26px;
+	text-align: center;
+	border: none;
+	display: block;
+	cursor: pointer;
+}
+
+.address_button {
+	color: blue;
+	cursor: pointer;
+}

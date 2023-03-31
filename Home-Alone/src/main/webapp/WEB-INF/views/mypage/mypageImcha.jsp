@@ -23,7 +23,7 @@
     <table style="margin-left: auto; margin-right: auto;" class="my-5" >
       <tr>
       	<td>
-          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/mypage/getMember'">
+          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/mypage/imcha/info'">
 	          <div class="imcha-div"><img src="/img/man-user.png" alt="유저이미지"></div>
 	          	회원정보수정
           </button>

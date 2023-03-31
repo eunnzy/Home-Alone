@@ -293,14 +293,13 @@
 		let enrollDate = $('#enrollDate').val();
 		let lessorId = "${home.lessorId}";
 		let homeLike = ${homeLike};
-		let revTime = $("input[name='revTime']:checked").val();
 		
 		console.log(lessorId);
 	</script>
-	<script src="/js/reportHome.js"></script>
-	<script src="/js/detailHome.js"></script>
-	<script src="/js/reservHome.js"></script>
-	<script src="/js/inquryHome.js"></script>
+	<script src="/js/home/reportHome.js"></script>
+	<script src="/js/home/detailHome.js"></script>
+	<script src="/js/home/reservHome.js"></script>
+	<script src="/js/home/inquryHome.js"></script>
 	
 	<script>
 		$(document).ready(function() {

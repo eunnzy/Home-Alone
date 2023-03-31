@@ -1,10 +1,7 @@
 package com.home.alone.dao;
 
-import javax.inject.Inject;
-
-import org.apache.ibatis.session.SqlSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.home.alone.vo.ImchaVO;
@@ -12,45 +9,57 @@ import com.home.alone.vo.ImchaVO;
 @Repository
 public class ImchaDAOImpl implements ImchaDAO {
 
-	private static final Logger log = LoggerFactory.getLogger(ImchaDAOImpl.class);
-	
-	private static final String NAMESPACE = "com.home.alone.mapper.ImchaMapper";
-	
-	private final SqlSession sqlSession;
-	
-	@Inject
-	public ImchaDAOImpl(SqlSession sqlSession) {
-		this.sqlSession = sqlSession;
-	}
-	
-	// 아이디 찾기
-//	@Override
-//	public ImchaVO findId(ImchaVO imcha) throws Exception {
-//		
-//		return sqlSession.selectOne(NAMESPACE+".findId", imcha);
-//	}
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+	private static final String IMCHAMAPPER = "com.home.alone.mapper.ImchaMapper.";
 	
 	// 아이디 찾기
 	@Override
-	public String findId(ImchaVO imcha) throws Exception {
-		
-		return sqlSession.selectOne(NAMESPACE+".findId", imcha);
+	public String selectImchaId(ImchaVO imcha) throws Exception {
+		return sqlSession.selectOne(IMCHAMAPPER + "selectImchaId", imcha);
 	}
 	
 	// 비밀번호 찾기
 	@Override
-	public ImchaVO findPw(ImchaVO imcha) throws Exception {
-		
-		return sqlSession.selectOne(NAMESPACE+".findPw", imcha);
+	public ImchaVO selectImchaPw(ImchaVO imcha) throws Exception {
+		return sqlSession.selectOne(IMCHAMAPPER + "selectImchaPw", imcha);
 	}
 	
 	// 비밀번호 변경
 	@Override
-	public ImchaVO updatePw(ImchaVO imcha) throws Exception {
-		
-		return sqlSession.selectOne(NAMESPACE+".updatePw", imcha);
+	public ImchaVO updateImchaPw(ImchaVO imcha) throws Exception {
+		return sqlSession.selectOne(IMCHAMAPPER + "updateImchaPw", imcha);
 	}
-	
+
+	@Override
+	public int insertImcha(ImchaVO imcha) {
+		return sqlSession.insert(IMCHAMAPPER + "insertImcha", imcha);
+	}
+
+	@Override
+	public int selectImchaIdCheck(String imchaId) {
+		return sqlSession.selectOne(IMCHAMAPPER + "selectImchaIdCheck", imchaId);
+	}
+
+	@Override
+	public int selectNicknameCheck(String nickname) {
+		return sqlSession.selectOne(IMCHAMAPPER + "selectNicknameCheck", nickname);
+	}
+
+	@Override
+	public ImchaVO selectImchaLogin(ImchaVO imcha) {
+		return sqlSession.selectOne(IMCHAMAPPER + "selectImchaLogin", imcha);
+	}
+
+	@Override
+	public int updateImcha(ImchaVO imcha) {
+		return sqlSession.update(IMCHAMAPPER + "updateImcha", imcha);
+	}
+
+	@Override
+	public ImchaVO selectImchaInfo(String imchaId) {
+		return sqlSession.selectOne(IMCHAMAPPER + "selectImchaInfo", imchaId);
+	}
 
 }
 

@@ -36,7 +36,7 @@ import com.home.alone.vo.ImchaVO;
 public class ImchaController {
 	
 	@Autowired
-	private ImchaService imchaservice;
+	private ImchaService imchaService;
 	
 	
 	// 유저회원가입
@@ -49,7 +49,7 @@ public class ImchaController {
 	@RequestMapping(value = "/imchaJoin", method = RequestMethod.POST)
 	public String joinPOST(ImchaVO imcha) throws Exception{
 		
-		imchaservice.imchaJoin(imcha);
+		imchaService.imchaJoin(imcha);
 		
 		return "redirect:/index";
 	}
@@ -59,7 +59,7 @@ public class ImchaController {
 	@ResponseBody
 	public String imchaIdChkPOST(String imchaId) throws Exception {
 		
-		int result = imchaservice.idCheck(imchaId);
+		int result = imchaService.imchaIdCheck(imchaId);
 		
 		if (result != 0) {
 			return "fail";
@@ -73,7 +73,7 @@ public class ImchaController {
 		@ResponseBody
 		public String nicknameChkPOST(String nickname) throws Exception {
 			
-			int result = imchaservice.nicknameCheck(nickname);
+			int result = imchaService.nicknameCheck(nickname);
 			
 			if (result != 0) {
 				return "fail";
@@ -97,7 +97,7 @@ public class ImchaController {
 //		return null;
 		
 		HttpSession session = request.getSession();
-		ImchaVO vo = imchaservice.imchaLogin(imcha);
+		ImchaVO vo = imchaService.imchaLogin(imcha);
 		
 		if(vo == null) {
 			int result = 0;
@@ -133,7 +133,7 @@ public class ImchaController {
 	@ResponseBody
 	public int findIdPOST(ImchaVO imcha, Model model) throws Exception {
 		System.out.println(imcha);
-		String findIdVo = imchaservice.findId(imcha);
+		String findIdVo = imchaService.findImchaId(imcha);
 		
 		System.out.println(findIdVo);
 		
@@ -167,14 +167,12 @@ public class ImchaController {
 	// 비밀번호 찾기
 	@RequestMapping(value="/findPw", method=RequestMethod.GET)
 	public String findPwGET() throws Exception {
-		
 		return "member/findPw";
 	}
 	
 	@RequestMapping(value="/findPw", method=RequestMethod.POST)
 	public String findPwPOST(ImchaVO imcha, HttpSession session, RedirectAttributes rttr) throws Exception{
-		
-		ImchaVO findPwVo = imchaservice.findPw(imcha);
+		ImchaVO findPwVo = imchaService.findImchaPw(imcha);
 		
 		if(findPwVo == null) {
 			rttr.addFlashAttribute("check", 1);
@@ -195,9 +193,7 @@ public class ImchaController {
 	
 	@RequestMapping(value="/updatePw", method=RequestMethod.POST)
 	public String updatePwPOST(@RequestParam(value="updatePw", defaultValue="", required=false) String imchaId, ImchaVO imcha) throws Exception{
-		
-		imchaservice.updatePw(imcha);
-		
+		imchaService.modifyImchaPw(imcha);
 		return "redirect:/member/imchaLogin";
 	}
 	

@@ -1,83 +1,65 @@
-//	$(document).ready(function(){
-//		$(".join_button").click(function(){
-//			$("#join_form").attr("action", "/member/imchaJoin");
-//			$("#join_form").submit();
-//		});
-//	});
-//	
- var code = "";
- 
- var idCheck = false;
- var idckCheck = false;
- var pwCheck = false;
- var pwckCheck = false;
- var nicknameCheck = false;
- var phoneCheck = false;
- var addressCheck = false;
- 
 $(document).ready(function(){
-	$("btn btn-primary btn btn-block").click(function(){
+	$("#modifyBtn").click(function(e){
 		
-		var imchaId = $('.form-id').val();
-		var imchaPw = $('.form-password').val();
-		var pwck    = $('.form-passwordCheck').val();
-		var nickname = $('.form-control').val();
-		var phone   = $('.form-control').val();
-		var imchaAddr3 = $('.form-control_3').val();
+		e. preventDefault();
+		
+		let imchaId = $('#imchaId').val();
+		let imchaPw = $('#imchaPw').val();
+		let pwck = $('#pwck').val();
+		let name = $("#name").val();
+		let nickname = $('#nickname').val();
+		let phone = $('#phone').val();
+		let sido = $("#sido").val();
+	
+		if(imchaId == "") {
+			$('.id_ck').css('display', 'block');
+			return false;
+		} else {
+			$('.id_ck').css('display', 'none');
+		}
+		
+		if(imchaPw == "") {
+			$('.pw_ck').css('display', 'block');
+			return false;
+		} else {
+			$('.pw_ck').css('display', 'none');
+		}
+		
+		if(pwck == "") {
+			$('.pwck_ck').css('display', 'block');
+			return false;
+		} else {
+			$('.pwck_ck').css('display', 'none');
+		}
+		
+		if(nickname == "") {
+			$('.name_ck').css('display','block');
+			return false;
+		} else {
+			$('.name_ck').css('display','none');
+		}
+		
+		if(phone == "") {
+			$('.phone_ck').css('display','block');
+			return false;
+		} else {
+			$('.phone_ck').css('display','none');
+		}
+		
+		if(sido == "") {
+			alter("주소 입력해주세요.");
+			return false;
+		}
+		
+		$("#imcha-form").attr("action", "/mypage/imcha/modify");
+		$("#imcha-form").submit();
 	});
-	
-	if(imchaId == "") {
-		$('.final_id_ck').css('display', 'block');
-		idCheck = false;
-	} else {
-		$('.final_id_ck').css('display', 'none');
-		idCheck = true;
-	}
-	
-	if(pwck == "") {
-		$('.final_pwck_ck').css('display', 'block');
-		pwckCheck = false;
-	} else {
-		$('.final_pwck_ck').css('display', 'none');
-		pwckCheck = true;
-	}
-	
-	if(nickname == "") {
-		$('.final_name_ck').css('display','block');
-		nicknameCheck = false;
-	} else {
-		$('.final_name_ck').css('display','none');
-		nicknameCheck = true;
-	}
-	
-	if(phone == "") {
-		$('.final_phone_ck').css('display','block');
-		phoneCheck = false;
-	} else {
-		$('.final_phone_ck').css('display','none');
-		phoncheck = true;
-	}
-	
-	if(imchaAddr3 = "") {
-		$('.final_imchaAddr3_ck').css('display','block');
-		addressCheck = false; 
-	} else {
-		$('.final_imchaAddr3_ck').css('display','none');
-		addressCheck = true;
-	}
-	
-	if(idCheck&idckCheck&pwCheck&pwckCheck&nicknameCheck&phoneCheck&addressCheck){
-		$("#validation-form").attr("action", "/member/userJoin");
-		$("#validation-form").submit();
-	}
-	
-	
 });
 	// 아이디 중복검사
-	$('.form-id').on("propertychange change keyup paste input", function(){
+	$('#imchaId').on("propertychange change keyup paste input", function(){
 		
-		var imchaId = $('.form-id').val();
-		var data  = {imchaId : imchaId}
+		let imchaId = $('#imchaId').val();
+		let data  = {imchaId : imchaId}
 		
 		$.ajax({
 			type : "post",
@@ -96,9 +78,9 @@ $(document).ready(function(){
 	});
 	
 	// 닉네임 중복검사
-	$('.form-nickname').on("propertychange change keyup paste input", function(){
+	$('#nickname').on("propertychange change keyup paste input", function(){
 			
-			var nickname = $('.form-nickname').val();
+			var nickname = $('#nickname').val();
 			var data  = {nickname : nickname}
 			
 			$.ajax({
@@ -117,55 +99,6 @@ $(document).ready(function(){
 			}); 
 		});
 	 
-//	// 주소연동
-//	function execution_daum_address(){
-//	 
-//	    new daum.Postcode({
-//	        oncomplete: function(data) {
-//	        	// 각 주소의 노출 규칙에 따라 주소를 조합한다.
-//                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-//                var addr = ''; // 주소 변수
-//                var extraAddr = ''; // 참고항목 변수
-//
-//                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-//                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-//                    addr = data.roadAddress;
-//                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-//                    addr = data.jibunAddress;
-//                }
-//
-//                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-//                if(data.userSelectedType === 'R'){
-//                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-//                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-//                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-//                        extraAddr += data.bname;
-//                    }
-//                    // 건물명이 있고, 공동주택일 경우 추가한다.
-//                    if(data.buildingName !== '' && data.apartment === 'Y'){
-//                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-//                    }
-//                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-//                    if(extraAddr !== ''){
-//                        extraAddr = ' (' + extraAddr + ')';
-//                    }
-//                    addr += extraAddr;
-//                
-//                } else {
-//                   addr += ' ';
-//                }
-//
-//                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-//                $(".form-control_1").val(data.zonecode);
-//                $(".form-control_2").val(addr);
-//                // 커서를 상세주소 필드로 이동한다.
-//                $(".form-control_3").attr("readonly",false);
-//                $(".form-control_3").focus();
-//            } 
-//	    }).open();    
-//	 
-//	}
-	// 주소
 	
 	$('document').ready(function() {
 		 var area0 = ["시/도 선택","서울특별시","인천광역시","대전광역시","광주광역시","대구광역시","울산광역시","부산광역시","경기도","강원도","충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","제주도"];
@@ -204,14 +137,16 @@ $(document).ready(function(){
 
 		 $("select[name^=sido]").change(function() {
 		  var area = "area"+$("option",$(this)).index($("option:selected",$(this))); // 선택지역의 구군 Array
-		  var $gugun = $(this).next(); // 선택영역 군구 객체
-		  $("option",$gugun).remove(); // 구군 초기화
+
+		var gugun = $(this).parent().next().children(); // 선택영역 군구 객체
+		console.log(gugun);
+		  $("option", gugun).remove(); // 구군 초기화
 
 		  if(area == "area0")
-		   $gugun.append("<option value=''>구/군 선택</option>");
+		   gugun.append("<option value=''>구/군 선택</option>");
 		  else {
 		   $.each(eval(area), function() {
-		    $gugun.append("<option value='"+this+"'>"+this+"</option>");
+		    gugun.append("<option value='"+this+"'>"+this+"</option>");
 		   });
 		  }
 		 });
@@ -220,10 +155,10 @@ $(document).ready(function(){
 		});
 	
 	// 비밀번호 확인
-	$('.form-passwordCheck').on("propertychange change keyup paste input", function(){
+	$('#pwck').on("propertychange change keyup paste input", function(){
 		
-		var imchaPw = $('.form-password').val();
-		var pwck    = $('.form-passwordCheck').val();
+		var imchaPw = $("#imchaPw").val();
+		var pwck    = $("#pwck").val();
 		$('.final_pwck_ck').css('display','none');
 		
 		if (imchaPw == pwck) {
@@ -237,7 +172,3 @@ $(document).ready(function(){
 		}
 	});
 	
-//	$(".btn btn-primary btn btn-block").click(function() {
-//		
-//		alert("로그인 버튼 작동");
-//	});

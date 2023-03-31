@@ -56,9 +56,9 @@
                   <span><img src="/icon/imcha.png"></span>
                </a>
                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="lessorDropdown">
-                  <li class="dropdown-item"> ${imcha.nickname}(${imcha.userRoll})님 </li>
+                  <li class="dropdown-item"> ${imcha.name}(${imcha.userRoll})님 </li>
                   <hr style="margin: auto">
-                  <li><a class="dropdown-item" href="../mypage/mypageImcha">마이페이지</a></li>
+                  <li><a class="dropdown-item" href="/mypage/imcha">마이페이지</a></li>
                   <li><a class="dropdown-item" href="/member/logout.do">로그아웃</a></li>
                </div>
             </c:if>
@@ -70,7 +70,7 @@
                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="lessorDropdown">
                   <li class="dropdown-item"> ${lessor.name}(${lessor.userRoll})님 </li>
                   <hr style="margin: auto">
-                  <li><a class="dropdown-item" href="../mypage/mypageLessor">마이페이지</a></li>
+                  <li><a class="dropdown-item" href="/mypage/lessor">마이페이지</a></li>
                   <li><a class="dropdown-item" href="/member/logout.do">로그아웃</a></li>
                </div>
             </c:if>
