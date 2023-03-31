@@ -44,7 +44,6 @@ import com.home.alone.vo.LessorVO;
 @RequestMapping(value = "/member")
 public class LessorController {
 	
-	
 	@Autowired
 	private LessorService lessorservice;
 	

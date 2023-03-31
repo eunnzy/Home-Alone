@@ -23,7 +23,7 @@
     <table style="margin-left: auto; margin-right: auto;" class="my-5" >
       <tr>
       	<td>
-          <button class="btn-lg mx-5 lessor-button" type="button" onclick = "location.href = '/mypage/getLessor'">
+          <button class="btn-lg mx-5 lessor-button" type="button" onclick = "location.href = '/mypage/lessor/info'">
           	<div class="lessor-div"><img src="/img/businessman.png" alt="중개인이미지"></div>
           		회원 정보 수정
           </button>

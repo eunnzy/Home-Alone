@@ -92,6 +92,6 @@
 
 
     
-    <script src="/js/lessorLogin.js" ></script>
+    <script src="/js/member/lessorLogin.js" ></script>
 </body>
 </html>

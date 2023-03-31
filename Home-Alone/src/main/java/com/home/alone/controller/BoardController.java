@@ -93,8 +93,8 @@ public class BoardController {
 			model.addAttribute("pageMaker", dto);
 			log.info("total : " + dto);
 		} else {
-			String sido1 = imcha.getSido1();
-			String gugun1 = imcha.getGugun1();
+			String sido1 = imcha.getSido();
+			String gugun1 = imcha.getGugun();
 			cri.setSido1(sido1);
 			cri.setGugun1(gugun1);
 			log.info("after Board cri : " + cri);

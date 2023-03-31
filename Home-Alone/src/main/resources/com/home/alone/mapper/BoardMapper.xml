@@ -32,7 +32,7 @@
 	<select id="beforeBoard" resultType="com.home.alone.vo.BoardVO">
 		<![CDATA[
 		SELECT A.* 
-		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE 
+		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE 
 		]]>
 		
 		<include refid="criteria"></include>
@@ -46,7 +46,7 @@
 	<!-- 로그인 전 갯수 -->
 	<select id="beforeBoardCount" resultType="int">
 		SELECT COUNT(*) FROM 
-		(SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
+		(SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
 		<include refid="criteria"></include>
 		BNO > 0 AND CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')
 	</select>
@@ -55,13 +55,13 @@
 	<select id="afterBoard" resultType="com.home.alone.vo.BoardVO">
 		<![CDATA[
 		SELECT A.* 
-		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE 
+		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE 
 		]]>
 		
 		<include refid="criteria"></include>
 		
 		<![CDATA[
-		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido1 = #{sido1} AND gugun1 = #{gugun1}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
+		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido = #{sido} AND gugun = #{gugun}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
 		) A WHERE rn > (#{pageNum} -1) * #{amount}
 		]]>
 	</select>
@@ -69,16 +69,16 @@
 	<!-- 로그인 후 갯수 -->
 	<select id="afterBoardCount" resultType="int">
 		SELECT COUNT(*) FROM 
-		(SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
+		(SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
 		<include refid="criteria"></include>
-		BNO > 0 AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido1 = #{sido1} AND gugun1 = #{gugun1}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
+		BNO > 0 AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido = #{sido} AND gugun = #{gugun}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
 	</select>
 	
 	<!-- 내가쓴글 -->
 	<select id="getMyboard" resultType="com.home.alone.vo.BoardVO">
 		<![CDATA[
 		SELECT A.* 
-		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE 
+		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE 
 		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaid}
 		) A WHERE rn > (#{pageNum} -1) * #{amount}
 		]]>
@@ -87,7 +87,7 @@
 	<!-- 내가쓴글 갯수 -->
  	<select id="getMyboardCount" resultType="int">
  		SELECT COUNT(*) FROM 
-		(SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaid}) A 
+		(SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaid}) A 
 		WHERE BNO > 0 
 	</select>
 	
@@ -99,7 +99,7 @@
 	
 	<!-- 조회 -->
 	<select id="read" parameterType="map" resultType="com.home.alone.vo.BoardVO">
-		SELECT B.*, I.nickname, I.sido1, I.gugun1 FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND bno = #{bno}
+		SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND bno = #{bno}
 	</select>
 	
 	<!-- 삭제 -->
