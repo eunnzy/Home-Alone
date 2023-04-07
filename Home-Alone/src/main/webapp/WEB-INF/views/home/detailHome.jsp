@@ -103,7 +103,7 @@
 							    <input type="hidden" name="imchaId" id="imchaId" value="${member.imchaId}">
 								<div class="col mb-3">
 							    <!-- <a href="https://www.flaticon.com/kr/free-icons/" title=" 아이콘"> 아이콘  제작자: Freepik - Flaticon</a>  -->
-						    	<img src="/icon/question.png" name="qnaBtn" id="qnaBtn"> <label for="qnaBtn">문의 남기기</label> 
+						    	<img src="/icon/question.png" id="inqModalBtn"> <label for="inqModalBtn">문의하기</label> 
 							</div>
 							
 							<div class="d-grid gap-2 mx-auto mt-3">
@@ -133,11 +133,11 @@
 								<c:choose>
 									<c:when test="${home.rentType == '월세'}">
 										<td width="30%">보증금 / 월세  </td>
-										<td>${home.deposit} / ${home.monthly} 만원</td>
+										<td>${home.deposit} / ${home.monthly}</td>
 									</c:when>
 									<c:otherwise>
 										<td width="30%">보증금 </td>
-										<td>${home.deposit}만원</td>
+										<td>${home.deposit}</td>
 									</c:otherwise>
 								</c:choose>
 							</tr>
@@ -147,7 +147,7 @@
 							</tr>
 							<tr>
 								<td>관리비</td>
-								<td>${home.adminCost}만원</td>
+								<td>${home.adminCost}</td>
 							</tr>
 							<tr>
 								<td>주차</td>
@@ -162,8 +162,7 @@
 							</tr>
 							<tr>
 								<td>입주 가능일</td>
-								<td><fmt:formatDate value="${home.moveDate}"
-										pattern="yyyy-MM-dd" /></td>
+								<td><fmt:formatDate value="${home.moveDate}" pattern="yyyy-MM-dd" /></td>
 							</tr>
 						</tbody>
 					</table>
@@ -278,7 +277,7 @@
 
 	<jsp:include page="reportHome.jsp"></jsp:include>  <!-- 신고하기 모달 -->
 	
-	<jsp:include page="qnaHome.jsp"></jsp:include> <!--  문의하기 모달 --> 
+	<jsp:include page="inquryHome.jsp"></jsp:include> <!--  문의하기 모달 --> 
 	
 	<jsp:include page="reservHome.jsp"></jsp:include><!-- 예약하기 모달 -->
 	
@@ -293,8 +292,7 @@
 		let enrollDate = $('#enrollDate').val();
 		let lessorId = "${home.lessorId}";
 		let homeLike = ${homeLike};
-		
-		console.log(lessorId);
+		console.log(search);
 	</script>
 	<script src="/js/home/reportHome.js"></script>
 	<script src="/js/home/detailHome.js"></script>

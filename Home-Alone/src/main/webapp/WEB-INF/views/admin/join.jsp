@@ -17,7 +17,7 @@
   <!-- 네브바 -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/admin/adminLogin"><img src="/img/house.png"></a>
+      <a class="navbar-brand" href="/admin/login"><img src="/img/house.png"></a>
       <div class="collapse navbar-collapse" id="navbarColor03">
        <!--  <a href="login4.jsp"><button class="btn btn-secondary my-2 my-sm-0">Login</button></a> -->
       </div>

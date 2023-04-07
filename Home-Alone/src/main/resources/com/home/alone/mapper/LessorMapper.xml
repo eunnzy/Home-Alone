@@ -73,10 +73,10 @@
    
    <!-- 이미지 등록 -->
 	<insert id="imgEnroll">
-		insert into lessorImg_tb(lessor_Id, fileName, uploadPath, uuid) values(#{lessorId}, #{fileName}, #{uploadPath}, #{uuid})
+		insert into lessor_img_tb(lessor_Id, fileName, uploadPath, uuid) values(#{lessorId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>
  	
  	<select id="selectImg" resultType="com.home.alone.vo.LessorImgVO">
- 		select lessor_id AS lessorId, fileName, uploadPath, uuid from lessorImg_tb where lessor_id= #{lessorId}
+ 		select lessor_id AS lessorId, fileName, uploadPath, uuid from lessor_img_tb where lessor_id= #{lessorId}
  	</select>
  </mapper>

@@ -41,9 +41,9 @@
           </button>
         </td>
         <td>
-          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/qna/list?imchaId=${imcha.imchaId}'">
+          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/mypage/imcha/inqury'">
           	<div class="imcha-div"><img src="/img/question.png" alt="문의이미지"></div>
-          		문의 하기
+          		문의 목록
           </button>
         </td>
         

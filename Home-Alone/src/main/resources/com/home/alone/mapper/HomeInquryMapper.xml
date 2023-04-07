@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.home.alone.mapper.HomeInquryMapper">
+ 	
+ 	<!-- 문의 등록 -->
+ 	<insert id="insertHomeInqury" parameterType="com.home.alone.vo.HomeInquryVO">
+ 		insert into Home_Inq_tb (iq_num, imcha_id, home_num, iq_title, iq_content) 
+ 		values ((select nvl(max(iq_num), 0) + 1 from Home_Inq_tb), #{imchaId}, #{homeNum}, #{iqTitle}, #{iqContent})
+ 	</insert>
+ 	
+<!--  	<update id="updateQNAImcha" parameterType="com.home.alone.vo.QNAImchaVO">
+ 		update Home_Inq_tb set iq_title=#{iqTitle}, iq_date=SYSDATE, iq_content=#{iqContent}
+ 				where iq_num=#{iqNum}
+ 	</update> -->
+ 	
+ 	<select id="selectInquryListByImcha" resultType="com.home.alone.vo.HomeInquryVO">
+ 		select iq_num as iqNum, imcha_id as imchaId, home_num as homeNum, iq_title as iqTitle, iq_date as iqDate, ans_status as ansStatus
+ 		from Home_Inq_tb 
+ 		where IMCHA_ID=#{imchaId}
+ 	</select>
+ 	
+ 	<delete id="deleteHomeInqury">	<!-- 문의글 삭제 -->
+ 		delete from Home_Inq_tb where iq_num = #{iqNum}
+ 	</delete>
+ 	
+ 	<select id="selectHomeInquryDetail" resultType="com.home.alone.vo.HomeInquryDetailVO">
+ 		select iq_num as iqNum, home_num as homeNum, imcha_id as imchaId, lessor_id as lessorId, 
+ 				iq_title as iqTitle, iq_content as iqContent, iq_date as iqDate, ans_status as ansStatus
+ 		from Home_InqAns_tb join Home_Inq_tb using(iq_num) 
+ 		where iq_num = #{iqNum}
+ 	</select>
+ 	
+ <!-- 	<select id="getBoard" resultMap="imchaMap">
+ 		select * from Home_Inq_tb where iq_num = #{iqNum}
+ 	</select>
+ 	
+ 	<select id="getAnswer" resultMap="lessorMap">
+ 		select * from Home_InqAns_tb where iq_num= #{iqNum}
+ 	</select> -->
+ 	
+ 	<!-- 중개인 qna -->
+ 	
+ 	
+ 	<!-- 문의글 답변 등록 -->
+ 	<insert id="insertHomeInqAnswer" parameterType="com.home.alone.vo.HomeInqAnswerVO">
+ 		insert into Home_InqAns_tb (ans_num, iq_num, lessor_id, ans_content) 
+ 		values ((select nvl(max(ans_num), 0) + 1 from Home_InqAns_tb), #{iqNum}, #{lessorId}, #{ansContent})
+ 	</insert>
+ 	
+ 	<select id="selectInquryListByLeessor" resultType="com.home.alone.vo.HomeInquryVO">
+ 		select iq_num as iqNum, home_num as homeNum, iq_title as iqTitle, iq_date as iqDate, ans_status as ansStatus
+ 		from Home_tb join Home_Inq_tb using(home_num) 
+ 		where lessor_id=#{lessorId}
+ 	</select>
+ 	
+ 	<!-- 문의글 답변 삭제 -->
+ 	<delete id="deleteHomeInqAnswer" parameterType="com.home.alone.vo.HomeInqAnswerVO">
+ 		delete from Home_InqAns_tb where lessor_id=#{lessorId} and iq_num = #{iqNum}
+ 	</delete>
+ 	
+ 	<update id="updateHomeInquryStatus">
+ 		update Home_InqAns_tb set ans_status = 1 where iq_num = #{iqNum}
+ 	</update>
+ 	
+  	
+  </mapper>

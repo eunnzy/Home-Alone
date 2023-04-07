@@ -1,10 +1,31 @@
-$("#qnaBtn").click(function() {
-	console.log("버튼 클릭");
-	$(".qna-modal").css("display", "flex");
+$("#inqModalBtn").click(function() {
+	$(".inq-modal").css("display", "flex");
 	
-	// 여기다 작성
+	$("#inqBtn").click(function() {
+		let iqTitle = $("#iqTitle").val();
+		let iqContent = $("#iqContent").val();
+		
+			
+		let inqData = {
+			"homeNum" : homeNum,
+			"iqTitle" : iqTitle,
+			"iqContent" : iqContent
+		};
+	
+		$.ajax({
+			url: '/home/inqury',
+			data: inqData,
+			type: 'POST',
+			success: function(data){
+				console.log(data);
+			}
+		});
+	
+	});
+	
+	
 })
 
-$(".qna-close").click(function() {
-	$(".qna-modal").css("display", "none");
+$(".inq-close").click(function() {
+	$(".inq-modal").css("display", "none");
 })

@@ -67,15 +67,24 @@ public class HomeManageController {
 	@RequestMapping("/list")
 	public String getHomeList(Model model,  HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		LessorVO lessorVO = (LessorVO) session.getAttribute("lessor");	// 글 등록 아이디
+		LessorVO lessorVO = (LessorVO) session.getAttribute("lessor");	// 로그인 한 아이디 
+		
 		System.out.println(lessorVO.getLessorId());
-		List<HomePreviewVO> manageList = homeService.getListByLessorId(lessorVO);
+		List<HomePreviewVO> homeList = homeService.getListByLessorId(lessorVO);
+		
+		for(int i=0; i<homeList.size(); i++) {
+			String deposit = homeService.convertMoneyUnit(homeList.get(i).getDeposit());
+			String monthly = homeService.convertMoneyUnit(homeList.get(i).getMonthly());
+			String adminCost = homeService.convertMoneyUnit(homeList.get(i).getAdminCost());
+			
+		}
+		
 //		System.out.println(manageList);
 //		for (int i=0; i<manageList.size(); i++) {
 //			List<HomeImgVO> img = homeDAO.selectHomeImgList(manageList.get(i).getHomeNum());
 //			manageList.get(i).setHomeImg(img.get(0));
 //		}
-		model.addAttribute("manageList", manageList);
+		model.addAttribute("homeList", homeList);
 		return "mypage/homeManage";
 	}
 	
@@ -217,7 +226,7 @@ public class HomeManageController {
 		insertMap.put("homeAddInfo", homeAddVO);
 		insertMap.put("homeOption", homeOptionVO);
 		
-		int result = homeService.insertHome(insertMap);	// 매물 정보 삽입.
+		int result = homeService.registerHome(insertMap);	// 매물 정보 삽입.
 		
 		return result;
 	}

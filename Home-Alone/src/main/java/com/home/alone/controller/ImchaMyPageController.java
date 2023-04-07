@@ -1,19 +1,20 @@
 package com.home.alone.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.home.alone.service.HomeService;
 import com.home.alone.service.ImchaService;
-import com.home.alone.service.LessorService;
+import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.ImchaVO;
-import com.home.alone.vo.LessorVO;
 
 @Controller
 @RequestMapping("/mypage/imcha")
@@ -21,6 +22,9 @@ public class ImchaMyPageController {
 	
 	@Autowired
 	private ImchaService  imchaService;
+	
+	@Autowired
+	private HomeService homeService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
 	public String mypageImcha() {
@@ -54,4 +58,12 @@ public class ImchaMyPageController {
 	    return "redirect: /mypage/imcha/info";
 	}
 	
+	@RequestMapping(value="/inqury")
+	public String homeInqList(Model model, HttpServletRequest request) {	// 문의 목록
+		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
+		List<HomeInquryVO> inqList = homeService.getHomeInqListByImcha(imcha.getImchaId());
+		model.addAttribute("inqList", inqList);
+		
+		return "/mypage/imcha/inquryList";
+	}
 }

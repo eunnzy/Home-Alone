@@ -5,7 +5,6 @@ let optionCheck = [];
 let addInfoCheck = [];
 let deposit = 0;
 let monthly = 0;
-let filterBtnStatus = false;
 
 $(document).ready(function() {
 	$("#filterBtn").click(function() {
@@ -19,37 +18,36 @@ $(document).ready(function() {
 	
 	$("#cancelBtn").click(function() {
 		if($("input[type=checkbox]:checked")) 
-		$("input[type=checkbox]").prop("checked", false);
+			$("input[type=checkbox]").prop("checked", false);
+		
+		$(".filter-content").css("display", "none");
+		getHomeInBounds();
 	});
 	
 	$("#filterApplyBtn").click(function() {
-		homeTypeCheck=[];
-		rentTypeCheck=[];
-		optionCheck=[];
-		addInfoCheck=[];
-		
-		filterBtnStatus = true;
-		console.log("filterApplyBtn func()");
-		console.log("filterBtn" + filterBtnStatus);	
+		homeType=[];
+		rentType=[];
+		optionList=[];
+		addInfo=[];
 		
 		$("input[name=homeType]:checked").each(function() {
-			if(!homeTypeCheck.includes($(this).val())) 
-				homeTypeCheck.push($(this).val());
+			if(!homeType.includes($(this).val())) 
+				homeType.push($(this).val());
 		});
 
 		$("input[name=rentType]:checked").each(function() {
-			if(!rentTypeCheck.includes($(this).val())) 
-				rentTypeCheck.push($(this).val());
+			if(!rentType.includes($(this).val())) 
+				rentType.push($(this).val());
 		});
 		
 		$("input[name=optionList]:checked").each(function() {
-			if(!optionCheck.includes($(this).val())) 
-				optionCheck.push($(this).val());
+			if(!optionList.includes($(this).val())) 
+				optionList.push($(this).val());
 		});
 		
 		$("input[name=addInfoList]:checked").each(function() {
-			if(!addInfoCheck.includes($(this).val())) 
-				addInfoCheck.push($(this).val());
+			if(!addInfo.includes($(this).val())) 
+				addInfo.push($(this).val());
 		});
 		
 		
@@ -71,19 +69,7 @@ $(document).ready(function() {
 			monthly = 99999999;
 		}
 		
-		getHomeInBounds();	
-		
-		for(let i=0; i<homeData.length; i++) {
-			console.log(homeData[i]);
-			let check = checkFilter(homeData[i]);
-			console.log("check: " + check);
-			if(check === false) {
-			    continue;
-			}
-			else {
-				displayHomeList(homeData[i], i);
-		   }
-		}
+		getHomeListByFilter();	// 필터 검색 함수 호출 
 		
 		$(".filter-content").css("display", "none");
 	});
