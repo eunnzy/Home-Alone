@@ -137,8 +137,6 @@
 					</div>
               	</div>
               </div>
-              
-            
 				
 			<div class="mb-3">
               <input type="text" class="form-control" name="lessorAddr2" id="lessorAddr2" placeholder=""  readonly="readonly">

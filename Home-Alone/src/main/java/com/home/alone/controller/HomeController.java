@@ -2,7 +2,6 @@ package com.home.alone.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,9 +28,9 @@ import com.home.alone.dao.HomeDAO;
 import com.home.alone.service.HomeService;
 import com.home.alone.service.LikeService;
 import com.home.alone.vo.HomeAddInfoVO;
+import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomeReportVO;
-import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.ImchaVO;
 import com.home.alone.vo.LikeVO;
 
@@ -46,12 +44,9 @@ import com.home.alone.vo.LikeVO;
 public class HomeController {
 	@Autowired
 	private HomeService homeService;
-	
 	@Autowired
 	private LikeService likeService;
 	
-	@Autowired
-	private HomeDAO homedao;
 	
 	// 매물 상세보기
 	@RequestMapping("/detail")	
@@ -59,9 +54,9 @@ public class HomeController {
 		System.out.println(homeNum);
 		Map<String, Object> home = homeService.selectHomeDetail(homeNum);
 		
-//		home.put("deposit", homeService.convertMoneyUnit((int)home.get("deposit")));
-//		home.put("monthly", homeService.convertMoneyUnit((int)home.get("monthly")));
-//		home.put("adminCost", homeService.convertMoneyUnit((int)home.get("adminCost")));
+		home.put("deposit", homeService.convertMoneyUnit((int)home.get("deposit")));
+		home.put("monthly", homeService.convertMoneyUnit((int)home.get("monthly")));
+		home.put("adminCost", homeService.convertMoneyUnit((int)home.get("adminCost")));
 		
 		System.out.println("detailHome: " + home);
 		
@@ -87,7 +82,8 @@ public class HomeController {
 		return "home/detailHome";
 	}
 	
-	@RequestMapping(value="/homeFilter")	// 필터 검색
+	// 필터 검색
+	@RequestMapping(value="/homeFilter")	
 	@ResponseBody
 	public List<HomePreviewVO> homeFilter(@RequestBody HashMap<String, Object> filterData) {
 		System.out.println("homeFilter controller");
@@ -157,26 +153,16 @@ public class HomeController {
 	}
 	
 	
-	/*
-	 * public String searchKeyword(@RequestParam("searchKeyword") String
-	 * searchKeyword, Model model) { System.out.println("searhKeyword" +
-	 * searchKeyword); model.addAttribute(searchKeyword, "searchKeyword"); return
-	 * "home/searchHome"; }
-	 */
-	
+	// 집찾기 페이지 이동
 	@RequestMapping(value="/searchHome" , method = RequestMethod.GET)
-	public String searchHome() {
+	public String searchHome(@RequestParam(required = false) String searchKeyword, Model model) {
+		System.out.println(searchKeyword);
+		model.addAttribute("searchKeyword", searchKeyword);
 		return "home/searchHome";
 	}
 	
-	/*
-	 * @RequestMapping(value="/searchHome" , method = RequestMethod.POST) public
-	 * String searchHomePost(@RequestParam String searchKeyword, Model model) {
-	 * model.addAttribute("searchKeyword", searchKeyword); return "home/searchHome";
-	 * }
-	 */
 	
-	
+	// 매물이미지 
 	@RequestMapping(value = "/getHomeImg", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getPreviewImg(@RequestParam String homeImgFile) {
 		System.out.println("homeImgFile : " + homeImgFile);
@@ -196,8 +182,28 @@ public class HomeController {
 		return result;
 	}
 	
+	// 매물 문의
+	@RequestMapping(value="/inqury", method=RequestMethod.POST)
+	@ResponseBody
+	public int inquryHome(HomeInquryVO inqData, HttpServletRequest request) {
+		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
+		
+		if(imcha == null) {
+			return 0;
+		}
+		
+		System.out.println(inqData);
+
+		inqData.setImchaId(imcha.getImchaId());
+		System.out.println(inqData);
+
+		
+		return homeService.inquryHome(inqData);
+	}
 	
-	@RequestMapping(value="/report", method=RequestMethod.POST) 
+	
+	
+	@RequestMapping(value="/report", method=RequestMethod.POST) 	// 매물 신고
 	@ResponseBody
 	public int reportHome(@RequestParam int homeNum, @RequestParam int reportType, @RequestParam String reportContent, HttpServletRequest request) {
 		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
@@ -220,13 +226,4 @@ public class HomeController {
 	
 	
 	
-	
-//	// 허위 매물 목록 리스트
-//	@GetMapping("/reportHome")
-//	public String HomeReport(Model model) {
-//		System.out.println("/HomeList 요청");
-//		List<HomeReportVO> list = homedao.selectReportHomeList();
-//		model.addAttribute("list", list);
-//		return "admin/reportHome";
-//	}
 }

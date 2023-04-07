@@ -224,16 +224,15 @@
 	</div>
 		
 	<script>
-		var search = encodeURIComponent("${searchKeyword}");
-		/* var searchKeyword = "${searchKeyword}"; */
+		var searchKeyword = "${searchKeyword}";
 		console.log(searchKeyword);
 	</script>
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a94d4863c9f7363e85ad81dac027db86&libraries=services,clusterer,drawing"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a94d4863c9f7363e85ad81dac027db86"></script>
 	
-	<script src="/js/home/searchHome2.js" ></script>
-	<script src="/js/home/searchFilter2.js" ></script>
+	<script src="/js/home/searchHome.js" ></script>
+	<script src="/js/home/searchFilter.js" ></script>
 	
 </script>
 </body>

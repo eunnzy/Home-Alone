@@ -182,9 +182,9 @@
 							    <div class="col-auto">
 							   		<input class="form-control" type="text" name="rentPeriods" value="${home.rentPeriods }">
 						    	</div>
-					    		<div class="col-auto">
+					    		<div class="col-3">
 						   			<select class="form-select" name="rentUnit">
-									  <option >기간</option>
+									  <option selected>기간</option>
 									  <option value="개월">개월</option>
 									  <option value="년">년</option>
 									</select>

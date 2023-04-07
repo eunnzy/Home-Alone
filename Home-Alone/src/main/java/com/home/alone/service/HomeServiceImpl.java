@@ -1,9 +1,6 @@
 package com.home.alone.service;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.home.alone.dao.HomeDAO;
-import com.home.alone.mapper.HomeMapper;
+import com.home.alone.dao.HomeInquryDAO;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeImgVO;
+import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomePriceVO;
@@ -32,10 +30,10 @@ public class HomeServiceImpl implements HomeService{
 	HomeDAO homeDAO;
 	
 	@Autowired
-	HomeMapper homeMapper;
-
+	HomeInquryDAO homeInquryDAO;
+	
 	@Override
-	public int insertHome(Map<String, Object> insertMap) {
+	public int registerHome(Map<String, Object> insertMap) {
 		System.out.println("\n============ HomeService insertHome 실행 =============\n");
 		if(insertMap == null)
 			 return 0;
@@ -57,23 +55,6 @@ public class HomeServiceImpl implements HomeService{
 		
 		HomeOptionVO homeOptionVO = (HomeOptionVO)insertMap.get("homeOption");
 		homeOptionVO.setHomeNum(homeNum);
-//		for(String op: (List<String>)insertMap.get("homeOptionList")) {
-//			switch(op) {
-//				case "washer": homeOptionVO.setWasher("Y"); break;
-//				case "telev": homeOptionVO.setTelev("Y"); break;
-//				case "microWav": homeOptionVO.setMicroWav("Y"); break;
-//				case "gasRange": homeOptionVO.setGasRange("Y"); break;
-//				case "induction": homeOptionVO.setInduction("Y"); break;
-//				case "desk": homeOptionVO.setDesk("Y"); break;
-//				case "bed": homeOptionVO.setBed("Y"); break;
-//				case "aircon": homeOptionVO.setAircon("Y"); break;
-//				case "fridge": homeOptionVO.setFridge("Y"); break;
-//				case "shoes": homeOptionVO.setShoes("Y"); break;
-//				case "closet": homeOptionVO.setCloset("Y"); break;
-//				case "doorLock": homeOptionVO.setDoorLock("Y"); break;
-//				case "bidet": homeOptionVO.setBidet("Y"); break;
-//			}
-//		}
 		System.out.println(homeOptionVO);
 		
 		// 가격 정보
@@ -151,20 +132,6 @@ public class HomeServiceImpl implements HomeService{
 		
 		List<String> optionList = Arrays.asList(homeOptionVO.getOptionList().split(", "));
 		
-//		if(homeOptionVO.getWasher().equals("Y")) optionList.add("washer");
-//		if(homeOptionVO.getTelev().equals("Y")) optionList.add("telev");
-//		if(homeOptionVO.getMicroWav().equals("Y")) optionList.add("microWav");
-//		if(homeOptionVO.getGasRange().equals("Y")) optionList.add("gasRange");
-//		if(homeOptionVO.getInduction().equals("Y")) optionList.add("induction");
-//		if(homeOptionVO.getDesk().equals("Y")) optionList.add("desk");
-//		if(homeOptionVO.getBed().equals("Y")) optionList.add("bed");
-//		if(homeOptionVO.getAircon().equals("Y")) optionList.add("aircon");
-//		if(homeOptionVO.getFridge().equals("Y")) optionList.add("fridge");
-//		if(homeOptionVO.getShoes().equals("Y")) optionList.add("shoes");
-//		if(homeOptionVO.getCloset().equals("Y")) optionList.add("closet");
-//		if(homeOptionVO.getDoorLock().equals("Y")) optionList.add("doorLock");
-//		if(homeOptionVO.getBidet().equals("Y")) optionList.add("bidet");
-
 		System.out.println("optionList : ");
 		System.out.println(optionList);
 		
@@ -209,6 +176,7 @@ public class HomeServiceImpl implements HomeService{
 	@Override
 	public String convertMoneyUnit(long money) {
 		String convert = "";
+		
 		if(money == 0) {
 			convert = "없음";
 		}else if(money >= 10000) {
@@ -216,12 +184,12 @@ public class HomeServiceImpl implements HomeService{
 			
 			if(money % 10000 != 0) {
 				money = money % 10000;
-				convert += money + "만";
+				convert += money + "만원";
 			}
+			
 		}else {
-			convert +=  money + "만";	
+			convert +=  money + "만원";	
 		}
-		
 		return convert;
 	}
 	
@@ -286,15 +254,16 @@ public class HomeServiceImpl implements HomeService{
 	@Override
 	public List<HomePreviewVO> getListByLessorId(LessorVO vo) {
 		System.out.println(vo);
-		List<HomePreviewVO> manageList = null;
-		manageList = homeDAO.getListByLessorId(vo);
+		List<HomePreviewVO> homeList = null;
+		homeList = homeDAO.getListByLessorId(vo);
 		
-		for(int i=0; i<manageList.size(); i++) {
-			int homeNum = manageList.get(i).getHomeNum();
-			manageList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
+		// 미리보기 사진 가져오기
+		for(int i=0; i<homeList.size(); i++) {
+			int homeNum = homeList.get(i).getHomeNum();
+			homeList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
 		}
 		
-		return manageList;
+		return homeList;
 	}
 
 	@Override
@@ -310,6 +279,21 @@ public class HomeServiceImpl implements HomeService{
 	@Override
 	public List<String> getValidTimeList(HomeReservVO homeReservVO) {
 		return homeDAO.selectHomeReservValidTimeList(homeReservVO);
+	}
+
+	@Override
+	public int inquryHome(HomeInquryVO homeInquryVO) {
+		return homeInquryDAO.insertHomeInqury(homeInquryVO);
+	}
+
+	@Override
+	public List<HomeInquryVO> getHomeInqListByImcha(String imchaId) {
+		return homeInquryDAO.selectInquryListByImcha(imchaId);
+	}
+
+	@Override
+	public List<HomeInquryVO> getHomeInqListByLessor(String lessorId) {
+		return homeInquryDAO.selectInquryListByImcha(lessorId);
 	}
 
 	

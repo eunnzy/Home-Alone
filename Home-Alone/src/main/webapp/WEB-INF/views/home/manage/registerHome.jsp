@@ -52,7 +52,7 @@
                                 	<input type="radio" class="form-check-input" name="homeType" value="투룸"> <label> 투룸 </label> 
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="radio" class="form-check-input" name="homeType" value="쓰리룸 이상"> <label> 쓰리룸 이상 </label> 
+                                	<input type="radio" class="form-check-input" name="homeType" value="쓰리룸이상"> <label> 쓰리룸이상 </label> 
                                 </div>
                                 <div class="form-check form-check-inline">
                                 	<input type="radio" class="form-check-input" name="homeType" value="오피스텔"> <label> 오피스텔 </label> 
@@ -179,9 +179,9 @@
 								    <div class="col-auto">
 								   		<input class="form-control" type="text" name="rentPeriods">
 							    	</div>
-						    		<div class="col-auto">
+						    		<div class="col-3">
 							   			<select class="form-select" name="rentUnit">
-										  <option >기간</option>
+										  <option selected>기간</option>
 										  <option value="개월">개월</option>
 										  <option value="년">년</option>
 										</select>

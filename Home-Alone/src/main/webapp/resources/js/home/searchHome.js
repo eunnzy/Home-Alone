@@ -1,7 +1,9 @@
 var map;
+var ps;
 let homeMarker = [];	// 매물 표시할 마커를 담을 배열
-let categoryStatus=false;
-
+var categoryStatus = false;
+var cateMarkers = []; // 마커를 담을 배열입니다
+var currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
 
 $(document).ready(function() { 	// 처음 페이지 들어왔을 때 현재 위치 내 매물 리스트 보여주기 위해*/
 	let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -14,6 +16,8 @@ $(document).ready(function() { 	// 처음 페이지 들어왔을 때 현재 위�
 	let zoomControl = new kakao.maps.ZoomControl(); // 지도 줌 컨트롤러
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
+	ps = new kakao.maps.services.Places(map); 	// 장소 검색 객체 
+	
 	
 	/*------------ searchHome 페이지 들어갈 때 사용자의 현재 위치 받아와서 그 위치에 있는 매물 리스트 보여줌 -------------*/
 	if (navigator.geolocation) {	 // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -24,26 +28,80 @@ $(document).ready(function() { 	// 처음 페이지 들어왔을 때 현재 위�
 			         // 인포윈도우에 표시될 내용입니다
 			map.setCenter(locPosition);	 
 			
-/*			if(searchKeyword !== "") {
-				console.log("searchKeyword 실행")
-				var ps = new kakao.maps.services.Places(); 	// 장소 검색 객체 
+			if(searchKeyword != null) {
 				ps.keywordSearch(searchKeyword, placesSearchCB);
-				return;
 			}
-		*/
 			
 			getHomeInBounds();
+			addCategoryClickEvent();
+			
 			kakao.maps.event.addListener(map, 'idle', getHomeInBounds);
+			kakao.maps.event.addListener(map, 'idle', searchCategoryPlaces);
 			
 		});
 	} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
 	    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
 	}
 	
-	
 });
 
-var ps = new kakao.maps.services.Places(); 	// 장소 검색 객체 
+
+// 각 카테고리에 클릭 이벤트를 등록합니다
+function addCategoryClickEvent() {
+    let category = document.getElementById('category'), // id가 category인 객체
+        children = category.children;	// category의 자식 객체(<li>)
+
+    for (let i=0; i<children.length; i++) {
+        children[i].onclick = onClickCategory;	// 클릭 이벤트 등록
+    }
+}
+
+// 카테고리를 클릭했을 때 호출되는 함수입니다
+function onClickCategory() {
+	let id = this.id,
+        className = this.className;
+
+	console.log(id + " " + className);
+
+    if (className === 'on') {	// 클릭한 객체의 클래스 이름이 'on' 이라면 이미 클릭 되어 있는 상태이므로 클릭 해제 상태로 변경
+        currCategory = '';		
+        changeCategoryClass();	
+		categoryStatus = false;	// 카테고리 버튼 클릭되지 않은 상태로 변경
+        removeCategoryMarker();
+    } else {
+        currCategory = id;		// 클릭한 객체 id
+        changeCategoryClass(this); 
+        searchCategoryPlaces();
+    }
+
+}
+
+function searchCategoryPlaces() {
+    if (!currCategory) {	// 현재 클릭된 카테고리 없음
+    	return;
+	}
+    // 지도에 표시되고 있는 마커를 제거합니다
+    removeCategoryMarker();
+
+	
+	let bounds = map.getBounds();	//현재 지도 범위 가져오기
+	
+	// 북동쪽 위도 경도
+	let neLat = bounds.getNorthEast().getLat();
+	let neLng = bounds.getNorthEast().getLng();
+	
+	// 남서쪽 위도, 경도
+	let swLat = bounds.getSouthWest().getLat();
+	let swLng = bounds.getSouthWest().getLng();
+	
+	var sw = new kakao.maps.LatLng(swLat, swLng), ne = new kakao.maps.LatLng(neLat, neLng);
+	let bound = new kakao.maps.LatLngBounds(sw, ne);
+	
+	let mapCenter = map.getCenter();
+	
+	
+    ps.categorySearch(currCategory, placesSearchCB, {bounds: bound, useMapBounds : true}); 
+}
 
 
 // 지도 경계에서의 매물 정보 가져오기
@@ -74,6 +132,7 @@ function getHomeInBounds() {
     			 	"swLng" : swLng };
 	
 	let mapCenter = map.getCenter();
+	
 	// 지도 경계까지의 매물 정보들을 서버에 요청.
 	$.ajax({
 		url: '/home/homeInBounds',
@@ -81,107 +140,82 @@ function getHomeInBounds() {
     	type : 'Post',
     	dataType : 'json',
     	success: function(data) {	
-    		if(data != null) {
-    			map.setCenter(mapCenter);	// 주어진 영역이 화면 안에 전부 나타날 수 있도록 지도의 중심 좌표와 확대 수준을 설정
-				console.log(data.length);
-				homeData = JSON.parse(JSON.stringify(data));	// 필터 검색을 위한 객체 저장
-				console.log("data 값 : " + homeData);
-				if(filterBtnStatus != true) {
-					let homeList = $(".home-card");  
-						homeList.remove();	// 기존의 리스트 목록 삭제
-					    removeMarker();	// 기존의 마커 제거
-								
-					for(let i=0; i<data.length; i++) {
-						displayHomeList(data[i], i);	// 매물 정보 리스트 출력
-					}
-				}else {
-					filterBtnStatus = false;
-				}
-			}else {
-					alert("해당하는 위치에 매물 정보가 없습니다.");
-				}
-	    	}
+			// searchCategoryPlaces();
+			console.log("CategoryStatus : " + categoryStatus);
+	
+			let homeList = $(".home-card");  
+				homeList.remove();	// 기존의 리스트 목록 삭제
+			    removeMarker();	// 기존의 마커 제거
+						
+			for(let i=0; i<data.length; i++) {
+				displayHomeList(data[i], i);	// 매물 정보 리스트 출력
+			}
+		}
 	});
+	
 }
 
-
-// 필터 검색
-function checkFilter(data) {
-	let typeStatus = false;
+function getHomeListByFilter() {	// filter 적용시 호출되는 함수
+	let homeList = $(".home-card");  
+		homeList.remove();	// 기존의 리스트 목록 삭제
+	    removeMarker();	// 기존의 마커 제거
 	
-	if(homeTypeCheck.length == 0)
-		typeStatus = true;
+	let bounds = map.getBounds();	// 지도 범위 가져오기
 	
-	for(let i=0; i<homeTypeCheck.length; i++) {
-		if(data.homeType == homeTypeCheck[i]) {
-			typeStatus = true;
-		}
-	}
+	// 북동쪽 위도 경도
+	let neLat = bounds.getNorthEast().getLat();
+	let neLng = bounds.getNorthEast().getLng();
 	
-	if(typeStatus == false) return typeStatus;
-		
-	let rentStatus = false;
+	// 남서쪽 위도, 경도
+	let swLat = bounds.getSouthWest().getLat();
+	let swLng = bounds.getSouthWest().getLng();
 	
-	if(rentTypeCheck.length == 0)
-		rentStatus = true;
-		
-	for(let i=0; i<rentTypeCheck.length; i++) {
-		if(data.rentType == rentTypeCheck[i])
-			rentStatus = true;
-	}
 	
-	if(rentStatus == false) return rentStatus;
+	console.log("neLat : " + neLat);
+	console.log("neLng : " + neLng);
+	console.log("swLat : " + swLat);
+	console.log("swLng : " + swLng);
 	
-	// 돈 범위 체크
-	if((data.deposit/10000) > deposit)
-		return false;
-		
-	if((data.monthly)/10000 > monthly)
-		return false;	
+	let mapBounds = {"neLat" : neLat,
+    				"neLng" : neLng,
+    			 	"swLat" : swLat,
+    			 	"swLng" : swLng };
 	
-	// 옵션 리스트 체크
-	let optionCount = 0;
-	for(let i=0; i<optionCheck.length; i++) {
-		for(let j=0; j<data.optionList.length; j++) {
-			if(data.optionList[j] == optionCheck[i]) {
-				optionCount++;	
+	let mapCenter = map.getCenter();
+	
+	let	filterData = {
+				"homeType" : homeType,
+				"rentType" : rentType,
+				"deposit" : deposit,
+				"monthly" : monthly,
+				"optionList" : optionList,
+				"addInfo" : addInfo,
+				"neLat" : neLat,
+				"neLng" : neLng,
+			 	"swLat" : swLat,
+			 	"swLng" : swLng 
+			}	
+			
+	console.log(filterData);
+	$.ajax({
+		type : 'Post',
+		url: '/home/homeFilter',
+    	data : JSON.stringify(filterData),
+		contentType: "application/json; charset=utf8",
+    	success: function(data) {	
+			// searchCategoryPlaces();
+			console.log("CategoryStatus : " + categoryStatus);
+			console.log(data);
+			let homeList = $(".home-card");  
+			homeList.remove();	// 기존의 리스트 목록 삭제
+		    removeMarker();	// 기존의 마커 제거
+					
+			for(let i=0; i<data.length; i++) {
+				displayHomeList(data[i], i);	// 매물 정보 리스트 출력
 			}
-		}	
-	}
-	
-	if(optionCheck.length != optionCount) { // 하나라도 같지 않으면 false
-		return false;
-	}
-	// 추가 정보
-	let addInfoCount=0;
-	for(let i=0; i<addInfoCheck.length; i++) {
-		switch(addInfoCheck[i]) {
-		case "반려동물":
-			data.pet.includes("가능");
-			addInfoCount++;
-			break;
-		case "엘리베이터":
-			data.elevator.includes("가능");
-			addInfoCount++;
-			break;
-		case "주차":
-			if(data.parking >= 1) 
-				addInfoCount++;
-			break;
-		case "발코니":
-			data.balcony.includes("가능");
-			addInfoCount++;
-			break;
-		default:
-			break;
 		}
-	}
+	});
 	
-	if(addInfoCheck.length != addInfoCount) {
-		return false;
-	}
-	
-	return true;
 }
 
 
@@ -266,7 +300,6 @@ $("#searchBtn").click(function() {
 		alert("검색어를 입력해주세요!");
 		return false;
 	}
-	
 	ps.keywordSearch(searchInput, placesSearchCB);
 });
 
@@ -281,13 +314,15 @@ $("#searchInput").on("keyup",function(key){
 // 장소검색이 완료됐을 때 호출되는 콜백함수
 function placesSearchCB(data, status, pagination) {
     if (status === kakao.maps.services.Status.OK) {
-		console.log(categoryStatus);	
-		if(categoryStatus == true) {
+		console.log("categoryStatus = " + categoryStatus);	
+		
+		if(categoryStatus === true) {
 			categoryDisplay(data);
-		}else {
-	       	displayPlaces(data);	// 검색한 장소 찾기
-		}
+			return;
+		}		
+		 displayPlaces(data);	// 검색한 장소 찾기
 			
+	
     } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert('검색 결과가 존재하지 않습니다.');
         return;
@@ -297,20 +332,69 @@ function placesSearchCB(data, status, pagination) {
     }
 }
 
+
 // 검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
-	console.log("displayPlace : " + places);		
+	if(categoryStatus == true)
+		return;
 	
- 	var bounds = new kakao.maps.LatLngBounds(); 	// 지도 범위 재 설정
+	if(categoryStatus === true) {
+			removeCategoryMarker();
+			categoryDisplay(places);
+	}
+	
+	
+	var bounds = new kakao.maps.LatLngBounds(); 	// 지도 범위 재 설정
     var placePosition = new kakao.maps.LatLng(places[0].y, places[0].x);
     bounds.extend(placePosition);
  	
     // 검색된 장소 위치를 기준으로 지도 범위를 재설정 & 매물 정보가져오기.
   	map.setBounds(bounds);
   	map.setLevel(3);
+	
   	getHomeInBounds();	
 }
 
+
+// 지도에 편의시설 마커를 표출하는 함수입니다
+function categoryDisplay(places) {
+	var order = document.getElementById(currCategory).getAttribute('data-order');
+	    for ( var i=0; i<places.length; i++ ) {
+	            // 마커를 생성하고 지도에 표시합니다
+	        var marker = addCategoryMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+			
+	    }
+
+}
+
+function addCategoryMarker(position, order) {
+	 var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        imageSize = new kakao.maps.Size(27, 28),  // 마커 이미지의 크기
+        imgOptions =  {
+            spriteSize : new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
+            spriteOrigin : new kakao.maps.Point(46, (order*36)), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+            offset: new kakao.maps.Point(11, 28) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            marker = new kakao.maps.Marker({
+            position: position, // 마커의 위치
+            image: markerImage 
+        });
+
+    marker.setMap(map); // 지도 위에 마커를 표출합니다
+    cateMarkers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+    return marker;
+}
+
+
+// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+function removeCategoryMarker() {
+    for ( var i = 0; i < cateMarkers.length; i++ ) {
+        cateMarkers[i].setMap(null);
+    }   
+    cateMarkers = [];
+}
 
 // 마커 오버레이 생성
 function getOverlay(data) {
@@ -338,6 +422,22 @@ function getOverlay(data) {
 }
 
 
+// 클릭된 카테고리에만 클릭된 스타일을 적용하는 함수입니다
+function changeCategoryClass(el) {
+    var category = document.getElementById('category'),
+        children = category.children,
+        i;
+
+    for (i=0; i<children.length; i++ ) {
+        children[i].className = '';
+    }
+
+    if (el) {
+        el.className = 'on';
+		categoryStatus = true;	// 카테고리 버튼 클릭된 상태로 변경
+    } 
+} 
+
 // 매물 마커 삭제
 function removeMarker() {
     for (var i = 0; i < homeMarker.length; i++ ) {
@@ -352,7 +452,7 @@ function convertMoney(money) {
 	if(money == 0) {
 		convert = "없음";
 	}else if(money >= 10000) {
-		convert += Math.floor(money/10000) + "억";
+		convert += Math.floor(money/10000) + "억 ";
 		if(money % 10000 != 0 ) {
 			money = money % 10000;
 			convert +=  money + "만";

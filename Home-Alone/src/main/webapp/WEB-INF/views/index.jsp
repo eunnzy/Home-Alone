@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>index</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <style>
 body {
@@ -46,7 +46,7 @@ overflow-x:hidden;
 .search-btn {
 	margin-left: 3px;
 	padding: 0.7rem 1rem;
-	background-color: #d9e3f1;
+	background-color: #b9cfef;
 	border-radius: 5px;
 	border: none;
 }
@@ -69,8 +69,6 @@ overflow-x:hidden;
   
   font-weight: 300;
 }
-
-	
 </style>
 </head>
 <body>
@@ -85,12 +83,10 @@ overflow-x:hidden;
                         <div class="text-center text-white">
                             <h1 class="index-title mb-5">어떤 집을 찾으시나요?</h1>
                             <form id="searchForm" action="/home/searchHome" method="get">
-                                <!-- Email address input-->
                                 <div class="row">
                                 	<div class="input-wrap">
 	                                    <div class="col">
-	                                        <input class="form-control form-control-lg" id="searchKeyword" type="text"  name="searchKeyword" placeholder="지역, 학교, 지하철역으로 검색" />
-	                                        <div class="invalid-feedback text-white">Email Address Email is not valid.</div>
+	                                        <input class="form-control form-control-lg" id="search" type="text"  name="searchKeyword" placeholder="지역, 학교, 지하철역으로 검색" />
 	                                    </div>
 	                                    <div class="col-auto"><button class="search-btn" id="submitButton" type="검색">검색</button></div>
                                     </div>

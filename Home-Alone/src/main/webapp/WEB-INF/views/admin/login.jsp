@@ -45,7 +45,7 @@
 			<div class="form-group mb-0">
 				<button type="submit" class="btn btn-primary register_btn w-100">LOGIN</button>
 			</div>
-			<a href="/admin/adminJoin">관리자 추가</a>
+			<a href="/admin/join">관리자 추가</a>
 			</form>
 			</div>
 			</div>

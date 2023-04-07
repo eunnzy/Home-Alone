@@ -41,7 +41,7 @@
           </button>
         </td>
         <td>
-          <button class="mx-5 lessor-button" type="button" onclick = "location.href = '/qna/lessorList'">
+          <button class="mx-5 lessor-button" type="button" onclick = "location.href = '/mypage/lessor/inqury'">
          	 <div class="lessor-div"><img src="/img/question.png" alt="문의이미지"></div>
           		1대1 문의
           </button>

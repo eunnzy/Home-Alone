@@ -82,7 +82,7 @@ public class AdminController {
 
 	
 	// 관리자 회원가입
-	@RequestMapping(value = "/adminJoin", method = RequestMethod.GET)
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public void joinGET() {
 		
 	}
@@ -94,7 +94,7 @@ public class AdminController {
 		}
 	
 	
-	@RequestMapping(value = "/adminJoin", method = RequestMethod.POST)
+	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String joinPOST(AdminVO admin) throws Exception{
 		
 		adminservice.adminJoin(admin);
@@ -116,13 +116,13 @@ public class AdminController {
 		}
 	}
 	
-	@RequestMapping(value = "/adminLogin", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String registerForm() {
-		return "/admin/adminLogin";
+		return "/admin/login";
 	}
 	
 	// 로그인
-	@RequestMapping(value = "/adminLogin", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPOST(HttpServletRequest request, AdminVO admin, RedirectAttributes rttr) throws Exception {
 		
 //		System.out.println("login 메서드 진입");

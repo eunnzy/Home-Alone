@@ -1,5 +1,7 @@
 package com.home.alone.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.home.alone.service.HomeService;
 import com.home.alone.service.ImchaService;
 import com.home.alone.service.LessorService;
+import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.ImchaVO;
 import com.home.alone.vo.LessorVO;
 
@@ -21,6 +25,9 @@ public class LessorMyPageController {
 	
 	@Autowired
 	LessorService lessorservice;
+	
+	@Autowired
+	private HomeService homeService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
 	public String mypageLessor() {
@@ -53,5 +60,14 @@ public class LessorMyPageController {
 		
 	    return "redirect: /mypage/lessor/info";
 			
+	}
+	
+	@RequestMapping(value="/inqury")
+	public String homeInqList(Model model, HttpServletRequest request) {	// 문의 목록
+		LessorVO lessor = (LessorVO) request.getSession().getAttribute("lessor");
+		List<HomeInquryVO> inqList = homeService.getHomeInqListByLessor(lessor.getLessorId());
+		model.addAttribute("inqList", inqList);
+		
+		return "/mypage/lessor/inqury ";
 	}
 }

@@ -48,6 +48,8 @@
           <th scope="col" class="col col-lg-1">카테고리</th>
           <td>
            <select class="form-select" id="condition" name="category">
+           <!-- 	<option value="질문">질문</option>
+            <option value="꿀팁공유">매물꿀팁공유</option> -->
             <option value="동네소식">동네소식</option>
             <option value="동네질문">동네질문</option>
             <option value="동네맛집">동네맛집</option>

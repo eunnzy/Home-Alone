@@ -26,7 +26,8 @@
          <div class="collapse navbar-collapse" id="navbarColor03">
             <ul class="navbar-nav me-auto">
                <li class="nav-item"><a class="nav-link" href="/home/searchHome">집찾기</a></li>
-                <li class="nav-item"><a class="nav-link" href="/safeMap">안전지도</a></li>
+               <li class="nav-item"><a class="nav-link" href="/propertyNews">부동산 소식</a></li>
+               <!--  <li class="nav-item"><a class="nav-link" href="/safeMap">안전지도</a></li> -->
                <%-- <li class="nav-item"><c:if
                      test="${member.userRoll == '일반회원' }">
                      <a class="nav-link" href="../mypage/mypageImcha">MyPage</a>
@@ -51,7 +52,7 @@
                </div>
             </c:if>
                
-            <c:if test="${imcha != null}">   <!-- 일반회원 로그인시  -->
+            <c:if test="${imcha != null && lessor == null}">   <!-- 일반회원 로그인시  -->
                <a class="nav-link dropdown-toggle" href="#" id="lessorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <span><img src="/icon/imcha.png"></span>
                </a>
@@ -63,7 +64,7 @@
                </div>
             </c:if>
             
-            <c:if test="${lessor != null}">   <!-- 중개인 로그인시 -->
+            <c:if test="${lessor != null  && imcha == null}">   <!-- 중개인 로그인시 -->
                <a class="nav-link dropdown-toggle" href="#" id="lessorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <span><img src="/icon/lessor.png"></span>
                </a>
@@ -74,7 +75,6 @@
                   <li><a class="dropdown-item" href="/member/logout.do">로그아웃</a></li>
                </div>
             </c:if>
-            
          </div>
       </div>
       </div>

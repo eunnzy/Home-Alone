@@ -158,11 +158,11 @@
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                $(".form-control_1").val(data.zonecode);
-                $(".form-control_2").val(addr);
+                $("#lessorAddr1").val(data.zonecode);
+                $("#lessorAddr2").val(addr);
                 // 커서를 상세주소 필드로 이동한다.
-                $(".form-control_3").attr("readonly",false);
-                $(".form-control_3").focus();
+                $("#lessorAddr3").attr("readonly",false);
+                $("#lessorAddr3").focus();
             } 
 	    }).open();    
 	 
