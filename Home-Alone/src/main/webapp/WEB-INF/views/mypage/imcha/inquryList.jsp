@@ -31,7 +31,6 @@
 	        <th scope="col">답변 상태</th>
 	      </tr>
 	    </thead>
-	    
 		  <tbody>
 		    <c:forEach items="${inqList }" var="inqList">
 		    <%-- <a href="qna/getBpard?iqNum=${qnaList.iqNum}"> --%>
