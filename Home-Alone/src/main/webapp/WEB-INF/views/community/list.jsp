@@ -5,10 +5,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src="/js/board_listBT.js"></script>
-<title>Community List</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/board_listBT.js"></script>
+	<title>Community List</title>
+	<style>
+		.login-show {
+			display: none;
+		}
+	</style>
 </head>
 <body>
 	<header>
@@ -17,79 +22,82 @@
 	
 	<div class="container">
         <div class="bs-docs-section row">
-          <div class="col-lg-12"><br><br>
-            <h1 id="tables">Community</h1>
-            <p><c:out value="${imcha.sido1}" /> <c:out value="${imcha.gugun1}" /></p>
-                
-            <span class="float-end">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">카테고리</a>
-            	<div class="dropdown-menu">
-                 <a class="dropdown-item cate" href="취미생활">전국취미생활</a>
-                 <a class="dropdown-item cate" href="자취꿀팁">전국자취꿀팁</a>
-                </div>
-            </span><br><br>
+        	<div class="col-lg-11 mx-auto ">
             
-            <!-- 검색창 -->
-            <form class="d-flex" id="searchForm" action="/community/list" method="get">
-              <select class="form-select" id="condition" style="width: 25%;" name="type" required>
-              	<option value="" <c:out value="${pageMaker.cri.type == null?'selected':''}" />> Search List </option>
-                <option value="T" <c:out value="${pageMaker.cri.type eq 'T'?'selected':''}" />> Title </option>
-                <option value="C" <c:out value="${pageMaker.cri.type eq 'C'?'selected':''}" />> Content </option>
-                <option value="N" <c:out value="${pageMaker.cri.type eq 'N'?'selected':''}" />> Nickname </option>
-                <option value="TC" <c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}" />> Title or Content </option>
-                <option value="TN" <c:out value="${pageMaker.cri.type eq 'TN'?'selected':''}" />> Title or Nickname </option>
-                <option value="TCN" <c:out value="${pageMaker.cri.type eq 'TCN'?'selected':''}" />> Title or Content or Nickname </option>
-              </select>
-              
-              <input class="form-control me-sm-2" type="search" placeholder="Search" name="keyword"
-               value='<c:out value="${pageMaker.cri.keyword}" />' required>
-               <input type="hidden" name="pageNum" value="<c:out value="${pageMaker.cri.pageNum }" />" >
-               <input type="hidden" name="amount" value="<c:out value="${pageMaker.cri.amount }" />" >
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form><br>
-
+				<h1 id="tables" class="text-center mt-5 mb-3">Community</h1>
+            	<div class="mx-auto community-info text-center mb-2">
+             		혼자서 집 구하시기 힘드시지 않았나요? <br> 
+             		커뮤니티를 활용하여 서로 정보를 공유하고, 질문도 해보세요
+            	</div>
+                
+	            <div class="row mt-3 mb-3">
+		            <div class="col">
+			            <div class="category-div">
+			            	<button class="btn cateBtn" id="전체" name="all">전체</button>
+			            	<button class="btn cateBtn" id="질문" name="ask">질문</button>
+			            	<button class="btn cateBtn" id="정보공유" name="info">정보공유</button>
+			            </div>
+		            </div>
+		            <div class="col float-end">
+			            <form id="searchForm" action="/community/list" method="get">
+			            	<div class="row">
+			                  	<div class="d-flex">
+			                  	   <div class="col-sm">
+			                  	   		<select class="form-select" id="condition" name="type" required>
+							              	<option value="" <c:out value="${pageMaker.cri.type == null?'selected':''}" />> 선택 </option>
+							                <option value="T" <c:out value="${pageMaker.cri.type eq 'T'?'selected':''}" />> 제목 </option>
+							                <option value="C" <c:out value="${pageMaker.cri.type eq 'C'?'selected':''}" />> 내용 </option>
+							                <option value="N" <c:out value="${pageMaker.cri.type eq 'N'?'selected':''}" />> 닉네임 </option>
+							                <option value="TC" <c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}" />> 제목 + 내용 </option>
+							       		</select>
+			                  	   </div>
+			                       <div class="col">
+			                           <input class="form-control me-sm-2" type="search" placeholder="Search" name="keyword"  required>
+						               <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }" >
+						               <input type="hidden" name="amount" value="${pageMaker.cri.amount }" >                 
+						           </div>
+			                       <div class="col-auto">  
+			                       		<button class="btn btn-secondary" type="submit">검색</button>
+			                       </div>
+			                      </div>
+			                  </div>
+			            </form>
+					</div>
+				</div>	
             <!-- 게시판시작 -->
             <div class="bs-component">
-              <table class="table table-hover" style="text-align: center;">
-                  <tr>
-                    <th scope="col" style="width: 10%;">Category</th>
-                    <th scope="col" style="width: 40%;">Title</th>
-                    <th scope="col" style="width: 15%;">Name</th>
-                    <th scope="col" style="width: 15%;">Time</th>
-                    <th scope="col" style="width: 10%;">Views</th>
-                    <th scope="col" style="width: 10%;">Likes</th>
+              <table class="table table-hover table-border" style="text-align: center;">
+                  <tr class="table-row">
+                    <th scope="col" style="width: 60%;">제목</th>
+                    <th scope="col" style="width: 15%;">닉네임</th>
+                    <th scope="col" style="width: 15%;">작성일</th>
+                    <th scope="col" style="width: 10%;">조회수</th>
                   </tr>
                   <!-- 공지 -->
                   <c:forEach var="list" items="${ablist}">
-                  <tr class="table-primary">
-                    <td></td>
-                    <td><a class="abmove" href="<c:out value="${list.ano}" />" style="text-decoration:none;"><c:out value="${list.title}" /></a></td>
-                    <td></td>
-                    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${list.regdate}" /></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+	                  <tr class="table-primary table-row">
+	                    <td><a class="abmove" href="${list.ano}" style="text-decoration:none;">${list.title}</a></td>
+	                    <td>운영자</td>
+	                    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${list.regdate}" /></td>
+	                    <td></td>
+	                  </tr>
                   </c:forEach>  
                   
                   <!-- 목록리스트 -->
                   <c:forEach items="${list}" var="board">
-                  <tr class="table-secondary">
-                    <td><c:out value="${board.category}" /></td>
-                    <td><a class="move" href="<c:out value="${board.bno}" />" style="text-decoration:none;"><c:out value="${board.title}" /></a></td>
-                    <td><c:out value="${board.nickname}" /></td>
-                    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
-                    <td><c:out value="${board.views}" /></td>
-                    <td><c:out value="${board.likes}" /></td>
-                  </tr>
+	                  <tr class="table-secondary table-row">
+	                    <td><a class="move" href="${board.bno}" style="text-decoration:none;"> [${board.category }] ${board.title}</a></td>
+	                    <td>${board.nickname}</td>
+	                    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
+	                    <td>${board.views}</td>
+	                  </tr>
                   </c:forEach>
               </table>
             </div>
-        </div>
-        </div>
         
         <!-- 페이징 -->
-        <div>
-          <ul class="pagination pagination-sm">
+        <div class="page-div mx-auto">
+          <ul class="pagination pagination-sm bg-light">
           
           	<c:if test="${pageMaker.prev}">
           	  <li class="page-item">
@@ -112,18 +120,19 @@
         </div>
 
         <!-- 하단 버튼 -->
-        <div class="loginshow">
-        <span><button type="button" class="btn btn-info" id="myboardBT">내가 쓴 글</button></span>
-        <span class="float-end"><button type="button" class="btn btn-info" id="regBT">글쓰기</button></span>
-        <br><br></div>
+        <div class="login-show">
+        <span><button type="button" class="btn btn-info" id="myBtn">내가 쓴 글</button></span>
+        <span class="float-end"><button type="button" class="btn btn-info" id="regBtn">글쓰기</button></span>
+        </div>
+    </div>
     </div>
     
     <!-- 페이지이동 Form -->
-    <form id = "actionForm" action="/community/list" method="get" >
-    	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }" >
-    	<input type="hidden" name="amount" value="${pageMaker.cri.amount }" >
-    	<input type="hidden" name="keyword" value="<c:out value="${pageMaker.cri.keyword}" />" >
-    	<input type="hidden" name="type" value="<c:out value="${pageMaker.cri.type}" />" >
+	<form id = "actionForm" action="/community/list" method="get" >
+    	<input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.cri.pageNum }" >
+    	<input type="hidden" name="amount" id="amount" value="${pageMaker.cri.amount }" >
+    	<input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}"  >
+    	<input type="hidden" name="type" id="type" value="${pageMaker.cri.type}">
     </form>
 	
 	<footer>
@@ -132,26 +141,31 @@
     
     <!-- 자바스크립트 -->
 	<script type="text/javascript">
+	var pageNum = $("#pageNum");
+	var amount = $("#amount");
+	var keyword = $("#keyword");
+	var type=$("#type");
+	
+	var imchaId = "${imcha.imchaId}";
+	var lessorId = "${lessor.lessorId}";
+	
+	console.log(imchaId);
+	
 	$(document).ready(function() {
-		var imchaId = '<c:out value="${imcha.imchaId}" />';
 		
-		if(imchaId == null || imchaId == '') {
-			$("#regBT").hide();
-			$("#myboardBT").hide();
-		} else {
-			$("#regBT").show();
-			$("#myboardBT").show();
+		if(imchaId != '') {
+			$(".login-show").show();
 		}
 		
-		$("#myboardBT").on("click", function(e) {
-			self.location = "/community/mylist?imchaid=<c:out value='${imcha.imchaId}' />";
+		$("#myBtn").on("click", function(e) {
+			self.location = "/community/mylist?imchaId=" + imchaId;
 		});
 		
 		var actionForm = $("#actionForm");
 		$(".move").on("click", function(e) {
 			e.preventDefault();
 			actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "'>");
- 			actionForm.append("<input type='hidden' name='userid' value='" + imchaId + "'>");  
+ 			actionForm.append("<input type='hidden' name='imchaId' value='" + imchaId + "'>");  
 			actionForm.attr("action", "/community/get");
 			actionForm.submit();
 		});
@@ -163,16 +177,33 @@
 			actionForm.submit();
 		});
 		
-		var cateForm = $("#cateForm");
+		
 		$(".cate").on("click", function(e) {
 			e.preventDefault();
 			var key = $(this).attr("href");
-			actionForm.find("input[name='pageNum']").val(1);
-			actionForm.find("input[name='type']").val('G');
-			actionForm.find("input[name='keyword']").val(key);
+			
+			pageNum.val(1);
+			
+			if(key == "전체"){
+				type.val('');
+				keyword.val('');
+			}else {
+				type.val('G');
+				keyword.val(key);
+			}
+			
 			actionForm.submit();
 		});
+		
+		
 	});
+	
+	$("#regBtn").click(function() {
+		self.location = "/community/register";
+	})
+	
 	</script>
+	
+	<script src="/js/board/list.js" ></script>
 </body>
 </html>

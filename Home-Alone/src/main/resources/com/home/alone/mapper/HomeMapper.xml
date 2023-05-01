@@ -22,40 +22,6 @@
  		values(#{homeNum}, #{optionList})
  	</insert>
  	
- 	<!-- <insert id="insertHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
- 		insert into Home_Option_tb(home_num, washer, telev, micro_wav, gas_range, induction, desk, bed, aircon, fridge, shoes, closet, door_lock, bidet)
- 		values(#{homeNum},
-	 		<if test='washer != "Y" '> 'N', </if>
-	 		<if test='washer == "Y" '>   #{washer}, </if>
-	 		<if test='telev != "Y" '> 'N', </if>
-	 		<if test='telev == "Y" '> #{telev}, </if>
-	 		<if test='microWav != "Y" '> 'N', </if>
-	 		<if test='microWav == "Y" '>  #{microWav}, </if>
-	 		<if test='gasRange != "Y" '> 'N', </if>
-	 		<if test='gasRange == "Y" '>  #{gasRange}, </if>
-	 		<if test='induction != "Y" '>  'N', </if>
-	 		<if test='induction == "Y" '>  #{induction}, </if>
-	 		<if test='desk != "Y" '> 'N', </if>
-	 		<if test='desk == "Y" '>  #{desk}, </if>
-	 		<if test='bed != "Y" '>  'N', </if>
-	 		<if test='bed == "Y" '>  #{bed}, </if>
-	 		<if test='aircon != "Y"'> 'N', </if>
-	 		<if test='aircon == "Y" '> #{aircon}, </if>
-	 		<if test='fridge != "Y" '> 'N', </if>
-	 		<if test='fridge == "Y" '> #{fridge}, </if>
-	 		<if test='shoes != "Y" '> 'N', </if>
-	 		<if test='shoes == "Y" '> #{shoes}, </if>
-	 		<if test='closet != "Y" '>  'N', </if>
-	 		<if test='closet == "Y" '>  #{closet}, </if>
-	 		<if test='doorLock != "Y" '>'N', </if>
-	 		<if test='doorLock == "Y" '> #{doorLock}, </if>
-	 		<if test='bidet != "Y" '> 'N' </if>
-	 		<if test='bidet == "Y" '> #{bidet} </if>
- 		)
- 	</insert> -->
- 	
- 	
-
  	<insert id="insertHomeAddInfo" parameterType="com.home.alone.vo.HomeAddInfoVO">
  		insert into Home_AddInfo_tb(home_num, parking, pet, balcony, elevator, move_date)
  		values(#{homeNum}, #{parking}, 
@@ -355,39 +321,10 @@
  	<!-- 매물 옵션 정보 테이블 수정 -->
  	<update id="updateHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
  		update Home_Option_tb
- 		set option_list=${optionList}
+ 		set option_list=#{optionList}
  		where home_num = #{homeNum}
  	</update>
- 	<!-- <update id="updateHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
- 		update Home_Option_tb
- 		set <if test='washer != "Y" '>  washer ='N', </if>
-	 		<if test='washer == "Y" '>  washer = #{washer}, </if>
-	 		<if test='telev != "Y" '> telev = 'N', </if>
-	 		<if test='telev == "Y" '> telev = #{telev}, </if>
-	 		<if test='microWav != "Y" '> micro_wav = 'N', </if>
-	 		<if test='microWav == "Y" '> micro_wav = #{microWav}, </if>
-	 		<if test='gasRange != "Y" '> gas_range = 'N', </if>
-	 		<if test='gasRange == "Y" '> gas_range = #{gasRange}, </if>
-	 		<if test='induction != "Y" '> induction = 'N', </if>
-	 		<if test='induction == "Y" '> induction = #{induction}, </if>
-	 		<if test='desk != "Y" '>  desk = 'N', </if>
-	 		<if test='desk == "Y" '> desk = #{desk}, </if>
-	 		<if test='bed != "Y" '>  bed = 'N', </if>
-	 		<if test='bed == "Y" '> bed = #{bed}, </if>
-	 		<if test='aircon != "Y"'> aircon = 'N', </if>
-	 		<if test='aircon == "Y" '> aircon = #{aircon}, </if>
-	 		<if test='fridge != "Y" '> fridge = 'N', </if>
-	 		<if test='fridge == "Y" '> fridge = #{fridge}, </if>
-	 		<if test='shoes != "Y" '> shoes = 'N', </if>
-	 		<if test='shoes == "Y" '> shoes = #{shoes}, </if>
-	 		<if test='closet != "Y" '> closet = 'N', </if>
-	 		<if test='closet == "Y" '> closet = #{closet}, </if>
-	 		<if test='doorLock != "Y" '> door_lock = 'N', </if>
-	 		<if test='doorLock == "Y" '> door_lock = #{doorLock}, </if>
-	 		<if test='bidet != "Y" '> bidet = 'N' </if>
-	 		<if test='bidet == "Y" '> bidet = #{bidet} </if>
- 		where home_num = #{homeNum}
- 	</update> -->
+ 	
  	
  	<!-- 매물 가격 정보 테이블 수정 -->
  	<update id="updateHomePrice" parameterType="com.home.alone.vo.HomePriceVO">
@@ -423,14 +360,9 @@
   	<select id="selectHomeReservValidTimeList" parameterType="com.home.alone.vo.HomeReservVO" resultType="java.lang.String">
   		select rev_time
   		from Home_Reserv_tb
-  		where home_num = #{homeNum} and rev_date = #{revDate}
+  		where home_num = #{homeNum} and rev_date = TO_DATE(#{revDate})
   	</select>
   	
-  	<select id="selectHomeReservListByImchaId" resultType="com.home.alone.vo.HomeReservVO">	<!-- 일반회원(임차인) 예약 목록 -->
-  		select rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime 
-		from Home_Reserv_tb 
-		where imcha_id = #{imchaId}
-  	</select>
   	
   	<delete id="deleteHomeReserv">	<!-- 예약 삭제 -->
  		delete from Home_Reserv_tb where rev_num = #{revNum}
@@ -453,8 +385,24 @@
  		SELECT *
 	    FROM Home_Reserv_tb
 	    WHERE revDate BETWEEN TO_DATE(#{revDate}, 'YYYY-MM-DD') AND TO_DATE(#{revDate})+1
-
+ 	</select>
+ 	
+	<select id="selectHomeReservListByImchaId" resultType="com.home.alone.vo.HomeReservPreviewVO">
+ 		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
+ 			   rev_state as revState, jgs_name as jgsName
+ 		FROM Home_Reserv_tb 
+	 		 join Lessor_tb using(lessor_id)
+ 		WHERE imcha_id = #{imcha_id}
+ 	</select>
+ 	
+ 	<select id="selectHomeReservListByLessorId" resultType="com.home.alone.vo.HomeReservPreviewVO">
+ 		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
+ 			   rev_state as revState, name as imchaName 
+ 		FROM Home_Reserv_tb 
+	 		 join Imcha_tb using(imcha_id)
+ 		WHERE lessor_id = #{lessorId}
  	</select>
  	
  </mapper>
+ 
  

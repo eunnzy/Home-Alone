@@ -7,25 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.home.alone.service.HomeService;
+import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.ImchaVO;
+import com.home.alone.vo.LessorVO;
 
 @Controller
 @RequestMapping("/home/reserv")
 public class HomeReservController {
-//	@Autowired
-//	RevMapper revMapper;
-//	
-	
-//	@Autowired
-//	ReservationService reservationService;
-//	
 	@Autowired
 	HomeService homeService;
 	
@@ -55,10 +50,19 @@ public class HomeReservController {
 	}
 	
 	
-	@RequestMapping("/list")	// 일반회원 리스트
-	public String reservList() {
-		
-		return "mypage/reservationImcha";
+	@RequestMapping("/imcha/list")	// 일반회원 리스트
+	public String reservListByImcha(String imchaId, Model model) {
+		List<HomeReservPreviewVO> reservList = homeService.getReservListByImcha(imchaId);
+		model.addAttribute("reservList", reservList);
+		return "mypage/imcha/reservImcha";
+	}
+	
+	@RequestMapping("/lessor/list")	// 일반회원 리스트
+	public String reservListByLessor(String lessorId, Model model, HttpServletRequest request) {
+		LessorVO lessor = (LessorVO) request.getSession().getAttribute("lessor");	// 회원 아이디 
+		List<HomeReservPreviewVO> reservList = homeService.getReservListByLessor(lessorId);
+		model.addAttribute("reservList", reservList);
+		return "mypage/lessor/reservLessor";
 	}
 
 

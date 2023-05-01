@@ -35,7 +35,7 @@
           </button>
         </td>
         <td>
-          <button class="mx-5 lessor-button" type="button" onclick = "location.href = '/home/reservation/lessorList'">
+          <button class="mx-5 lessor-button" type="button" onclick = "location.href = '/home/reserv/lessor/list?lessorId=${lessor.lessorId}'">
 	          <div class="lessor-div"><img src="/img/booking.png" alt="달력이미지"></div>
 	          	예약 확인
           </button>
@@ -46,12 +46,12 @@
           		1대1 문의
           </button>
         </td>
-        <td>
+       <!--  <td>
           <button class="btn-secondary btn-lg mx-5 lessor-button" type="button" onclick = "location.href = 'QNA_LESSOR.html'">
           	<div class="lessor-div"><img src="/img/administrator.png" alt="관리자이미지"></div>
           		관리자 문의
           	</button>
-        </td>
+        </td> -->
       </tr>
     </table>
   </div>

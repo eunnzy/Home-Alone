@@ -1,6 +1,5 @@
 package com.home.alone.dao;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
+import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 import com.home.alone.vo.LessorVO;
@@ -120,7 +120,6 @@ public class HomeDAOImpl implements HomeDAO{
 
 	@Override
 	public List<HomeReportVO> selectReportHomeList() {
-
 		return sqlSession.selectList(HOMEMAPPER + "selectReportHomeList");
 	}
 	
@@ -152,7 +151,7 @@ public class HomeDAOImpl implements HomeDAO{
 	}
 
 	@Override
-	public List<HomeReservVO> selectHomeReservListByImchaId(String imchaId) {
+	public List<HomeReservPreviewVO> selectHomeReservListByImchaId(String imchaId) {
 		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservListByImchaId", imchaId);
 	}
 
@@ -160,9 +159,11 @@ public class HomeDAOImpl implements HomeDAO{
 	public List<String> selectHomeReservValidTimeList(HomeReservVO homeReservVO) {
 		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservValidTimeList", homeReservVO);
 	}
-
 	
 
-	
+	@Override
+	public List<HomeReservPreviewVO> selectHomeReservListByLessorId(String lessorId) {
+		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservListByLessorId", lessorId);
+	}
 
 }

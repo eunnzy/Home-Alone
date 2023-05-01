@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.home.alone.service.BoardService;
 import com.home.alone.service.ReplyService;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.BoardLikesVO;
-import com.home.alone.vo.Criteria;
 import com.home.alone.vo.ReplyVO;
 
 import lombok.AllArgsConstructor;

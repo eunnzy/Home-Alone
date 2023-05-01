@@ -33,12 +33,10 @@ public class NewsServiceImpl implements NewsService{
 					+ "date=" + date + "&page=" + Integer.toString(page); // 크롤링 해 올 url
 			
 			System.out.println(url); 
-			
 
 			Document data = Jsoup.connect(url).get();
 			Elements elements = data.select("div.list_body li dl");
-			
-		//	System.out.println(elements);
+			System.out.println();
 			
 			for(Element element : elements) {
 				NewsVO newsVO = new NewsVO();
@@ -47,29 +45,12 @@ public class NewsServiceImpl implements NewsService{
 				newsVO.setImgUrl(element.select("dt a img").attr("abs:src"));
 				newsVO.setContent(element.select("dd span.lede").text());
 				newsVO.setPublication(element.select("dd span.writing").text());
-			//	System.out.println(newsVO);
 				newsList.add(newsVO);
 			}
 			
-			
-			elements = data.select("ul.type06 li dl");
-			
-			if(elements != null) {
-				for(Element element : elements) {
-					NewsVO newsVO = new NewsVO();
-					newsVO.setUrl(element.select("dt a").attr("abs:href"));
-					newsVO.setTitle(element.select("dt a").text());
-					newsVO.setImgUrl(element.select("dt a img").attr("abs:src"));
-					newsVO.setContent(element.select("dd span.lede").text());
-					newsVO.setPublication(element.select("dd span.writing").text());
-				//	System.out.println(newsVO);
-					newsList.add(newsVO);
-				
-				}
-			}
+			System.out.println(newsList.size());
 			
 			Element nextPage = data.select("div.paging strong").next().first();			
-			// Element nextPage = data.select("div.paging strong").after("a").first();
 			System.out.println(nextPage);
 			
 			if(nextPage == null) {	// 다음 페이지가 없으면 크롤링 종료
@@ -78,8 +59,6 @@ public class NewsServiceImpl implements NewsService{
 				page++;
 			}
 		}
-		
-		System.out.println(newsList.size());
 		
 		return newsList;
 	}

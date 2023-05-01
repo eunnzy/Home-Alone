@@ -1,7 +1,6 @@
 
 package com.home.alone.dao;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +11,7 @@ import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
+import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 import com.home.alone.vo.LessorVO;
@@ -23,8 +23,6 @@ public interface HomeDAO {
 	int insertHomePrice(HomePriceVO homePriceVO);	// 매물 가격 insert
 	int insertHomeOption(HomeOptionVO homeOptionVO);	// 매물 옵션 insert
 	int insertHomeAddInfo(HomeAddInfoVO homenAddInfoVO); // 매물 추가 정보 insert
-	// -----------------------
-	
 	int insertHomeReport(HomeReportVO homeReportVO);	// 매물 신고 정보 insert
 	int insertHomeReserv(HomeReservVO homeReservVO); // 매물 예약 정보 insert
 	
@@ -36,7 +34,8 @@ public interface HomeDAO {
 	HomeAddInfoVO selectHomeAddInfo(int homeNum);	// 매물 추가 정보
 	HomeOptionVO selectHomeOption(int homeNum);		// 매물 옵션 정보
 	List<HomeImgVO> selectHomeImgList(int homeNum); // 해당 매물 사진들 반환
-	List<HomeReservVO> selectHomeReservListByImchaId(String imchaId);	// 예약 목록
+	List<HomeReservPreviewVO> selectHomeReservListByImchaId(String imchaId);	// 일반회원 예약 목록
+	List<HomeReservPreviewVO> selectHomeReservListByLessorId(String lessorId);	// 일반회원 예약 목록
 	List<String> selectHomeReservValidTimeList(HomeReservVO homeReservVO);		// 이미 예약된 시간 리스트
 	
 	int updateHome(HomeVO homeVO);	// 매물 테이블 수정

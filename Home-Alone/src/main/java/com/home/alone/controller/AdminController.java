@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,9 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,23 +35,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.home.alone.dao.HomeDAO;
-import com.home.alone.mapper.LessorMapper;
 import com.home.alone.service.AdminService;
 import com.home.alone.service.AlarmBoardService;
-import com.home.alone.service.HomeService;
-import com.home.alone.service.ImchaService;
 import com.home.alone.service.LessorService;
 import com.home.alone.vo.AdminVO;
 import com.home.alone.vo.AlarmBoardAttachFileDTO;
 import com.home.alone.vo.AlarmBoardAttachVO;
 import com.home.alone.vo.AlarmBoardVO;
-import com.home.alone.vo.BoardAttachVO;
-import com.home.alone.vo.BoardVO;
-import com.home.alone.vo.Criteria;
 import com.home.alone.vo.HomeReportVO;
-import com.home.alone.vo.HomeVO;
-import com.home.alone.vo.ImchaVO;
-import com.home.alone.vo.LessorVO;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -87,11 +73,11 @@ public class AdminController {
 		
 	}
 	
-		@RequestMapping("/main")
-		public String home() {
-			
-			return "/admin/main";
-		}
+	@RequestMapping("/main")
+	public String home() {
+		
+		return "/admin/main";
+	}
 	
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
@@ -214,7 +200,7 @@ public class AdminController {
 	// 공지 리스트 
 	@GetMapping("/ablist")
 	public String ablist(Model model) {
-		List<AlarmBoardVO> ablist = abservice.alarmBoard();
+		List<AlarmBoardVO> ablist = abservice.getAlarmBoardList();
 		model.addAttribute("ablist", ablist);
 		return "/admin/ablist";
 	}

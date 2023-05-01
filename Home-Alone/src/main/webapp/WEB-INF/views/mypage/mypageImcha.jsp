@@ -35,7 +35,7 @@
           </button>
         </td>
         <td>
-          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/home/reservation/list?imchaId=${imcha.imchaId}'">
+          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/home/reserv/imcha/list?imchaId=${imcha.imchaId}'">
           	<div class="imcha-div"><img src="/img/booking.png" alt="예약이미지"></div>
           		예약 확인
           </button>

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,14 @@ import com.home.alone.dao.HomeInquryDAO;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeImgVO;
+import com.home.alone.vo.HomeInqAnswerVO;
+import com.home.alone.vo.HomeInquryDetailVO;
 import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
+import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 import com.home.alone.vo.LessorVO;
@@ -27,13 +29,13 @@ import com.home.alone.vo.LessorVO;
 public class HomeServiceImpl implements HomeService{
 	
 	@Autowired
-	HomeDAO homeDAO;
+	private HomeDAO homeDAO;
 	
 	@Autowired
-	HomeInquryDAO homeInquryDAO;
+	private HomeInquryDAO homeInquryDAO;
 	
 	@Override
-	public int registerHome(Map<String, Object> insertMap) {
+	public int registerHome(Map<String, Object> insertMap) {	// 매물 등록
 		System.out.println("\n============ HomeService insertHome 실행 =============\n");
 		if(insertMap == null)
 			 return 0;
@@ -84,13 +86,6 @@ public class HomeServiceImpl implements HomeService{
 			int homeNum = homeInBoundsList.get(i).getHomeNum();
 			
 			HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);
-			/*
-			 * List<String> optionList =
-			 * Arrays.asList(homeOptionVO.getOptionList().split(", "));
-			 * 
-			 * 
-			 * homeInBoundsList.get(i).setOptionList(optionList);
-			 */
 			homeInBoundsList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
 		}
 		
@@ -99,7 +94,7 @@ public class HomeServiceImpl implements HomeService{
 	
 	
 	@Override
-	public List<HomePreviewVO> homeListByFilter(Map<String, Object> filterData) {
+	public List<HomePreviewVO> homeListByFilter(Map<String, Object> filterData) {	// 매물 필터 검색
 		List<HomePreviewVO> homeList = null;
 		homeList = homeDAO.selectHomeListByFilter(filterData);
 		
@@ -108,9 +103,6 @@ public class HomeServiceImpl implements HomeService{
 			int homeNum = homeList.get(i).getHomeNum();
 			
 			HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);
-		//	List<String> optionList = Arrays.asList(homeOptionVO.getOptionList().split(", "));
-
-			//homeList.get(i).setOptionList(optionList);
 			homeList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
 		}
 		
@@ -122,7 +114,7 @@ public class HomeServiceImpl implements HomeService{
 	
 
 	@Override
-	public Map<String, Object> selectHomeDetail(int homeNum) {
+	public Map<String, Object> getHomeDetail(int homeNum) {	// 매물상세정보
 		
 		HomeDetailVO homeDetailVO = homeDAO.selectHomeDetail(homeNum);
 		homeDetailVO.setHomeImgList(homeDAO.selectHomeImgList(homeNum));
@@ -186,19 +178,12 @@ public class HomeServiceImpl implements HomeService{
 				money = money % 10000;
 				convert += money + "만원";
 			}
-			
 		}else {
 			convert +=  money + "만원";	
 		}
 		return convert;
 	}
 	
-
-	@Override
-	public List<HomeVO> selectAllHomeList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public int modifyHomeInfo(Map<String, Object> modifyHome) {	// 매물 정보 수정.
@@ -247,7 +232,7 @@ public class HomeServiceImpl implements HomeService{
 	}
 
 	@Override
-	public List<HomeReportVO> selectReportHomeList() {
+	public List<HomeReportVO> getReportHomeList() {
 		return homeDAO.selectReportHomeList();
 	}
 
@@ -267,33 +252,91 @@ public class HomeServiceImpl implements HomeService{
 	}
 
 	@Override
-	public int deleteHome(@Param("homeNum")int homeNum) {
+	public int deleteHome(int homeNum) {	// 매물 삭제
 		return homeDAO.deleteHome(homeNum);
 	}
 
 	@Override
-	public int reservHome(HomeReservVO homeReservVO) {
+	public int reservHome(HomeReservVO homeReservVO) {	// 매물 예약
 		return homeDAO.insertHomeReserv(homeReservVO);
 	}
 
 	@Override
-	public List<String> getValidTimeList(HomeReservVO homeReservVO) {
+	public List<String> getValidTimeList(HomeReservVO homeReservVO) {	// 이미 예약된 매물 시간대 리스트 
 		return homeDAO.selectHomeReservValidTimeList(homeReservVO);
 	}
 
 	@Override
-	public int inquryHome(HomeInquryVO homeInquryVO) {
+	public int inquryHome(HomeInquryVO homeInquryVO) {	// 매물 문의
 		return homeInquryDAO.insertHomeInqury(homeInquryVO);
 	}
 
 	@Override
-	public List<HomeInquryVO> getHomeInqListByImcha(String imchaId) {
+	public List<HomeInquryVO> getHomeInqListByImcha(String imchaId) {	// 매물 문의 목록(일반회원)
 		return homeInquryDAO.selectInquryListByImcha(imchaId);
 	}
 
 	@Override
-	public List<HomeInquryVO> getHomeInqListByLessor(String lessorId) {
-		return homeInquryDAO.selectInquryListByImcha(lessorId);
+	public List<HomeInquryVO> getHomeInqListByLessor(String lessorId) {	// 매물 문의 목록(중개인)
+		return homeInquryDAO.selectInquryListByLeessor(lessorId);
+	}
+
+	@Override
+	public HomeInquryDetailVO getHomeInqDetail(int iqNum) {	// 문의 상세보기
+		return homeInquryDAO.selectHomeInquryDetail(iqNum);
+	}
+
+	@Override
+	public List<HomeInqAnswerVO> getHomeInqAnswerList(int iqNum) {	// 문의 답변 목록
+		return homeInquryDAO.selectInqAnswer(iqNum);
+	}
+
+	@Override
+	public int registerHomeInqAnswer(HomeInqAnswerVO homeInqAnswerVO) {		// 문의 작성
+		int result = homeInquryDAO.insertHomeInqAnswer(homeInqAnswerVO);
+		System.out.println(result);
+		
+		if(result == 1) {
+			return homeInquryDAO.updateHomeInquryStatus(homeInqAnswerVO.getIqNum());
+		}
+		return 0;
+	}
+	
+	@Override
+	public int homeAnsIdCheck(String lessorId) {	// 문의 답변 상태
+		return homeInquryDAO.selectInqAnswerIdCheck(lessorId);
+	}
+
+	@Override
+	public int modifyHomeInqAnswer(HomeInqAnswerVO homeInqAnswerVO) {	
+		return homeInquryDAO.updateHomeInqAnswer(homeInqAnswerVO);
+	}
+
+	@Override
+	public List<HomeReservPreviewVO> getReservListByImcha(String imchaId) {	// 예약 목록 (일반회원)
+		List<HomeReservPreviewVO> reservList = null;
+		reservList = homeDAO.selectHomeReservListByImchaId(imchaId);
+		
+		for(int i=0; i<reservList.size(); i++) {
+			int homeNum = reservList.get(i).getHomeNum();
+			reservList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
+		}
+		
+		return reservList;
+	}
+
+	@Override
+	public List<HomeReservPreviewVO> getReservListByLessor(String lessorId) {	// 예약 목록(임대인)
+		List<HomeReservPreviewVO> reservList = null;
+		reservList = homeDAO.selectHomeReservListByLessorId(lessorId);
+		
+		
+		for(int i=0; i<reservList.size(); i++) {
+			int homeNum = reservList.get(i).getHomeNum();
+			reservList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
+		}
+		
+		return reservList;
 	}
 
 	

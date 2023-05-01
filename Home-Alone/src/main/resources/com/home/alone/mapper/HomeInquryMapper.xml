@@ -16,20 +16,37 @@
  				where iq_num=#{iqNum}
  	</update> -->
  	
+ 	<!-- 일반회원(임차인) 문의글 목록 -->
  	<select id="selectInquryListByImcha" resultType="com.home.alone.vo.HomeInquryVO">
  		select iq_num as iqNum, imcha_id as imchaId, home_num as homeNum, iq_title as iqTitle, iq_date as iqDate, ans_status as ansStatus
  		from Home_Inq_tb 
  		where IMCHA_ID=#{imchaId}
  	</select>
  	
- 	<delete id="deleteHomeInqury">	<!-- 문의글 삭제 -->
+ 	<!-- 문의글 삭제 -->
+ 	<delete id="deleteHomeInqury">	
  		delete from Home_Inq_tb where iq_num = #{iqNum}
  	</delete>
  	
- 	<select id="selectHomeInquryDetail" resultType="com.home.alone.vo.HomeInquryDetailVO">
+ 	<!-- 문의글 답변 리스트 -->
+ 	<select id="selectInqAnswer" resultType="com.home.alone.vo.HomeInqAnswerVO">
+ 		select iq_num as iqNum, lessor_id as lessorId, ans_content as ansContent, ans_date as ansDate
+ 		from Home_InqAns_tb
+ 		where iq_num = #{iqNum}
+ 	</select>
+ 	
+<!--  	<select id="selectHomeInquryDetail" resultType="com.home.alone.vo.HomeInquryDetailVO">
  		select iq_num as iqNum, home_num as homeNum, imcha_id as imchaId, lessor_id as lessorId, 
  				iq_title as iqTitle, iq_content as iqContent, iq_date as iqDate, ans_status as ansStatus
  		from Home_InqAns_tb join Home_Inq_tb using(iq_num) 
+ 		where iq_num = #{iqNum}
+ 	</select> -->
+ 	
+ 	<!-- 문의글 상세 페이지 -->
+ 	 <select id="selectHomeInquryDetail" resultType="com.home.alone.vo.HomeInquryDetailVO">
+ 		select iq_num as iqNum, home_num as homeNum, imcha_id as imchaId, 
+ 				iq_title as iqTitle, iq_content as iqContent, iq_date as iqDate, ans_status as ansStatus
+ 		from Home_Inq_tb
  		where iq_num = #{iqNum}
  	</select>
  	
@@ -50,10 +67,16 @@
  		values ((select nvl(max(ans_num), 0) + 1 from Home_InqAns_tb), #{iqNum}, #{lessorId}, #{ansContent})
  	</insert>
  	
+ 	<!-- lessor(중개인) 문의글 리스트 -->
  	<select id="selectInquryListByLeessor" resultType="com.home.alone.vo.HomeInquryVO">
- 		select iq_num as iqNum, home_num as homeNum, iq_title as iqTitle, iq_date as iqDate, ans_status as ansStatus
+ 		select iq_num as iqNum, home_num as homeNum, imcha_id as imchaId, iq_title as iqTitle, iq_date as iqDate, ans_status as ansStatus
  		from Home_tb join Home_Inq_tb using(home_num) 
  		where lessor_id=#{lessorId}
+ 	</select>
+ 	
+ 	<!-- 문의 답변 작성 아이디 확인 -->
+ 	<select id="selectInqAnswerIdCheck">
+ 		select count(*) from Home_Inq_tb where lessor_id = #{lessorId}
  	</select>
  	
  	<!-- 문의글 답변 삭제 -->
@@ -61,9 +84,14 @@
  		delete from Home_InqAns_tb where lessor_id=#{lessorId} and iq_num = #{iqNum}
  	</delete>
  	
+ 	<!-- 문의글 답변 상태 변경 -->
  	<update id="updateHomeInquryStatus">
- 		update Home_InqAns_tb set ans_status = 1 where iq_num = #{iqNum}
+ 		update Home_Inq_tb set ans_status = 1 where iq_num = #{iqNum}
  	</update>
  	
+ 	<!-- 문의글 답변 내용 수정 -->
+  	<update id="updateHomeInqAnswer" parameterType="com.home.alone.vo.HomeInqAnswerVO">
+  		update Home_Inq_tb set ans_content = #{ansContent} where iq_num = #{iqNum}
+  	</update>
   	
   </mapper>

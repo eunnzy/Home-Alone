@@ -1,10 +1,13 @@
 $("#reservModalBtn").click(function() {
+	console.log(imchaId);
 	
+	if(imchaId == '') {
+		alert("로그인을 해주세요!");
+		return false;
+	}
+			
 	$(".reserv-modal").css("display", "flex");
 	
-	let revDate = $("#revDate").val();	// 방문 날짜
-	let revTime = $("input:radio[name=revTime]:checked").val();
-
 	$("#revDate").on("change", function(e){	// 날짜 선택할 때
 		revTimeInit();
 		
@@ -25,7 +28,12 @@ $("#reservModalBtn").click(function() {
 		});
 	});
 	
+	console.log(revDate);
+	console.log(revTime);
+	
 	$("#reservBtn").on("click", function(e){	// 예약하기 버튼 클릭시
+			let revDate = $("#revDate").val();	// 방문 날짜
+			let revTime = $("input:radio[name=revTime]:checked").val();
 		let revData = {
 			"revDate" : revDate,
 			"revTime" : revTime,
@@ -43,6 +51,7 @@ $("#reservModalBtn").click(function() {
 				console.log(data);
 				alert('예약이 완료되었습니다.');
 				changeDisabled(revTime);
+				$(".reserv-modal").css("display", "none");
 			},
 			error: function () {
 			}

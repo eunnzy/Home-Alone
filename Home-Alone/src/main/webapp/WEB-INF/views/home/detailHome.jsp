@@ -262,7 +262,7 @@
 				</div>
 
 
-				<div class="location ms-2 mt-5 mb-2">
+				<div class="location ms-2 mt-5 mb-4">
 					<h3>
 						<b>위치 정보</b>
 					</h3>
@@ -273,24 +273,25 @@
 		</div>
 
 		
-		
+	 <footer>
+			<jsp:include page="../footer.jsp"></jsp:include>
+ 		</footer>	
 
-	<jsp:include page="reportHome.jsp"></jsp:include>  <!-- 신고하기 모달 -->
+		<jsp:include page="reportHome.jsp"></jsp:include>  <!-- 신고하기 모달 -->
 	
 	<jsp:include page="inquryHome.jsp"></jsp:include> <!--  문의하기 모달 --> 
 	
 	<jsp:include page="reservHome.jsp"></jsp:include><!-- 예약하기 모달 -->
-	
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a94d4863c9f7363e85ad81dac027db86"></script>
 	<script>
 		let latitude = ${home.latitude};
 		let longitude = ${home.longitude};
 		let homeNum = ${home.homeNum};
-		let imchaId = $('#imchaId').val();
+		let imchaId = "${imcha.imchaId}";
 		let enrollName = $('#enrollName').val();
 		let enrollDate = $('#enrollDate').val();
-		let lessorId = "${home.lessorId}";
+		var lessorId = "${home.lessorId}";
 		let homeLike = ${homeLike};
 		console.log(search);
 	</script>
@@ -298,6 +299,7 @@
 	<script src="/js/home/detailHome.js"></script>
 	<script src="/js/home/reservHome.js"></script>
 	<script src="/js/home/inquryHome.js"></script>
+
 	
 	<script>
 		$(document).ready(function() {
@@ -309,12 +311,16 @@
 				$("#likeBtn").prop("src", "/icon/heart.png");
 				
 			}
-			
-			let imchaId = $('#imchaId').val();
 			let enrollName = $('#enrollName').val();
 			let enrollDate = $('#enrollDate').val();
 			let revTime = $("input[name='revTime']:checked").val();
+			
 			$("#likeBtn").on("click", function(e){ 
+				if(imchaId == '') {
+					alert("로그인을 해주세요!");
+					return false;
+				}
+				
 				$.ajax({
 					type : 'get',
 					url : '/like/clickLike?homeNum=' + homeNum,

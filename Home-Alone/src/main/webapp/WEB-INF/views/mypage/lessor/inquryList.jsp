@@ -37,7 +37,7 @@
 		    <%-- <a href="qna/getBpard?iqNum=${qnaList.iqNum}"> --%>
 		      <tr class="table-secondary">
 		        <th scope="row">${inqList.imchaId }</th>
-		        <td colspan="2"><a href="/qna/getBoard?iqNum=${inqList.iqNum}">${inqList.iqTitle }</a></td>
+		        <td colspan="2"><a href="/inqury/detail?iqNum=${inqList.iqNum}">${inqList.iqTitle }</a></td>
 		        <td><fmt:formatDate value="${inqList.iqDate}" pattern="yyyy-MM-dd" /></td>
 				<c:choose>
 					<c:when test="${ inqList.ansStatus eq 0 }">

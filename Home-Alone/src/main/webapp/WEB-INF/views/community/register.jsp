@@ -40,8 +40,8 @@
        <h1 id="tables">글쓰기</h1>
        
      <form action="insertBoard.do" method="post" enctype="multipart/form-data" id="regForm">
-       <input type='hidden' name='imchaid' value='<c:out value="${imcha.imchaId}" />'>
-       	
+   <%--     <input type='hidden' name='imchaId' value='<c:out value="${imcha.imchaId}" />'>
+       	 --%>
 	   <div class="bs-component">
         <table class="table table-hover">
          <tr>
@@ -50,20 +50,16 @@
            <select class="form-select" id="condition" name="category">
            <!-- 	<option value="질문">질문</option>
             <option value="꿀팁공유">매물꿀팁공유</option> -->
-            <option value="동네소식">동네소식</option>
-            <option value="동네질문">동네질문</option>
-            <option value="동네맛집">동네맛집</option>
-            <option value="도와줘요">도와줘요</option>
-            <option value="취미생활">전국취미생활</option>
-            <option value="자취꿀팁">전국자취꿀팁</option>
-            <option value="분실실종">전국분실실종</option>
+            <option >카테고리 선택</option>
+            <option value="정보공유">정보공유</option>
+            <option value="질문">질문</option>
            </select>
           </td>
          </tr>
          <tr>
           <th scope="col" class="col col-lg-1">제목</th>
            <td><input type="text" class="form-control" id="title" name="title" required></td>
-          </tr>
+          </tr >
           <tr>
            <th scope="col" class="col col-lg-1">첨부파일</th>
            <td><input class="form-control" type="file" id="file" name="uploadFile" multiple></td>

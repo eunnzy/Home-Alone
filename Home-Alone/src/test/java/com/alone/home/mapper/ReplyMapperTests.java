@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.home.alone.mapper.ReplyMapper;
-import com.home.alone.vo.Criteria;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.ReplyVO;
 
 import lombok.Setter;

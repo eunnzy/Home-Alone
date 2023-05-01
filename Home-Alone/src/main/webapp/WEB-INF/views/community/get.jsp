@@ -2,6 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%
+	pageContext.setAttribute("br", "<br/>");
+	pageContext.setAttribute("cn", "\n");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,7 +15,7 @@
 <script type="text/javascript" src="/js/board_get_reply.js"></script>
 <script type="text/javascript" src="/js/board_getBT.js"></script>
 <style>
-	img{
+	.img-div > img{
 /* 		width: 95%;
 	    height: auto; */
 	    display: flex;
@@ -25,7 +30,7 @@
 	</header>
 	
 		<!-- 본문 -->
-		<div class="container"><br>
+		<div class="container mt-5">
 		<!-- 조회시작 : 제목, 닉네임, 최근수정날짜 -->
 	    <div class="card mb-3" style="background-color: white;">
 	      <h3 class="card-header"><c:out value="${board.title}" /></h3>
@@ -37,7 +42,7 @@
 	      <div id="uploadfile"><ul></ul></div>
 	      <!-- 내용 -->
 	      <div class="card-body">
-	        <p class="card-text" style="color: black;"><c:out value="${board.content}" /></p>
+	        <span class="card-text" style="color: black;">${fn:replace(board.content, cn, br)}</p>
 	      </div><br>
 	      <!-- 이미지 업로드 -->
 	      <div id="uploadimg"></div>
@@ -128,7 +133,7 @@
 			$("#like").html(str); 
 		} else {
 			if (likeval > 0) {
-				str = "<img src='/icon/like.png' class='likeBT'>";
+				str = "<img src='/icon/heart-fill.png' class='likeBT'>";
 				$("#like").html(str); 
 				$(".likeBT").on("click", function(e) {
 					var result = confirm("좋아요를 취소하시겠습니까?");
@@ -141,7 +146,7 @@
 					}
 				});
 			} else {
-				str = "<img src='/icon/nonlike.png' class='likeBT'>";
+				str = "<img src='/icon/heart.png' class='likeBT'>";
 				$("#like").html(str); 
 				$(".likeBT").on("click", function(e) {
 					replyService.likeUp({bno:bnoValue, userid:member}, function(result) {
@@ -214,7 +219,7 @@
 			$("#deleteBT").show();
 		}
 		if(imchanick == '' || imchanick == null) {
-			$("#reply").attr("disabled", "").attr("value", "     로그인 후 댓글 입력이 가능합니다 ;(");
+			$("#reply").attr("disabled", "").attr("value", "     로그인 후 댓글 입력이 가능합니다 :(");
 			$("#replyregBT").attr("disabled", "");
 		}
 	});

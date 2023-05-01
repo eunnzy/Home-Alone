@@ -26,7 +26,7 @@
          <div class="collapse navbar-collapse" id="navbarColor03">
             <ul class="navbar-nav me-auto">
                <li class="nav-item"><a class="nav-link" href="/home/searchHome">집찾기</a></li>
-               <li class="nav-item"><a class="nav-link" href="/news">부동산 소식</a></li>
+             	<li class="nav-item"><a class="nav-link" href="/news">부동산 소식</a></li> 
                <!--  <li class="nav-item"><a class="nav-link" href="/safeMap">안전지도</a></li> -->
                <%-- <li class="nav-item"><c:if
                      test="${member.userRoll == '일반회원' }">

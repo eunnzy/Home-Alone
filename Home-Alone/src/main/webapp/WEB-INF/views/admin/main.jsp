@@ -12,9 +12,8 @@
 		<jsp:include page="header.jsp"></jsp:include>
  	 </header>
  	 
-	<br><br>
-	<div class="container">
-		<div class="row">
+	<div class="container mt-4">
+		<div class="row mb-3">
 			<div class="complain col-6 mr-4">
 				<div class="card text-center bg-white">
 			    	<div class="card-body">
@@ -34,7 +33,6 @@
 		 		</div>
 		 	</div>
 		</div>
-		<br><br>
 		<div class="row">
 			<div class="alarmboard col-6 mr-4">
 				<div class="card text-center bg-white">
@@ -49,16 +47,13 @@
 				<div class="card text-center bg-white">
 					<div class="card-body">
 						<img src="/img/homepage.png" class="rounded mx-auto d-block mt-2 mb-3" width="180" height="180" alt="...">	
-						<h5 class="card-title mb-2"><b>Here is My Home</b></h5>
+						<h5 class="card-title mb-2"><b>Home Alone</b></h5>
 						<p class="card-text">이용자 홈페이지로 이동하기</p>
 		 			</div>
 		 		</div>
 		 	</div>
 		</div>
 	</div>
-    <footer>
-    	<jsp:include page="footer.jsp"></jsp:include>
-    </footer>
     
     <script>
 		$(".complain").click(function() {

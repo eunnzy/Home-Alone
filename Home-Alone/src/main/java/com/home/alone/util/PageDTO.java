@@ -1,4 +1,8 @@
-package com.home.alone.vo;
+package com.home.alone.util;
+
+import java.util.List;
+
+import com.home.alone.vo.NewsVO;
 
 import lombok.Data;
 
@@ -27,4 +31,6 @@ public class PageDTO {
 		this.prev = this.startPage > 1;
 		this.next = this.endPage < realEnd;
 	}
+	
+	
 }

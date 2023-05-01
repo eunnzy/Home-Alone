@@ -59,7 +59,7 @@ $(document).ready(function(){
 			return false;
 		}
 		
-		$("#imcha-form").attr("action", "/mypage/imchaJoin");
+		$("#imcha-form").attr("action", "/member/imchaJoin");
 		$("#imcha-form").submit();
 	});
 });

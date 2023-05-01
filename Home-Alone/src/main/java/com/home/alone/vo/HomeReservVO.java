@@ -14,14 +14,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class HomeReservVO {
 	
-	private int revNum;
+	private int revNum;	
 	private String lessorId;
 	private String imchaId;
 	private int homeNum;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date revDate;
-	private String revTime;
+	private Date revDate;	// 예약 날짜
+	private String revTime;	// 예약 시간대
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date regRevDate;		// 신청시간 작성일같은거
-	private int revState;
+	private Date regRevDate;		// 신청시간 
+	private int revState;	// 예약 상태
+	
+	private String jgsName; 	// 중개사이름
+	private String imchaName;
+	
 }

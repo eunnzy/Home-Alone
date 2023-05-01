@@ -236,7 +236,7 @@ public class HomeManageController {
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
 	public String modifyHome(@RequestParam("homeNum")int homeNum, Model model, HttpServletRequest request) {
 		LessorVO lessorVO = (LessorVO) request.getSession().getAttribute("lessor");	
-		Map<String, Object> home = homeService.selectHomeDetail(homeNum);	// 원래 정보 가져오기
+		Map<String, Object> home = homeService.getHomeDetail(homeNum);	// 원래 정보 가져오기
 		System.out.println("detailHome: " + home);
 		
 //		home.put("deposit", (int)home.get("deposit"));

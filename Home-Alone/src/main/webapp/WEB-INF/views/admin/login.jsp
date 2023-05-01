@@ -29,7 +29,7 @@
 <div class="col col-sm-12 col-md-12 col-lg-4 m-0 p-0 accounts_col">
 <div class="accounts_forms w-100 h-100" id="login">
 				<div class="title mt-4 p-4 w-100">
-		<h1>여기가 내집</h1>
+		<h1>나홀로 집에</h1>
 		<p class="mt-3">관리자 로그인 페이지.</p>
 		</div>
 		<form id="login_form" method="post" class="form w-100 p-4">

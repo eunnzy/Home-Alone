@@ -37,7 +37,7 @@
                   <tr class="table-light">
                     <td><c:out value="${board.category}" /></td>
                     <td>
-                    	<a href="/community/get?bno=<c:out value='${board.bno}' />&userid=<c:out value="${imcha.imchaId}" />" style="text-decoration:none;">
+                    	<a href="/community/get?bno=<c:out value='${board.bno}' />&imchaId=<c:out value="${imcha.imchaId}" />" style="text-decoration:none;">
                     		<c:out value="${board.title}" />
                     	</a>
                     </td>

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.home.alone.vo.Criteria;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.ReplyVO;
 
 public interface ReplyMapper {
