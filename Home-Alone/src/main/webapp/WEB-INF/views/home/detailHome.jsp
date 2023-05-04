@@ -3,10 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%
 	pageContext.setAttribute("br", "<br/>");
 	pageContext.setAttribute("cn", "\n");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,8 +47,7 @@
 										<div class="carousel-item">
 									</c:otherwise>
 								</c:choose>
-								<img
-									src="/home/getHomeImg?homeImgFile=${imgFile.homeImgPath}/${imgFile.homeImgName}"
+								<img src="/home/getHomeImg?homeImgFile=${fn:replace(imgFile.homeImgPath, '\\', '//')}/${imgFile.homeImgUuid}_${imgFile.homeImgName}"
 									class="d-block w-100" height="450" alt="...">
 						</div>
 						</c:forEach>

@@ -236,7 +236,7 @@ public class BoardController {
 		
 		List<BoardAttachFileDTO> list = new ArrayList<>();
 		// folder 만들기
-		String uploadFolder = "/Users/songs/upload";
+		String uploadFolder = "C:\\boardUpload\\";
 		
 		String uploadFolderPath = getFolder();
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
@@ -286,7 +286,7 @@ public class BoardController {
     public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, String fileName) {
 		log.info("click : " + fileName);
 		
-         Resource resource = new FileSystemResource("/Users/songs/upload/" + fileName);
+         Resource resource = new FileSystemResource("C:\\boardUpload\\" + fileName);
          if (resource.exists() == false) {
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
          }
@@ -323,7 +323,7 @@ public class BoardController {
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String fileName) {
 		log.info("fileName : " + fileName);
-		File file = new File("/Users/songs/upload/" + fileName);
+		File file = new File( "C:\\boardUpload\\" + fileName);
 		log.info("file: " + file);
 		ResponseEntity<byte[]> result = null;
 		
@@ -346,7 +346,7 @@ public class BoardController {
 		File file;
 		
 		try {
-			file = new File("/Users/songs/upload/" + URLDecoder.decode(fileName, "UTF-8"));
+			file = new File( "C:\\boardUpload\\" + URLDecoder.decode(fileName, "UTF-8"));
 			file.delete();
 			
 			if(type.equals("image")) {
@@ -401,10 +401,10 @@ public class BoardController {
 		
 		attachList.forEach(attach -> {
 			try {
-				Path file = Paths.get("/Users/songs/upload/" + attach.getUploadPath() + "/" + attach.getUuid() + "_" + attach.getFileName());
+				Path file = Paths.get("C:\\boardUpload\\" + attach.getUploadPath() + "/" + attach.getUuid() + "_" + attach.getFileName());
 				Files.deleteIfExists(file);
 				if(Files.probeContentType(file).startsWith("image")) {
-					Path thumbNail = Paths.get("/Users/songs/upload/" + attach.getUploadPath() + "/s_" + attach.getUuid() + "_" + attach.getFileName());
+					Path thumbNail = Paths.get("C:\\boardUpload\\" + attach.getUploadPath() + "/s_" + attach.getUuid() + "_" + attach.getFileName());
 					Files.delete(thumbNail);
 				}
 			} catch(Exception e) {

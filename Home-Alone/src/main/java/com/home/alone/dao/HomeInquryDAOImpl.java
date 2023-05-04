@@ -49,13 +49,13 @@ public class HomeInquryDAOImpl implements HomeInquryDAO{
 	}
 	
 	@Override
-	public List<HomeInqAnswerVO> selectInqAnswer(int iqNum) {
-		return sqlSession.selectList(HOMEINQURYMAPPER + "selectInqAnswer", iqNum);
+	public List<HomeInqAnswerVO> selectInqAnswerList(int iqNum) {
+		return sqlSession.selectList(HOMEINQURYMAPPER + "selectInqAnswerList", iqNum);
 	}
 
 	@Override
-	public int deleteHomeInqAnswer(int iqNum) {
-		return 0;
+	public int deleteHomeInqAnswer(int ansNum) {
+		return sqlSession.delete(HOMEINQURYMAPPER + "deleteHomeInqAnswer", ansNum);
 	}
 
 	@Override
@@ -64,13 +64,23 @@ public class HomeInquryDAOImpl implements HomeInquryDAO{
 	}
 	
 	@Override
-	public int updateHomeInquryStatus(int iqNum) {
-		return sqlSession.update(HOMEINQURYMAPPER + "updateHomeInquryStatus", iqNum);
+	public int updateHomeInqAnsCom(int iqNum) {
+		return sqlSession.update(HOMEINQURYMAPPER + "updateHomeInqAnsCom", iqNum);
+	}
+	
+	@Override
+	public int updateHomeInqAnsWait(int iqNum) {
+		return sqlSession.update(HOMEINQURYMAPPER + "updateHomeInqAnsWait", iqNum);
 	}
 
 	@Override
 	public int updateHomeInqAnswer(HomeInqAnswerVO homeInqAnswerVO) {
 		return sqlSession.update(HOMEINQURYMAPPER + "updateHomeInqAnswer", homeInqAnswerVO);
+	}
+
+	@Override
+	public HomeInqAnswerVO selectHomeInqAnswer(int ansNum) {
+		return sqlSession.selectOne(HOMEINQURYMAPPER + "selectHomeInqAnswer", ansNum);
 	}
 
 	

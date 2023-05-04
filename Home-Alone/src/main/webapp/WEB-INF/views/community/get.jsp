@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 	pageContext.setAttribute("br", "<br/>");
@@ -11,86 +11,106 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="/js/board_get_reply.js"></script>
 <script type="text/javascript" src="/js/board_getBT.js"></script>
 <style>
-	.img-div > img{
-/* 		width: 95%;
+.img-div>img {
+	/* 		width: 95%;
 	    height: auto; */
-	    display: flex;
-	    margin: 15px auto 15px auto;
-	}
+	display: flex;
+	margin: 15px auto 15px auto;
+}
 </style>
 <title>View</title>
 </head>
 <body>
-	<header>
-		<jsp:include page="../header.jsp"></jsp:include>
-	</header>
-	
-		<!-- 본문 -->
-		<div class="container mt-5">
+	<header> <jsp:include page="../header.jsp"></jsp:include> </header>
+
+	<!-- 본문 -->
+	<div class="container mt-5">
 		<!-- 조회시작 : 제목, 닉네임, 최근수정날짜 -->
-	    <div class="card mb-3" style="background-color: white;">
-	      <h3 class="card-header"><c:out value="${board.title}" /></h3>
-	      <div class="card-footer text-muted">
-	        <span><c:out value="${board.nickname}" /></span>
-	        <span class="float-end">최근 수정일 : <fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}" /></span>
-	      </div>
-	      <!-- 파일 업로드 -->
-	      <div id="uploadfile"><ul></ul></div>
-	      <!-- 내용 -->
-	      <div class="card-body">
-	        <span class="card-text" style="color: black;">${fn:replace(board.content, cn, br)}</p>
-	      </div><br>
-	      <!-- 이미지 업로드 -->
-	      <div id="uploadimg"></div>
-	        <!-- hidden -->
-	      	<input type="hidden" name="bno" value="<c:out value="${board.bno}" />" >
-	      	
-	      <!-- 조회수, 좋아요 -->
-	      <div class="card-body"> 	
-	      <span><c:out value="${board.views}" /> 조회</span>
-	      <form><span class="float-end" id="like"></span></form>
-	      </div>
-	    </div>
-	    
-	    <!-- 댓글 -->
-	    <div class="card card-body" style="background-color: white;">
-	       <div class = "chat"></div>
-	       <!-- 댓글 작성 창 -->
-		   <div><br></div>
-	       <div class="input-group mb-3 replyreg">
-	         <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" style="80%" name="reply" id="reply" required>
-	         <button class="btn btn-secondary" type="button" id="replyregBT">등록</button>
-	       </div>
-	    </div><div><br></div>
+		<div class="card mb-3" style="background-color: white;">
+			<h3 class="card-header">
+				<c:out value="${board.title}" />
+			</h3>
+			<div class="card-footer text-muted">
+				<span><c:out value="${board.nickname}" /></span> <span
+					class="float-end">최근 수정일 : <fmt:formatDate
+						pattern="yyyy-MM-dd" value="${board.updateDate}" /></span>
+			</div>
+			<!-- 파일 업로드 -->
+			<div id="uploadfile">
+				<ul></ul>
+			</div>
+			<!-- 내용 -->
+			<div class="card-body">
+				<span class="card-text" style="color: black;">${fn:replace(board.content, cn, br)}</p>
+			</div>
+			<br>
+			<!-- 이미지 업로드 -->
+			<div id="uploadimg"></div>
+			<!-- hidden -->
+			<input type="hidden" name="bno"
+				value="<c:out value="${board.bno}" />">
 
-	    <!-- 하단 버튼 -->
-        <span><button type="button" class="btn btn-info" id="BackBT">목록으로</button></span>
-        <span class="float-end"><div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary" id="modifyBT">수정</button>
-	    <button type="button" class="btn btn-secondary" id="deleteBT">삭제</button>
-	    </div></span>
+			<!-- 조회수, 좋아요 -->
+			<div class="card-body">
+				<span><c:out value="${board.views}" /> 조회</span>
+				<form>
+					<span class="float-end" id="like"></span>
+				</form>
+			</div>
+		</div>
 
- 	    <!-- 페이지이동 Form -->
-	    <form id = "operForm" action="/community/modify" method="get" >
-	   	 <input type="hidden" id="bno" name="bno" value="<c:out value="${board.bno}" />" >
- 	   	 <input type="hidden" name="pageNum" value="<c:out value="${cri.pageNum }" />" >
-	   	 <input type="hidden" name="amount" value="<c:out value="${cri.amount }" />"  >
-	   	 <input type="hidden" name="keyword" value="<c:out value="${cri.keyword }" />"  >
-	   	 <input type="hidden" name="type" value="<c:out value="${cri.type }" />"  > 
-	    </form> 
-	    <div><br><br></div>
-       </div>
-	
-	<footer>
-    	<jsp:include page="../footer.jsp"></jsp:include>
-    </footer>
-    
-    <!-- 자바스크립트 -->
-    <script type="text/javascript">
+		<!-- 댓글 -->
+		<div class="card card-body" style="background-color: white;">
+			<div class="chat"></div>
+			<!-- 댓글 작성 창 -->
+			<div>
+				<br>
+			</div>
+			<div class="input-group mb-3 replyreg">
+				<input type="text" class="form-control"
+					aria-label="Recipient's username" aria-describedby="button-addon2"
+					style="" name="reply" id="reply" required>
+				<button class="btn btn-secondary" type="button" id="replyregBT">등록</button>
+			</div>
+		</div>
+		<div>
+			<br>
+		</div>
+
+		<!-- 하단 버튼 -->
+		<span><button type="button" class="btn btn-info" id="BackBT">목록으로</button></span>
+		<span class="float-end"><div class="btn-group" role="group"
+				aria-label="Basic example">
+				<button type="button" class="btn btn-secondary" id="modifyBT">수정</button>
+				<button type="button" class="btn btn-secondary" id="deleteBT">삭제</button>
+			</div></span>
+
+		<!-- 페이지이동 Form -->
+		<form id="operForm" action="/community/modify" method="get">
+			<input type="hidden" id="bno" name="bno"
+				value="<c:out value="${board.bno}" />"> <input
+				type="hidden" name="pageNum"
+				value="<c:out value="${cri.pageNum }" />"> <input
+				type="hidden" name="amount" value="<c:out value="${cri.amount }" />">
+			<input type="hidden" name="keyword"
+				value="<c:out value="${cri.keyword }" />"> <input
+				type="hidden" name="type" value="<c:out value="${cri.type }" />">
+		</form>
+		<div>
+			<br>
+			<br>
+		</div>
+	</div>
+
+	<footer> <jsp:include page="../footer.jsp"></jsp:include> </footer>
+
+	<!-- 자바스크립트 -->
+	<script type="text/javascript">
     // 파일 업로드 
     $(document).ready(function() {
 		(function() {
@@ -120,7 +140,7 @@
 			})();
     });
     </script>
-    <script type="text/javascript">
+	<script type="text/javascript">
     // 좋아요 체크 
     $(document).ready(function() {
     	var likeval = ${like};
@@ -157,7 +177,7 @@
 		}
     });
     </script>
-    <script type="text/javascript">
+	<script type="text/javascript">
     $(document).ready(function() {
 		var bnoValue = '<c:out value="${board.bno}" />';
 		var replyUL = $(".chat");

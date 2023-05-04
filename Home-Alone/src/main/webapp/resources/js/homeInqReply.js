@@ -1,55 +1,33 @@
-$(document).ready(function() {
-	
-	/*$.ajax({
-		url: "/inqury/answer/list",
-		type: 'POST',
-		data: {"iqNum" : $("#iqNum").val()},
-		success: function(data) {
-			console.log(data);
-			
-			let answerHtml = "";
-			let answerList = $(".answer-list");
-			
-			for(let i=0; i<data.length; i++) {
-				answerHtml += "<tr><td>"+ data[i].lessorId  +"</td></tr>";
-				answerHtml += "<tr><td>"+ data[i].ansContent  +"</td></tr>";
-			}
-			
-			answerList.append(answerHtml);
-		}
-		
-	});*/
-	
-})
+console.log("Reply Module....");
 
-var answerService = (function() {
+var replyService = (function() {
 	// 댓글 등록 
-	function add(answer, callback, error) {
+	function add(reply, callback, error) {
 		console.log("add reply.......");
 		
 		$.ajax({
 			type : 'post', 
-			url : '/inqury/answer/register', 
-			data : JSON.stringify(answer), 
+			url : '/replies/new', 
+			data : JSON.stringify(reply), 
 			contentType : "application/json; charset=utf-8", 
 			success : function(result, status, xhr) { if(callback) { callback(result); }},
 			error : function(xhr, status, er) { if(error) { error(er); }}
 		})
 	}
 	
-	// 답변 목록 
+	// 댓글 목록 
 	function getList(param, callback, error) {
-		var iqNum = param.iqNum;
-		// var page = param.page || 1;
-		$.getJSON("/inqury/answer/" + iqNum + ".json", function(data) { if(callback) {  callback(data); } })
+		var bno = param.bno;
+		var page = param.page || 1;
+		$.getJSON("/replies/pages/" + bno + "/" + page + ".json", function(data) { if(callback) { callback(data); } })
 		.fail(function(xhr, status, err) { if(error) { error(); }});
 	}
 	
-	// 답변 삭제 
-	function remove(ansNum, callback, error) {
+	// 댓글 삭제 
+	function remove(rno, callback, error) {
 		$.ajax ({
 			type : 'delete',
-			url : '/inqury/answer/delete/' + ansNum,
+			url : '/replies/' + rno,
 			success : function(deleteResult, status, xhr) { if(callback) { callback(deleteResult); }},
 			error : function(xhr, status, er) { if(error) { error(er); } }
 		});
@@ -95,6 +73,32 @@ var answerService = (function() {
 		}
 	};
 		
+	// 좋아요 
+	function likeUp(mylike, callback, error) {
+		console.log(mylike.bno + "번 게시물 좋아요 ");
+		$.ajax ({
+			type : 'post', 
+			url : '/replies/likeUp',  
+			data : JSON.stringify(mylike),
+			contentType : "application/json; charset=utf-8",
+			success : function(result, status, xhr) { if(callback) { callback(result); }},
+			error : function(xhr, status, er) { if(error) { error(er); }}
+		});
+	}
 	
-	return { add:add, getList:getList, remove:remove, update:update, get:get, displayTime:displayTime};
+	// 좋아요 취소 
+	function likeDown(mylike, callback, error) {
+		console.log(mylike.bno + "번 게시물 좋아요 취소 ");
+		$.ajax ({
+			type : 'post', 
+			url : '/replies/likeDown',  
+			data : JSON.stringify(mylike),
+			contentType : "application/json; charset=utf-8",
+			success : function(result, status, xhr) { if(callback) { callback(result); }},
+			error : function(xhr, status, er) { if(error) { error(er); }}
+		});
+	}
+	
+	return { add:add, getList:getList, remove:remove, update:update, get:get, displayTime:displayTime, likeDown:likeDown, likeUp:likeUp };
 })();
+

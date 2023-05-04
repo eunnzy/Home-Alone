@@ -29,10 +29,11 @@
  	</delete>
  	
  	<!-- 문의글 답변 리스트 -->
- 	<select id="selectInqAnswer" resultType="com.home.alone.vo.HomeInqAnswerVO">
- 		select iq_num as iqNum, lessor_id as lessorId, ans_content as ansContent, ans_date as ansDate
- 		from Home_InqAns_tb
+ 	<select id="selectInqAnswerList" resultType="com.home.alone.vo.HomeInqAnswerVO">
+ 		select iq_num as iqNum, ans_num as ansNum, lessor_id as lessorId, jgs_name as jgsName, ans_content as ansContent, ans_date as ansDate
+ 		from Home_InqAns_tb join Lessor_tb using(lessor_id)
  		where iq_num = #{iqNum}
+ 		order by ans_num asc
  	</select>
  	
 <!--  	<select id="selectHomeInquryDetail" resultType="com.home.alone.vo.HomeInquryDetailVO">
@@ -79,14 +80,25 @@
  		select count(*) from Home_Inq_tb where lessor_id = #{lessorId}
  	</select>
  	
+ 	<select id="selectHomeInqAnswer" resultType="com.home.alone.vo.HomeInqAnswerVO">
+ 		select iq_num as iqNum, ans_num as ansNum, lessor_id as lessorId, ans_content as ansContent, ans_date as ansDate	
+ 		from Home_InqAns_tb
+ 		where ans_num = #{ans_num}
+ 	</select>
+ 	
  	<!-- 문의글 답변 삭제 -->
- 	<delete id="deleteHomeInqAnswer" parameterType="com.home.alone.vo.HomeInqAnswerVO">
- 		delete from Home_InqAns_tb where lessor_id=#{lessorId} and iq_num = #{iqNum}
+ 	<delete id="deleteHomeInqAnswer">
+ 		delete from Home_InqAns_tb where ans_num = #{ans_num}
  	</delete>
  	
- 	<!-- 문의글 답변 상태 변경 -->
- 	<update id="updateHomeInquryStatus">
+ 	<!-- 문의글 답변 상태 변경: 완료 -->
+ 	<update id="updateHomeInqAnsCom">
  		update Home_Inq_tb set ans_status = 1 where iq_num = #{iqNum}
+ 	</update>
+ 	
+ 	<!-- 문의글 답변 상태 변경: 대기 -->
+ 	<update id="updateHomeInqAnsWait">
+ 		update Home_Inq_tb set ans_status = 0 where iq_num = #{iqNum}
  	</update>
  	
  	<!-- 문의글 답변 내용 수정 -->

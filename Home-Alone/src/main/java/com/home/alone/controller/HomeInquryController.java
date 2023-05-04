@@ -5,21 +5,34 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.home.alone.service.HomeService;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.HomeInqAnswerVO;
 import com.home.alone.vo.HomeInquryDetailVO;
 import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.ImchaVO;
 import com.home.alone.vo.LessorVO;
+import com.home.alone.vo.ReplyVO;
+
+import lombok.extern.log4j.Log4j;
 
 @Controller
+@Log4j
 @RequestMapping("/inqury")
 public class HomeInquryController {
 	
@@ -32,16 +45,9 @@ public class HomeInquryController {
 	@ResponseBody	
 	public int inquryHome(HomeInquryVO inqData, HttpServletRequest request) {
 		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
-		
 		if(imcha == null) {
 			return 0;
 		}
-		
-		System.out.println(inqData);
-
-		inqData.setImchaId(imcha.getImchaId());
-		System.out.println(inqData);
-
 		
 		return homeService.inquryHome(inqData);
 	}
@@ -56,24 +62,29 @@ public class HomeInquryController {
 		return "inqury/detail";
 	}
 	
-	
-	
-	@RequestMapping("/answer/list")	// 답변 목록
-	@ResponseBody
-	public List<HomeInqAnswerVO> answerList(int iqNum, HttpServletRequest request) {
-		List<HomeInqAnswerVO> answerList = homeService.getHomeInqAnswerList(iqNum);
-		return answerList;
+	// 답변 목록
+	@GetMapping(value = "/answer/{iqNum}", produces= {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<HomeInqAnswerVO>> getList(@PathVariable("iqNum") int iqNum) {
+		log.info("get List.........");
+		return new ResponseEntity<>(homeService.getHomeInqAnswerList(iqNum), HttpStatus.OK);
 	}
 	
-	@RequestMapping("/answer/register")	// 답변 등록
-	@ResponseBody
-	public int answer(HomeInqAnswerVO homeInqAnswer, HttpServletRequest request) {
-		LessorVO lessor = (LessorVO) request.getSession().getAttribute("lessor");
-		homeInqAnswer.setLessorId(lessor.getLessorId());
-			
-		System.out.println(homeInqAnswer);
-		return homeService.registerHomeInqAnswer(homeInqAnswer);
+	// 답변 삭제 
+	@DeleteMapping(value="/answer/delete/{ansNum}", produces= {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> remove(@PathVariable("ansNum") int ansNum) {
+		log.info("remove : " + ansNum);
+		return homeService.deleteHomeInqAnswer(ansNum) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+		
+	
+	// 답변 등록 
+	@PostMapping(value = "/answer/register", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> create(@RequestBody HomeInqAnswerVO homeInqAnsVO) {
+		log.info("HomeInqAnswerVO : " + homeInqAnsVO);
+		int insertCount = homeService.registerHomeInqAnswer(homeInqAnsVO);
+		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	
 	
 

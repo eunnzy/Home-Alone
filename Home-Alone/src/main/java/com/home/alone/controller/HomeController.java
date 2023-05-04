@@ -39,7 +39,7 @@ import com.home.alone.vo.LikeVO;
 
 @Controller
 @RequestMapping("/home")
-@SessionAttributes("home")
+/* @SessionAttributes("home") */
 public class HomeController {
 	@Autowired
 	private HomeService homeService;
@@ -64,8 +64,8 @@ public class HomeController {
 		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
 		System.out.println("imcha " + imcha);
 		
-		int homeLike = 0;
-		if(imcha != null) {
+		int homeLike = 0;	
+		if(imcha != null) {	// 좋아요 표시 했는지 확인
 			LikeVO likeVO = new LikeVO();
 			likeVO.setHomeNum(homeNum);
 			likeVO.setImchaId(imcha.getImchaId());
@@ -166,9 +166,9 @@ public class HomeController {
 	@RequestMapping(value = "/getHomeImg", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getPreviewImg(@RequestParam String homeImgFile) {
 		System.out.println("homeImgFile : " + homeImgFile);
+		
 		ResponseEntity<byte[]> result = null;
 		File imgFile = new File("C:\\homeUpload", homeImgFile);
-		
 		try {
 			HttpHeaders header = new HttpHeaders();
 			header.add("Content-type", Files.probeContentType(imgFile.toPath()));

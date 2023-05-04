@@ -55,7 +55,7 @@
                                 	<input type="radio" class="form-check-input" name="homeType" value="투룸"> <label> 투룸 </label> 
                                 </div>
                                 <div class="form-check form-check-inline">
-                                	<input type="radio" class="form-check-input" name="homeType" value="쓰리룸 이상"> <label> 쓰리룸 이상 </label> 
+                                	<input type="radio" class="form-check-input" name="homeType" value="쓰리룸이상"> <label> 쓰리룸 이상 </label> 
                                 </div>
                                 <div class="form-check form-check-inline">
                                 	<input type="radio" class="form-check-input" name="homeType" value="오피스텔"> <label> 오피스텔 </label> 
@@ -456,11 +456,12 @@
 		
 		let homeImgDiv = $( ".resultImg");
 		let imgStr = "";
+	//	let imgPath = encodeURIComponent("${imgFile.homeImgPath}/t_${imgFile.homeImgUuid}_${imgFile.homeImgName}");
 		
 		imgStr += "<c:forEach items='${home.homeImgList}' var='imgFile'>"
-		imgStr += "<div class='img-div col-sm-3' data-path='${imgFile.homeImgPath}' data-imgname='${imgFile.homeImgName}'>";
+		imgStr += "<div class='img-div col-sm-3' data-uuid='${imgFile.homeImgUuid}' data-path='${imgFile.homeImgPath}' data-imgname='${imgFile.homeImgName}'>";
 		imgStr  += "<div class='imgDelete' data-file='${imgFile.homeImgPath}'><i class='bi bi-x-lg'></i></div>";
-		imgStr  += "<img src='/home/manage/showHomeImg?homeImgName=${imgFile.homeImgPath}/t_${imgFile.homeImgName}'>";
+		imgStr  += "<img src='/home/manage/showHomeImg?homeImgName=${imgFile.homeImgPath}/t_${imgFile.homeImgUuid}_${imgFile.homeImgName}'>";
 		imgStr  += "</div></c:forEach>";
 		
 		homeImgDiv.append(imgStr);

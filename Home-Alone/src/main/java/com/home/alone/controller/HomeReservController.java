@@ -1,9 +1,11 @@
 package com.home.alone.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -120,13 +122,9 @@ public class HomeReservController {
 //	}
 //	
 //	// 예약 거부
-//	@RequestMapping("/reject")
-//	public String reject(int revNum, String imchaId, int homeNum, HttpServletResponse response) throws IOException {
-//		revMapper.reject(revNum, imchaId, homeNum);
-//		response.setContentType("text/html; charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//        out.println("<script>alert('예약을 거절하였습니다.');history.go(-1);</script>");
-//        out.flush();
-//		return "redirect:/home/reservation/lessorList";
-//	}
+	@RequestMapping("/reject")
+	public String reject(int revNum, HttpServletResponse response) throws IOException {
+		homeService.homeReservReject(revNum);
+		return "redirect:/home/reserv/lessorList";
+	}
 }

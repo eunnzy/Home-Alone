@@ -47,7 +47,6 @@ public class LikeController {
 		System.out.println(likeVO);
 		int checkLike = likeService.checkLike(likeVO);
 		
-		
 		if(checkLike == 0) {	 // 좋아요가 안 되어 있는 경우 
 			likeService.insetLike(likeVO);
 			return 1;
@@ -80,8 +79,4 @@ public class LikeController {
 		return false;
 	}
 
-//	public LikeVO getByLikeNumWithImchaId(LikeVO vo) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 }

@@ -36,9 +36,9 @@
  	
  	<insert id="insertHomeImgList" parameterType="java.util.List">
  		<foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
- 		into Home_Img_tb(home_num, home_img_name, home_img_path) 
+ 		into Home_Img_tb(home_num, home_img_name, home_img_path, home_img_uuid) 
  		values
- 			(#{item.homeNum}, #{item.homeImgName}, #{item.homeImgPath})
+ 			(#{item.homeNum}, #{item.homeImgName}, #{item.homeImgPath}, #{item.homeImgUuid})
  		</foreach>
  	</insert>
  	
@@ -56,7 +56,7 @@
  	
 	
 	<select id="selectHomeInBoundsList" resultType="com.home.alone.vo.HomePreviewVO" parameterType="hashmap">
-			select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
+			select  <![CDATA[/*+ INDEX(Home_tb home_pk)*/]]> home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
 			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
 			from Home_tb 
@@ -66,7 +66,7 @@
 	</select>
 	
 	<select id="selectHomeListByFilter" parameterType="hashmap" resultType="com.home.alone.vo.HomePreviewVO">
-		select home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
+		select <![CDATA[/*+ INDEX(Home_tb home_pk)*/]]> home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
 			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
 		from Home_tb 
@@ -261,7 +261,7 @@
 	
 	 	
  	<select id="selectHomeImgList" resultType="com.home.alone.vo.HomeImgVO">
- 		select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath  
+ 		select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath, home_img_uuid as homeImgUuid  
  		from Home_Img_tb where home_num = #{homeNum}
  	</select>
 	
@@ -277,13 +277,13 @@
 	
 	<!-- 매물 사진 등록  -->
  	<insert id="insertHomeImg" parameterType="com.home.alone.vo.HomeImgVO">
- 		insert into Home_Img_tb(img_num, home_num, home_img_name, home_img_path) 
- 		values((select nvl(max(img_num), 0) + 1 from Home_Img_tb), #{homeNum}, #{homeImgName}, #{homeImgPath})
+ 		insert into Home_Img_tb(img_num, home_num, home_img_name, home_img_path, home_img_uuid) 
+ 		values((select nvl(max(img_num), 0) + 1 from Home_Img_tb), #{homeNum}, #{homeImgName}, #{homeImgPath}, #{homeImgUuid})
  	</insert>
 
  	
 	<select id="selectPreviewHomeImg" resultType="com.home.alone.vo.HomeImgVO"> <!-- 미리보기 사진 -->
-			select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath 
+			select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath, home_img_uuid as homeImgUuid   
 			from (select * from Home_Img_tb where home_num = #{homeNum})
 			where <![CDATA[ rownum <2 ]]>
 	</select>
@@ -402,6 +402,15 @@
 	 		 join Imcha_tb using(imcha_id)
  		WHERE lessor_id = #{lessorId}
  	</select>
+ 	
+ 	<update id="updateHomeReservReject" >	<!-- 예약 거절 -->
+ 		UPDATE Home_Reserv_tb SET rev_state = 2 WHERE revNum = #{revNum}
+ 	</update>
+ 	
+	<update id="updateHomeReservAccept" >	<!-- 예약 수락 -->
+ 		UPDATE Home_Reserv_tb SET rev_state = 1 WHERE revNum = #{revNum}
+ 	</update>
+ 	
  	
  </mapper>
  
