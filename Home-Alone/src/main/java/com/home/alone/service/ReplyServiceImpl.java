@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.home.alone.mapper.ReplyMapper;
-import com.home.alone.vo.Criteria;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.ReplyVO;
 
 import lombok.Setter;

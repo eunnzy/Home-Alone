@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,9 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,24 +34,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.home.alone.dao.HomeDAO;
-import com.home.alone.mapper.LessorMapper;
 import com.home.alone.service.AdminService;
 import com.home.alone.service.AlarmBoardService;
 import com.home.alone.service.HomeService;
-import com.home.alone.service.ImchaService;
 import com.home.alone.service.LessorService;
 import com.home.alone.vo.AdminVO;
 import com.home.alone.vo.AlarmBoardAttachFileDTO;
 import com.home.alone.vo.AlarmBoardAttachVO;
 import com.home.alone.vo.AlarmBoardVO;
-import com.home.alone.vo.BoardAttachVO;
-import com.home.alone.vo.BoardVO;
-import com.home.alone.vo.Criteria;
 import com.home.alone.vo.HomeReportVO;
-import com.home.alone.vo.HomeVO;
-import com.home.alone.vo.ImchaVO;
-import com.home.alone.vo.LessorVO;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -68,17 +54,17 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class AdminController {
 	
 	@Autowired
-	private AdminService adminservice;
+	private AdminService adminService;
 	
 	@Autowired
-	private LessorService lessorservice;
+	private LessorService lessorService;
 	
 	
 	@Autowired
-	private HomeDAO homedao;
+	private HomeService homeService;
 	
 	@Autowired
-	private AlarmBoardService abservice;
+	private AlarmBoardService abService;
 
 	
 	// 관리자 회원가입
@@ -87,17 +73,17 @@ public class AdminController {
 		
 	}
 	
-		@RequestMapping("/main")
-		public String home() {
-			
-			return "/admin/main";
-		}
+	@RequestMapping("/main")
+	public String home() {
+		
+		return "/admin/main";
+	}
 	
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String joinPOST(AdminVO admin) throws Exception{
 		
-		adminservice.adminJoin(admin);
+		adminService.adminJoin(admin);
 		
 		return "redirect:/admin/main";
 	}
@@ -107,7 +93,7 @@ public class AdminController {
 	@ResponseBody
 	public String adminIdChkPOST(String adminId) throws Exception {
 		
-		int result = adminservice.idCheck(adminId);
+		int result = adminService.idCheck(adminId);
 		
 		if (result != 0) {
 			return "fail";
@@ -131,7 +117,7 @@ public class AdminController {
 //		return null;
 		
 		HttpSession session = request.getSession();
-		AdminVO avo = adminservice.adminLogin(admin);
+		AdminVO avo = adminService.adminLogin(admin);
 		
 		if(avo == null) {
 			int result = 0;
@@ -163,9 +149,9 @@ public class AdminController {
 	@RequestMapping(value="/successId")
 	public int successId(@RequestParam(value ="lessorId") String lessorId) throws Exception {
 		System.out.println(lessorId);
-		lessorservice.successId(lessorId);
+		lessorService.successId(lessorId);
 		
-		int result = lessorservice.successId(lessorId);
+		int result = lessorService.successId(lessorId);
 		
 		if (result != 0) {
 			return result;
@@ -185,7 +171,7 @@ public class AdminController {
 	@GetMapping("/reportList")
 	public String HomeReport(Model model) {
 		System.out.println("/HomeList 요청");
-		List<HomeReportVO> list = homedao.selectReportHomeList();
+		List<HomeReportVO> list = homeService.getReportHomeList();
 		System.out.println(list);
 		model.addAttribute("list", list);
 		return "admin/reportList";
@@ -196,9 +182,9 @@ public class AdminController {
 	@RequestMapping(value="/successNum")
 	public int successNum(@RequestParam(value ="homeNum") int homeNum) throws Exception {
 		System.out.println(homeNum);
-		adminservice.successNum(homeNum);
+		adminService.successNum(homeNum);
 		
-		int result = adminservice.successNum(homeNum);
+		int result = adminService.successNum(homeNum);
 		
 		if (result != 1) {
 			return result;
@@ -214,7 +200,7 @@ public class AdminController {
 	// 공지 리스트 
 	@GetMapping("/ablist")
 	public String ablist(Model model) {
-		List<AlarmBoardVO> ablist = abservice.alarmBoard();
+		List<AlarmBoardVO> ablist = abService.getAlarmBoardList();
 		model.addAttribute("ablist", ablist);
 		return "/admin/ablist";
 	}
@@ -229,14 +215,14 @@ public class AdminController {
 	@GetMapping("/getAB")
 	public String getAB(Long ano, Model model) {
 		log.info("getAB");
-		model.addAttribute("Aboard", abservice.abget(ano));		
+		model.addAttribute("Aboard", abService.abget(ano));		
 		return "/admin/getAB";
 	}
 		
 	// 수정테이블 불러오기
 	@GetMapping("/abmodify")
 	public String abmodify(Long ano, Model model) {
-		model.addAttribute("board", abservice.abget(ano));
+		model.addAttribute("board", abService.abget(ano));
 		return "/admin/abmodify";
 	}
 	
@@ -252,7 +238,7 @@ public class AdminController {
 		}
 			
 		log.info("=====================================");
-		abservice.abregister(vo);
+		abService.abregister(vo);
 		rttr.addFlashAttribute("result", vo.getAno());
 		return "redirect: /admin/ablist";
 		}
@@ -262,9 +248,9 @@ public class AdminController {
 		public String remove(@RequestParam("ano") Long ano, RedirectAttributes rttr) {
 			log.info("remove..." + ano);
 			
-			List<AlarmBoardAttachVO> attachList = abservice.getabAttachList(ano);	
+			List<AlarmBoardAttachVO> attachList = abService.getabAttachList(ano);	
 			
-			if(abservice.abremove(ano)) {
+			if(abService.abremove(ano)) {
 				deleteFiles(attachList);
 				rttr.addFlashAttribute("result", "success");
 			}
@@ -275,7 +261,7 @@ public class AdminController {
 	@PostMapping("updateAlarm.do")
 	public String modify(AlarmBoardVO vo, RedirectAttributes rttr) {
 		log.info("modify : " + vo);
-		abservice.abmodify(vo);
+		abService.abmodify(vo);
 		return "redirect: /admin/ablist";
 	}
 	
@@ -285,7 +271,7 @@ public class AdminController {
 	public ResponseEntity<List<AlarmBoardAttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
 		List<AlarmBoardAttachFileDTO> list = new ArrayList<>();
 		// folder 만들기
-		String uploadFolder = "/Users/songs/adminupload";
+		String uploadFolder = "C:\\boardUplad\\";
 			
 		String uploadFolderPath = getFolder();
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
@@ -332,7 +318,7 @@ public class AdminController {
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String fileName) {
 		log.info("fileName : " + fileName);
-		File file = new File("/Users/songs/adminupload/" + fileName);
+		File file = new File("C:\\boardUplad\\" + fileName);
 		log.info("file: " + file);
 		ResponseEntity<byte[]> result = null;
 			
@@ -355,7 +341,7 @@ public class AdminController {
 		File file;
 			
 		try {
-			file = new File("/Users/songs/adminupload/" + URLDecoder.decode(fileName, "UTF-8"));
+			file = new File("C:\\boardUplad\\" + URLDecoder.decode(fileName, "UTF-8"));
 			file.delete();
 				
 			if(type.equals("image")) {
@@ -376,7 +362,7 @@ public class AdminController {
 	@ResponseBody
 	public ResponseEntity<List<AlarmBoardAttachVO>> getAttachList(Long ano) {
 		log.info("getAttachList" + ano);
-		return new ResponseEntity<>(abservice.getabAttachList(ano), HttpStatus.OK);
+		return new ResponseEntity<>(abService.getabAttachList(ano), HttpStatus.OK);
 	}
 		
 	// 컨트롤러 내에서 사용하는 메소드 
@@ -410,10 +396,10 @@ public class AdminController {
 			
 		attachList.forEach(attach -> {
 			try {
-				Path file = Paths.get("/Users/songs/adminupload/" + attach.getUploadPath() + "/" + attach.getUuid() + "_" + attach.getFileName());
+				Path file = Paths.get("C:\\boardUplad\\" + attach.getUploadPath() + "\\" + attach.getUuid() + "_" + attach.getFileName());
 				Files.deleteIfExists(file);
 				if(Files.probeContentType(file).startsWith("image")) {
-					Path thumbNail = Paths.get("/Users/songs/adminupload/" + attach.getUploadPath() + "/s_" + attach.getUuid() + "_" + attach.getFileName());
+					Path thumbNail = Paths.get("C:\\boardUplad\\" + attach.getUploadPath() + "\\s_" + attach.getUuid() + "_" + attach.getFileName());
 					Files.delete(thumbNail);
 				}
 			} catch(Exception e) {

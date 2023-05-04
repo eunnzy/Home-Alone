@@ -1,16 +1,15 @@
 package com.alone.home.mapper;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.home.alone.dao.BoardDAO;
 import com.home.alone.mapper.BoardMapper;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.BoardVO;
-import com.home.alone.vo.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -20,8 +19,13 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class BoardMapperTests {
 	
+	@Autowired
+	private BoardDAO boardDAO;
+	
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
+	
+	
 	
 	// 전국 목록 리스트
 	// @Test
@@ -38,6 +42,16 @@ public class BoardMapperTests {
 //		list.forEach(board -> log.info(board));
 //	}
 	
+	@Test
+	public void getMyList() {
+	//	log.info(boardDAO.selectMyBoardCount(cri));
+		
+		// Criteria cri = new Criteria();
+		String imchaId = "hong";
+		int count = boardDAO.selectWriteCount(imchaId);
+		System.out.println(count);
+	}
+	
 	// INSERT처리도 되고 생성된 PK값을 알아야 하는 경우
 	// @Test
 	public void testInsertSelectKey() {
@@ -45,7 +59,7 @@ public class BoardMapperTests {
 		board.setTitle("새로 추가하는 제목 SelectKey");
 		board.setContent("새로 작성하는 내용 SelectKey");
 		board.setCategory("동네맛집");
-		board.setImchaid("cha_user2");
+		board.setImchaId("cha_user2");
 			
 		mapper.insertSelectKey(board);
 			

@@ -79,6 +79,8 @@ public class HomeManageController {
 			
 		}
 		
+		
+		System.out.println("homeList: " + homeList);
 //		System.out.println(manageList);
 //		for (int i=0; i<manageList.size(); i++) {
 //			List<HomeImgVO> img = homeDAO.selectHomeImgList(manageList.get(i).getHomeNum());
@@ -206,7 +208,8 @@ public class HomeManageController {
 							System.out.println(imgStr);
 							
 							homeImgVO.setHomeImgPath(imgStr[0]);
-							homeImgVO.setHomeImgName(imgStr[1]);
+							homeImgVO.setHomeImgUuid(imgStr[1]);
+							homeImgVO.setHomeImgName(imgStr[2]);
 							homeImgList.add(homeImgVO);
 						}
 						break;
@@ -236,7 +239,7 @@ public class HomeManageController {
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
 	public String modifyHome(@RequestParam("homeNum")int homeNum, Model model, HttpServletRequest request) {
 		LessorVO lessorVO = (LessorVO) request.getSession().getAttribute("lessor");	
-		Map<String, Object> home = homeService.selectHomeDetail(homeNum);	// 원래 정보 가져오기
+		Map<String, Object> home = homeService.getHomeDetail(homeNum);	// 원래 정보 가져오기
 		System.out.println("detailHome: " + home);
 		
 //		home.put("deposit", (int)home.get("deposit"));
@@ -362,7 +365,8 @@ public class HomeManageController {
 							System.out.println(imgStr);
 							
 							homeImgVO.setHomeImgPath(imgStr[0]);
-							homeImgVO.setHomeImgName(imgStr[1]);
+							homeImgVO.setHomeImgUuid(imgStr[1]);
+							homeImgVO.setHomeImgName(imgStr[2]);
 							homeImgList.add(homeImgVO);
 						}
 						break;
@@ -390,6 +394,7 @@ public class HomeManageController {
 	
 	
 	
+	// ResponseEntity Http의 Body에 추가될 데이터가 List<HomeImgVO>
 	// 매물 사진 로컬 저장소에 업로드 		
 	@RequestMapping(value = "/homeImgUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<HomeImgVO>> uploadImage(@RequestParam MultipartFile[] homeImg, HttpServletRequest request, 
@@ -413,29 +418,40 @@ public class HomeManageController {
 
 		}
 		
-		String uploadPath = "C:\\homeUpload";	// 파일 저장 경로
-//		String uploadPath = "/Users/sihyun/homeUpload";	// 파일 저장 경로
-		String homeImgPath = "homeImg";
-		File uploadFolder = new File(uploadPath, homeImgPath);
+		String uploadFolder = "C:\\homeUpload";	// 파일 저장 경로
+	//	String homeImgPath = "homeImg";
+	//	File uploadFolder = new File(uploadPath, homeImgPath);
 		
-		if(!uploadFolder.exists())	// 위 경로가 존재하지 않으면
-			uploadFolder.mkdirs();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String str = sdf.format(date);
+		String datePath = str.replace("-", File.separator);
+		File uploadPath = new File(uploadFolder, datePath);
+		
+		if(!uploadPath.exists())	// 위 경로가 존재하지 않으면
+			uploadPath.mkdirs();
+		
 		
 		List<HomeImgVO> homeImgList = new ArrayList<>();	// 매물 이미지 담는 ArrayList 객체
 		
 		for(MultipartFile multifile : homeImg) {
 			
+			String imgName = multifile.getOriginalFilename();	// 전달 받은 파일 이름 그대로 저장
+			
 			HomeImgVO homeImgVO = new HomeImgVO();	// 매물 이미지 정보 객체 생성
-			
-			String imgName = multifile.getOriginalFilename();	// 파일 이름
-			String uuid = UUID.randomUUID().toString();	// 사진 파일 이름이 중복 되면 덮어 쓰기 때문에 이를 방지 하기 위한 UUID(식별자)를 적용.
-			imgName = uuid + "_" + imgName;	// ex) uuid_fileName.jpg/png
-
 			// 매물 객체 정보 저장	
-			homeImgVO.setHomeImgName(imgName);	
-			homeImgVO.setHomeImgPath(homeImgPath);	
+			homeImgVO.setHomeImgName(imgName);	// 사진이름
+			homeImgVO.setHomeImgPath(datePath);	// 사진 경로
 			
-			File save = new File(uploadFolder, imgName);		
+			String uuid = UUID.randomUUID().toString();	// 사진 파일 이름이 중복 되면 덮어 쓰기 때문에 이를 방지 하기 위한 UUID(식별자)를 적용.
+			
+			homeImgVO.setHomeImgUuid(uuid);
+			
+			imgName = uuid + "_" + imgName;	// ex) uuid_fileName.jpg/png
+		
+		//	homeImgVO.setHomeImgPath(homeImgPath);	
+			
+			File save = new File(uploadPath, imgName);		
 			System.out.println("파일 이름 : " + imgName);		
 			System.out.println("파일 타입 : " + multifile.getContentType());
 			System.out.println("파일 크기 : " + multifile.getSize());
@@ -444,7 +460,7 @@ public class HomeManageController {
 				multifile.transferTo(save); // 파일 저장 
 
 				// 썸네일 이미지 저장 
-				FileOutputStream thumbnail = new FileOutputStream(new File(uploadFolder, "t_" + imgName));
+				FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "t_" + imgName));
 				Thumbnailator.createThumbnail(multifile.getInputStream(), thumbnail, 200, 200);
 				thumbnail.close();
 				
@@ -464,8 +480,8 @@ public class HomeManageController {
 	@RequestMapping(value = "/showHomeImg", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getHomeImg(String homeImgName) {
 		System.out.println(homeImgName);
-		File imgFile = new File("C:\\homeUpload", homeImgName);
-//		File imgFile = new File("/Users/sihyun/homeUpload", homeImgName);
+	//	File imgFile = new File("C:\\homeUpload", homeImgName);
+		File imgFile = new File("C:\\homeUpload", homeImgName); 	
 		
 		ResponseEntity<byte[]> result = null;
 		

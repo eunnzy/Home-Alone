@@ -65,9 +65,12 @@ public class LessorMyPageController {
 	@RequestMapping(value="/inqury")
 	public String homeInqList(Model model, HttpServletRequest request) {	// 문의 목록
 		LessorVO lessor = (LessorVO) request.getSession().getAttribute("lessor");
-		List<HomeInquryVO> inqList = homeService.getHomeInqListByLessor(lessor.getLessorId());
-		model.addAttribute("inqList", inqList);
+		System.out.println(lessor);
 		
-		return "/mypage/lessor/inqury ";
+		List<HomeInquryVO> inqList = homeService.getHomeInqListByLessor(lessor.getLessorId());
+		System.out.println(inqList);
+		
+		model.addAttribute("inqList", inqList);
+		return "/mypage/lessor/inquryList";
 	}
 }

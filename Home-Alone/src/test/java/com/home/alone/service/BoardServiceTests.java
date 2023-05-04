@@ -36,7 +36,7 @@ public class BoardServiceTests {
 		board.setTitle("새로 작성하는 글");
 		board.setContent("새로 작성하는 내용");
 		board.setCategory("취미생활");
-		board.setImchaid("Songs");
+		board.setImchaId("Songs");
 		
 		service.register(board);
 		log.info("생성된 게시물의 번호 : " + board.getBno());
@@ -45,13 +45,13 @@ public class BoardServiceTests {
 	// 조회 
 	// @Test
 	public void testGet() {
-		log.info(service.get(1L));
+		log.info(service.getDetail(1L));
 	}
 	
 	// 수정 
 	@Test
 	public void testUpdate() {
-		BoardVO board = service.get(10L);
+		BoardVO board = service.getDetail(10L);
 		if(board == null) {
 			return;
 		}

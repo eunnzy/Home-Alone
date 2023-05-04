@@ -1,6 +1,5 @@
 package com.home.alone.dao;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
+import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 import com.home.alone.vo.LessorVO;
@@ -26,37 +26,37 @@ public class HomeDAOImpl implements HomeDAO{
 	private static final String HOMEMAPPER = "com.home.alone.mapper.HomeMapper.";
 	
 	@Override
-	public int insertHome(HomeVO homeVO) {
+	public int insertHome(HomeVO homeVO) {  // 매물 기본 정보 테이블에 insert
 		return sqlSession.insert(HOMEMAPPER + "insertHome", homeVO);
 	}
 
 	@Override
-	public int insertHomeImgList(List<HomeImgVO> homeImgList) {
+	public int insertHomeImgList(List<HomeImgVO> homeImgList) { // 매물 사진 경로 insert
 		return sqlSession.insert(HOMEMAPPER + "insertHomeImgList", homeImgList);
 	}
 	
 	@Override
-	public int insertHomeOption(HomeOptionVO homeOptionVO) {
+	public int insertHomeOption(HomeOptionVO homeOptionVO) { // 매물 옵션 정보 insert
 		return sqlSession.insert(HOMEMAPPER + "insertHomeOption", homeOptionVO);
 	}
 	
 	@Override
-	public int insertHomeAddInfo(HomeAddInfoVO homenAddInfoVO) {
+	public int insertHomeAddInfo(HomeAddInfoVO homenAddInfoVO) { // 매물 추가 정보 insert
 		return sqlSession.insert(HOMEMAPPER + "insertHomeAddInfo", homenAddInfoVO);
 	}
 
 	@Override
-	public int insertHomePrice(HomePriceVO homePriceVO) {
+	public int insertHomePrice(HomePriceVO homePriceVO) { // 매물 가격 정보 insert
 		return sqlSession.insert(HOMEMAPPER + "insertHomePrice", homePriceVO);
 	}
 
 	@Override
-	public int insertHomeReport(HomeReportVO homeReportVO) {
+	public int insertHomeReport(HomeReportVO homeReportVO) {	// 매물 신고 정보 insert
 		return sqlSession.insert(HOMEMAPPER + "insertHomeReport", homeReportVO);
 	}
 	
 	@Override
-	public int insertHomeReserv(HomeReservVO homeReservVO) {
+	public int insertHomeReserv(HomeReservVO homeReservVO) {	// 매물 예약 정보 insert
 		return sqlSession.insert(HOMEMAPPER + "insertHomeReserv", homeReservVO);
 	}
 
@@ -120,7 +120,6 @@ public class HomeDAOImpl implements HomeDAO{
 
 	@Override
 	public List<HomeReportVO> selectReportHomeList() {
-
 		return sqlSession.selectList(HOMEMAPPER + "selectReportHomeList");
 	}
 	
@@ -152,7 +151,7 @@ public class HomeDAOImpl implements HomeDAO{
 	}
 
 	@Override
-	public List<HomeReservVO> selectHomeReservListByImchaId(String imchaId) {
+	public List<HomeReservPreviewVO> selectHomeReservListByImchaId(String imchaId) {
 		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservListByImchaId", imchaId);
 	}
 
@@ -160,9 +159,21 @@ public class HomeDAOImpl implements HomeDAO{
 	public List<String> selectHomeReservValidTimeList(HomeReservVO homeReservVO) {
 		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservValidTimeList", homeReservVO);
 	}
-
 	
 
-	
+	@Override
+	public List<HomeReservPreviewVO> selectHomeReservListByLessorId(String lessorId) {
+		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservListByLessorId", lessorId);
+	}
+
+	@Override
+	public int updateHomeReservReject(int revNum) {
+		return sqlSession.update(HOMEMAPPER + "updateHomeReservReject", revNum);
+	}
+
+	@Override
+	public int updateHomeReservAccept(int revNum) {
+		return sqlSession.update(HOMEMAPPER + "updateHomeReservAccept", revNum);
+	}
 
 }

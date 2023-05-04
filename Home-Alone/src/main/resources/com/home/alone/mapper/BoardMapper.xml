@@ -28,113 +28,109 @@
 		</trim>
 	</sql>
 	
-	<!-- 로그인 전 리스트 -->
-	<select id="beforeBoard" resultType="com.home.alone.vo.BoardVO">
+	<!-- 커뮤니티 글 목록 -->
+	<select id="selectBoardList" resultType="com.home.alone.vo.BoardVO">
 		<![CDATA[
 		SELECT A.* 
-		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE 
+		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B board_pk) */ rownum rn, B.*, I.nickname 
+			  FROM Board_tb B, Imcha_tb I  
+			  WHERE 
 		]]>
-		
-		<include refid="criteria"></include>
-		
+			  <include refid="criteria"></include>
 		<![CDATA[
-		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')
-		) A WHERE rn > (#{pageNum} -1) * #{amount}
+			rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID ) A 
+		WHERE rn > (#{pageNum} -1) * #{amount}
 		]]>
 	</select>
 	
-	<!-- 로그인 전 갯수 -->
-	<select id="beforeBoardCount" resultType="int">
-		SELECT COUNT(*) FROM 
-		(SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
-		<include refid="criteria"></include>
-		BNO > 0 AND CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')
+	<!-- 커뮤니티 글 개수 -->
+	<select id="selectBoardCount" resultType="int">
+		SELECT COUNT(*) FROM Board_tb 
 	</select>
 	
-	<!-- 로그인 후 리스트 -->
-	<select id="afterBoard" resultType="com.home.alone.vo.BoardVO">
-		<![CDATA[
-		SELECT A.* 
-		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE 
-		]]>
-		
-		<include refid="criteria"></include>
-		
-		<![CDATA[
-		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido = #{sido} AND gugun = #{gugun}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
-		) A WHERE rn > (#{pageNum} -1) * #{amount}
-		]]>
-	</select>
-	
-	<!-- 로그인 후 갯수 -->
-	<select id="afterBoardCount" resultType="int">
-		SELECT COUNT(*) FROM 
-		(SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID) A WHERE 
-		<include refid="criteria"></include>
-		BNO > 0 AND ((CATEGORY IN ('동네소식', '동네질문', '동네맛집', '도와줘요') AND sido = #{sido} AND gugun = #{gugun}) OR (CATEGORY IN ('자취꿀팁', '취미생활', '분실실종')))
-	</select>
 	
 	<!-- 내가쓴글 -->
-	<select id="getMyboard" resultType="com.home.alone.vo.BoardVO">
+	<select id="selectMyBoardList" resultType="com.home.alone.vo.BoardVO">
 		<![CDATA[
 		SELECT A.* 
-		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B pk_board ) */ rownum rn, B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE 
-		rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaid}
-		) A WHERE rn > (#{pageNum} -1) * #{amount}
+		FROM (SELECT /*+ INDEX(I imcha_pk) INDEX_DESC (B board_pk) */ rownum rn, B.*, I.nickname 
+			  FROM Board_tb B, Imcha_tb I 
+			  WHERE rownum <= #{pageNum} * #{amount} AND B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaId}
+			  ) A 
+		WHERE rn > (#{pageNum} -1) * #{amount} 
 		]]>
 	</select>
 	
-	<!-- 내가쓴글 갯수 -->
- 	<select id="getMyboardCount" resultType="int">
- 		SELECT COUNT(*) FROM 
-		(SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaid}) A 
-		WHERE BNO > 0 
+	<select id="selectWriteCount" resultType="int">
+		SELECT COUNT(*)
+		FROM Board_tb
+		WHERE imcha_id = #{imchaId}
 	</select>
 	
+		<!-- 내가쓴글 갯수 -->
+ <!-- 	<select id="selectMyBoardCount" resultType="int">
+ 		SELECT COUNT(*)
+		FROM Board_tb join Imcha_tb using(imcha_id)
+		WHERE imcha_id = #{imchaId}
+ 		SELECT COUNT(*) 
+ 		FROM (SELECT B.*
+ 			  FROM Board_tb B, Imcha_tb I 
+ 			  WHERE B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaId}
+ 			  ) A 
+		WHERE BNO > 0 
+	</select> -->
+	
+	<!-- <select id="selectMyCount" resultType="int">
+		SELECT COUNT(*) 
+ 		FROM Board_tb
+		WHERE imcha_id=#{imchaId}
+	</select>
+	 -->
+	
 	<!-- 등록 -->
-	<insert id="insertSelectKey">
+	<insert id="insertBoard" parameterType="com.home.alone.vo.BoardVO">
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long"> SELECT SEQ_BNO.NEXTVAL FROM dual </selectKey>
-		INSERT INTO Board (BNO, IMCHA_ID, TITLE, CATEGORY, CONTENT) VALUES (#{bno}, #{imchaid}, #{title}, #{category}, #{content})
+		INSERT INTO Board_tb (BNO, IMCHA_ID, TITLE, CATEGORY, CONTENT) VALUES (#{bno}, #{imchaId}, #{title}, #{category}, #{content})
 	</insert>
 	
 	<!-- 조회 -->
-	<select id="read" parameterType="map" resultType="com.home.alone.vo.BoardVO">
-		SELECT B.*, I.nickname, I.sido, I.gugun FROM Board B, Imcha_tb I WHERE B.IMCHA_ID = I.IMCHA_ID AND bno = #{bno}
+	<select id="selectBoardDetail" resultType="com.home.alone.vo.BoardVO">
+		SELECT * FROM Board_tb WHERE bno = #{bno}
 	</select>
 	
 	<!-- 삭제 -->
-	<delete id="delete">
-		DELETE FROM Board WHERE bno = #{bno}
+	<delete id="deleteBoard">
+		DELETE FROM Board_tb WHERE bno = #{bno}
 	</delete>
 	
 	<!-- 수정 -->
-	<update id="update">
-		UPDATE Board SET TITLE=#{title}, CONTENT=#{content}, CATEGORY=#{category}, UPDATEDATE = SYSDATE WHERE bno = #{bno}
+	<update id="updateBoard">
+		UPDATE Board_tb SET TITLE=#{title}, CONTENT=#{content}, CATEGORY=#{category}, UPDATEDATE = SYSDATE WHERE bno = #{bno}
 	</update>
 	
 	<!-- 좋아요 증가  -->
-	<update id="likesUp">
-		UPDATE Board SET likes = likes+1 WHERE bno = #{bno}
+	<update id="updateLikesUp">
+		UPDATE Board_tb SET likes = likes+1 WHERE bno = #{bno}
 	</update>
 	
 	<!-- 좋아요 감소  -->
-	<update id="likesDown">
-		UPDATE Board SET likes = likes-1 WHERE bno = #{bno}
+	<update id="updateLikesDown">
+		UPDATE Board_tb SET likes = likes-1 WHERE bno = #{bno}
 	</update>
 	
 	<!-- 조회수 증가  -->
-	<update id="viewsUp">
-		UPDATE Board SET views = views+1 WHERE bno = #{bno}
+	<update id="updateViewsUp">
+		UPDATE Board_tb SET views = views+1 WHERE bno = #{bno}
 	</update>
 	
 	<!-- 댓글수 증가  -->
-	<update id="replysUp">
-		UPDATE Board SET replys = replys+1 WHERE bno = #{bno}
+	<update id="updateReplysUp">
+		UPDATE Board_tb SET replys = replys+1 WHERE bno = #{bno}
 	</update>
 	
 	<!-- 댓글수 감소  -->
-	<update id="replysDown">
-		UPDATE Board SET replys = replys-1 WHERE bno = #{bno}
+	<update id="updateReplysDown">
+		UPDATE Board_tb SET replys = replys-1 WHERE bno = #{bno}
 	</update>
 	
 </mapper>

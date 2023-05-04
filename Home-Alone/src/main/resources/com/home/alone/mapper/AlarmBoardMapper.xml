@@ -3,29 +3,29 @@
 <mapper namespace="com.home.alone.mapper.AlarmBoardMapper">
 
 	<!-- 리스트 -->
-	<select id="alarmBoard" resultType="com.home.alone.vo.AlarmBoardVO">
-		SELECT * FROM alarmBoard 
+	<select id="selectAlarmBoardList" resultType="com.home.alone.vo.AlarmBoardVO">
+		SELECT * FROM Alarm_Board_tb 
 	</select>
 	
 	<!-- 등록 -->
-	<insert id="insertalarmBoard">
+	<insert id="insertAlarmBoard">
 		<selectKey keyProperty="ano" order="BEFORE" resultType="long"> SELECT SEQ_ANO.NEXTVAL FROM dual </selectKey>
-		INSERT INTO alarmBoard (ano, TITLE, CONTENT) 
+		INSERT INTO Alarm_Board_tb  (ano, TITLE, CONTENT) 
 		VALUES (#{ano}, #{title}, #{content})
 	</insert>
 	
 	<!-- 조회 -->
-	<select id="alarmBoardread" parameterType="map" resultType="com.home.alone.vo.AlarmBoardVO">
-		SELECT * FROM alarmBoard WHERE ano = #{ano}
+	<select id="selectAlarmBoardDetail" parameterType="map" resultType="com.home.alone.vo.AlarmBoardVO">
+		SELECT * FROM Alarm_Board_tb  WHERE ano = #{ano}
 	</select>
 	
 	<!-- 삭제 -->
-	<delete id="alarmBoarddelete">
-		DELETE FROM alarmBoard WHERE ano = #{ano}
+	<delete id="deleteAlarmBoard">
+		DELETE FROM Alarm_Board_tb  WHERE ano = #{ano}
 	</delete>
 	
 	<!-- 수정 -->
-	<update id="alarmBoardupdate">
-		UPDATE alarmBoard SET TITLE = #{title}, CONTENT= #{content}, updatedate = SYSDATE WHERE ano = #{ano}
+	<update id="updateAlarmBoard">
+		UPDATE Alarm_Board_tb SET TITLE = #{title}, CONTENT= #{content}, updatedate = SYSDATE WHERE ano = #{ano}
 	</update>
 </mapper>

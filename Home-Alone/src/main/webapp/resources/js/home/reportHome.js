@@ -1,6 +1,10 @@
 $("#sirenBtn").click(function(){
-	$(".report-modal").css("display", "flex");
+	if(imchaId == '') {
+		alert("로그인을 해주세요!");
+		return false;
+	}
 	
+	$(".report-modal").css("display", "flex");
 	$("#reportBtn").click(function() {
 		let reportType = $("input:radio[name=reportType]:checked").val();
 		let reportContent = $("#reportContent").val();

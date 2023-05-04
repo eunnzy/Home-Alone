@@ -1,31 +1,28 @@
 package com.home.alone.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.home.alone.service.HomeService;
+import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.ImchaVO;
+import com.home.alone.vo.LessorVO;
 
 @Controller
 @RequestMapping("/home/reserv")
 public class HomeReservController {
-//	@Autowired
-//	RevMapper revMapper;
-//	
-	
-//	@Autowired
-//	ReservationService reservationService;
-//	
 	@Autowired
 	HomeService homeService;
 	
@@ -55,10 +52,19 @@ public class HomeReservController {
 	}
 	
 	
-	@RequestMapping("/list")	// 일반회원 리스트
-	public String reservList() {
-		
-		return "mypage/reservationImcha";
+	@RequestMapping("/imcha/list")	// 일반회원 리스트
+	public String reservListByImcha(String imchaId, Model model) {
+		List<HomeReservPreviewVO> reservList = homeService.getReservListByImcha(imchaId);
+		model.addAttribute("reservList", reservList);
+		return "mypage/imcha/reservImcha";
+	}
+	
+	@RequestMapping("/lessor/list")	// 일반회원 리스트
+	public String reservListByLessor(String lessorId, Model model, HttpServletRequest request) {
+		LessorVO lessor = (LessorVO) request.getSession().getAttribute("lessor");	// 회원 아이디 
+		List<HomeReservPreviewVO> reservList = homeService.getReservListByLessor(lessorId);
+		model.addAttribute("reservList", reservList);
+		return "mypage/lessor/reservLessor";
 	}
 
 
@@ -116,13 +122,9 @@ public class HomeReservController {
 //	}
 //	
 //	// 예약 거부
-//	@RequestMapping("/reject")
-//	public String reject(int revNum, String imchaId, int homeNum, HttpServletResponse response) throws IOException {
-//		revMapper.reject(revNum, imchaId, homeNum);
-//		response.setContentType("text/html; charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//        out.println("<script>alert('예약을 거절하였습니다.');history.go(-1);</script>");
-//        out.flush();
-//		return "redirect:/home/reservation/lessorList";
-//	}
+	@RequestMapping("/reject")
+	public String reject(int revNum, HttpServletResponse response) throws IOException {
+		homeService.homeReservReject(revNum);
+		return "redirect:/home/reserv/lessorList";
+	}
 }

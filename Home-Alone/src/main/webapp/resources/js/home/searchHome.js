@@ -76,6 +76,7 @@ function onClickCategory() {
 
 }
 
+// 주위 편의시설 검색
 function searchCategoryPlaces() {
     if (!currCategory) {	// 현재 클릭된 카테고리 없음
     	return;
@@ -234,7 +235,7 @@ function displayHomeList(data, i) {
 
 // 매물 정보 추가 
 function getHomeItem(data) {
-	homeImgFile = data.homeImg.homeImgPath + "/" + data.homeImg.homeImgName;	// 사진경로
+	homeImgFile = encodeURIComponent(data.homeImg.homeImgPath + "/" + data.homeImg.homeImgUuid + "_" +data.homeImg.homeImgName);	// 사진경로
 	
 	let monthly = convertMoney(data.monthly);
 	let deposit = convertMoney(data.deposit);

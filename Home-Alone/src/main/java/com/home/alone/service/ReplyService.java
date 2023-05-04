@@ -2,7 +2,7 @@ package com.home.alone.service;
 
 import java.util.List;
 
-import com.home.alone.vo.Criteria;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.ReplyVO;
 
 public interface ReplyService {

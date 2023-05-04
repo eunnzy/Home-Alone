@@ -1,4 +1,4 @@
-package com.home.alone.vo;
+package com.home.alone.util;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -14,13 +14,9 @@ import lombok.ToString;
 public class Criteria {
 	private int pageNum;		// 페이지 번호 
 	private int amount;			// 한 페이지당 몇 개의 데이터를 보여줄 것인지 결정 
-	
 	private String type;
 	private String keyword;
-	
-	private String imchaid;		// 닉네임
-	private String sido1;		// 주소1
-	private String gugun1;		// 주소2 
+	private String imchaId;		// 닉네임
 	
 	public Criteria() {
 		this(1, 10);

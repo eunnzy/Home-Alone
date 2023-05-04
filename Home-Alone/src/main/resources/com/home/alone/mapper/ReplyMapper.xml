@@ -4,26 +4,26 @@
 
 	<!-- 등록 -->
 	<insert id="insert">
-		INSERT INTO Board_Reply (rno, bno, reply, replyer) VALUES (SEQ_REPLY.NEXTVAL, #{bno}, #{reply}, #{replyer})
+		INSERT INTO Board_Reply_tb (rno, bno, reply, replyer) VALUES (SEQ_REPLY.NEXTVAL, #{bno}, #{reply}, #{replyer})
 	</insert>
 	
 	<!-- 특정 댓글 조회 -->
  	<select id="read" resultType="com.home.alone.vo.ReplyVO">
-		SELECT * FROM Board_Reply WHERE rno = #{rno}
+		SELECT * FROM Board_Reply_tb WHERE rno = #{rno}
 	</select> 
 	
 	<!-- 삭제 -->
 	<delete id="delete">
-		DELETE FROM Board_Reply WHERE rno = #{rno}
+		DELETE FROM Board_Reply_tb WHERE rno = #{rno}
 	</delete>
 	
 	<!-- 수정 -->
  	<update id="update">
-		UPDATE Board_Reply SET reply = #{reply}, updatedate = SYSDATE WHERE rno = #{rno}
+		UPDATE Board_Reply_tb SET reply = #{reply}, updatedate = SYSDATE WHERE rno = #{rno}
 	</update> 
 	
 	<!-- 페이징 처리 리스트 -->
  	<select id="getListWithPaging" resultType="com.home.alone.vo.ReplyVO">
-		SELECT * FROM Board_Reply WHERE bno = #{bno} ORDER BY rno asc
+		SELECT * FROM Board_Reply_tb WHERE bno = #{bno} ORDER BY rno asc
 	</select> 
 </mapper>

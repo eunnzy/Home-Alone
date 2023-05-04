@@ -1,20 +1,18 @@
 package com.home.alone.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.home.alone.dao.BoardDAO;
 import com.home.alone.mapper.BoardAttachMapper;
 import com.home.alone.mapper.BoardLikesMapper;
 import com.home.alone.mapper.BoardMapper;
+import com.home.alone.util.Criteria;
 import com.home.alone.vo.BoardAttachVO;
-import com.home.alone.vo.BoardLikesVO;
 import com.home.alone.vo.BoardVO;
-import com.home.alone.vo.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -22,6 +20,9 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Service
 public class BoardServiceImpl implements BoardService {
+	
+	@Autowired
+	private BoardDAO boardDAO;
 	
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
@@ -33,46 +34,31 @@ public class BoardServiceImpl implements BoardService {
 	private BoardLikesMapper likesMapper;
 	
 
-	// 로그인 전 
 	@Override
-	public List<BoardVO> beforeBoard(Criteria cri) {
+	public List<BoardVO> boardList(Criteria cri) {	// 커뮤니티 글 리스트
 		log.info("before Board" + cri);
-		return mapper.beforeBoard(cri);
+		return boardDAO.selectBoardList(cri);
 	}
 	
-	// 로그인 전 갯수
 	@Override
-	public int beforeBoardCount(Criteria cri) {
+	public int boardCount(Criteria cri) {	// 커뮤니티 글 개수
 		log.info("before Board Count");
-		return mapper.beforeBoardCount(cri);
+		return boardDAO.selectBoardCount(cri);
 	}	
 				
-	// 로그인 후 
-	@Override
-	public List<BoardVO> afterBoard(Criteria cri) {
-		log.info("after Board");
-		return mapper.afterBoard(cri);
-	}
-				
-	// 로그인 후 갯수
-	@Override
-	public int afterBoardCount(Criteria cri) {
-		log.info("after Board Count");
-		return mapper.afterBoardCount(cri);
-	}
-	
 	// 내가 쓴 글 목록 리스트 
 	@Override
-	public List<BoardVO> getMyboard(Criteria cri) {
+	public List<BoardVO> getMyboardList(Criteria cri) {
 		log.info("get getMyboard......");
-		return mapper.getMyboard(cri);
+		return boardDAO.selectMyBoardList(cri);
 	}
 		
 	// 내가 쓴 글 갯수
 	@Override
-	public int getMyboardCount(Criteria cri) {
+	public int getMyboardCount(String imchaId) {
 		log.info("getMyboardCount");
-		return mapper.getMyboardCount(cri);
+		log.info(imchaId);
+		return boardDAO.selectWriteCount(imchaId);
 	}
 	
 	// 등록 
@@ -80,7 +66,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void register(BoardVO board) {
 		log.info("register........" + board);
-		mapper.insertSelectKey(board);
+		boardDAO.insertBoard(board);
 		if(board.getAttachList() == null || board.getAttachList().size() <= 0) {
 			return;
 		}
@@ -92,9 +78,9 @@ public class BoardServiceImpl implements BoardService {
 
 	// 조회
 	@Override
-	public BoardVO get(Long bno) {
+	public BoardVO getDetail(Long bno) {
 		log.info("get........" + bno);
-		return mapper.read(bno);
+		return boardDAO.selectBoardDetail(bno);
 	}
 	
 	// 파일 업로드 조회
@@ -110,7 +96,7 @@ public class BoardServiceImpl implements BoardService {
 	public boolean modify(BoardVO board) {
 		log.info("modify........" + board);
 		attachMapper.deleteAll(board.getBno());
-		boolean modifyResult = mapper.update(board) == 1;
+		boolean modifyResult = boardDAO.updateBoard(board) == 1;
 		if(modifyResult && board.getAttachList() != null && board.getAttachList().size() > 0) {
 			board.getAttachList().forEach(attach -> {
 				attach.setBno(board.getBno());
@@ -126,7 +112,7 @@ public class BoardServiceImpl implements BoardService {
 	public boolean remove(Long bno) {
 		log.info("remove........" + bno);
 		attachMapper.deleteAll(bno);
-		return mapper.delete(bno) == 1;
+		return boardDAO.deleteBoard(bno) == 1;
 	}
 	
 	// 좋아요 On
@@ -144,13 +130,13 @@ public class BoardServiceImpl implements BoardService {
 	// 좋아요 Up
 	@Override
 	public boolean likesUp(Long bno) {
-		return mapper.likesUp(bno) == 1;
+		return boardDAO.updateLikesUp(bno) == 1;
 	}
 		
 	// 좋아요 Down
 	@Override
 	public boolean likesDown(Long bno) {
-		return mapper.likesDown(bno) == 1;
+		return boardDAO.updateLikesDown(bno) == 1;
 	}
 		
 	// 좋아요 체크 
@@ -164,18 +150,18 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean viewsUp(Long bno) {
 		log.info("viewsUp........" + bno);
-		return mapper.viewsUp(bno) == 1;
+		return boardDAO.updateViewsUp(bno) == 1;
 	}
 	
 	// 댓글수 증가
 	@Override
 	public void replysUp(Long bno) {
-		mapper.replysUp(bno);
+		boardDAO.updateReplysUp(bno);
 	}
 						
 	// 댓글수 감소
 	@Override
 	public void replysDown(Long bno) {
-		mapper.replysDown(bno);
+		boardDAO.updateReplysDown(bno);
 	}
 }

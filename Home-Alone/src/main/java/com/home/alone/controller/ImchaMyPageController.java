@@ -48,7 +48,7 @@ public class ImchaMyPageController {
 	}
 	
 	
-	@RequestMapping(value="/modify")	// 수정
+	@RequestMapping(value="/modify")	// 회원정보수정
 	public String modifyImcha(ImchaVO imcha, HttpServletRequest request) throws Exception {
 		System.out.println(imcha);
 		HttpSession session = request.getSession();

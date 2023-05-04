@@ -2,12 +2,13 @@ let index = 0;
 let homeForm = $("#homeForm");
 let homeImgList = [];    
 
-function imgExtentionCheck(fileName, fileSize){	// 파일 확장자 및 크기 체크 
+// 사진 확장자 및 크기 체크 
+function imgCheck(fileName, fileSize){	
 	let regex = new RegExp("(.*?)\.(jpg|png|gif|jpeg)$");	// 파일 확장자 -> jpg / pn / gif / jpeg만 가능
-	let maxSize = 10485760;	
+	let maxSize = 10485760;		// 사진 최대 크기는 1MB까지
 	
 	if(fileSize >= maxSize){
-		alert("파일 사이즈 초과");
+		alert("사진 사이즈 초과입니다. 사진 크기는 1MB까지 가능합니다.");
 		return false;
 	}
 		  
@@ -29,10 +30,10 @@ function showImage(resultArr) {
 	
 	$(resultArr).each(function(i, obj){
 		// encodeURIComponent : 사진 이름이 한글이면 변환 해서 
-		let imgPath = encodeURIComponent(obj.homeImgPath + "/t_" + obj.homeImgName);
+		let imgPath = encodeURIComponent(obj.homeImgPath + "/t_" + obj.homeImgUuid + "_" +obj.homeImgName);
 		console.log("obj: " + obj.homeImgPath);
 		
-		str += "<div class='img-div col-sm-3' data-path='"+ obj.homeImgPath +"' data-imgname='"+obj.homeImgName +"'>";
+		str += "<div class='img-div col-sm-3' data-uuid='"+  obj.homeImgUuid + "' data-path='"+ obj.homeImgPath +"' data-imgname='"+obj.homeImgName +"'>";
 		str += "<div class='imgDelete' data-file='" + imgPath + "'><i class='bi bi-x-lg'></i></div>";
    		str += "<img src='/home/manage/showHomeImg?homeImgName="+ imgPath +"'>";
 		str += "</div>";
@@ -48,10 +49,13 @@ $(document).on("change", "input[type=file]", function(e){
 	e. preventDefault();
 	
 	let formData = new FormData();
+	/* 화면 이동 없이 사진을 서버로 전송하기 위해 FormData객체 생성, 
+	사진을 formData에 저장하여 FormData자체를 서버로 전달하기 위해 */
+		
 	let fileInput = $("input[name=homeImg]");
 	let fileList = fileInput[0].files;
 	
-	if(fileList.length > 10) {
+	if(fileList.length > 9) {
 		alert("사진은 최대 10장까지 첨부가능합니다.");
 		return false;
 	}
@@ -59,18 +63,18 @@ $(document).on("change", "input[type=file]", function(e){
 	console.log("fileList : " + fileList);
 	
 	for(var i=0; i<fileList.length; i++) {
-		if(!imgExtentionCheck(fileList[i].name, fileList[i].size)){	// 파일 확장자 및 크기 검사
+		if(!imgCheck(fileList[i].name, fileList[i].size)){	// 파일 확장자 및 크기 검사
 			return false;
 		}
-		formData.append("homeImg", fileList[i]);
+		formData.append("homeImg", fileList[i]);	// formData에 "homeImg" 이름으로 데이터 추가
 	}
 		
 	
 	// 서버에 사진 전송
 	$.ajax({
 		url: '/home/manage/homeImgUpload',
-    	processData : false,
-    	contentType : false,
+    	processData : false,	// 전송할 데이터를 queryStirng 형태로 변환할지 
+    	contentType : false,	// 전송되는 데이터 content-type
     	data : formData,
     	type : 'POST',
     	dataType : 'json',
@@ -123,16 +127,19 @@ $("#addBtn").on("click",function(e){
 			console.log("resultImg.each() 함수 실행 ");
 			
 			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgName' value='"+ $(obj).data("imgname") +"'>";
-			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("path") +"'>";	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("uuid") +"'>";	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgUuid' value='"+ $(obj).data("path") +"'>";	
+	
 	
 			let homeImgName = $(obj).data("imgname");
+			let homeImgUuid =  $(obj).data("uuid");
 			let homeImgPath = $(obj).data("path");
 			
 			// homeImgData = { homeImgPath : homeImgPath, homeImgName: homeImgName };
 			
-			let homeImgData = homeImgPath + " " + homeImgName;
+			let homeImgData = homeImgPath + " "+ homeImgUuid + " " + homeImgName;
 			homeImgList.push(homeImgData);
-		}); 
+	}); 
 	
 	homeForm.append(str);
 	

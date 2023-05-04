@@ -12,9 +12,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -31,15 +30,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,33 +42,32 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.home.alone.service.AlarmBoardService;
 import com.home.alone.service.BoardService;
+import com.home.alone.util.Criteria;
+import com.home.alone.util.PageDTO;
 import com.home.alone.vo.AlarmBoardVO;
 import com.home.alone.vo.BoardAttachFileDTO;
 import com.home.alone.vo.BoardAttachVO;
 import com.home.alone.vo.BoardLikesVO;
 import com.home.alone.vo.BoardVO;
-import com.home.alone.vo.Criteria;
 import com.home.alone.vo.ImchaVO;
-import com.home.alone.vo.PageDTO;
-import com.home.alone.vo.ReplyVO;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 @Log4j
-@RequestMapping("/community/")
-@AllArgsConstructor
+@RequestMapping("/community")
 public class BoardController {
-
+	
+	@Autowired
 	private BoardService service;
+	@Autowired
 	private AlarmBoardService abservice;
 	
 	// 로그인 여부에 따른 목록 리스트 
 	@GetMapping("/list")
 	public String list(Model model, HttpServletRequest request, Criteria cri) {
-		
+//		System.out.println(cri);
 		HttpSession session = request.getSession();
 		ImchaVO imcha = (ImchaVO) session.getAttribute("imcha");
 		if(cri.getTypeArr() == null) {
@@ -83,33 +77,17 @@ public class BoardController {
 			cri.setKeyword("");
 		}
 		
-		if(imcha == null) {
-			log.info("before Board" + cri);
-			model.addAttribute("list", service.beforeBoard(cri));
-			
-			int total = service.beforeBoardCount(cri);
-			log.info("before total : " + total);
-			PageDTO dto = new PageDTO(cri, total);
-			model.addAttribute("pageMaker", dto);
-			log.info("total : " + dto);
-		} else {
-			String sido1 = imcha.getSido();
-			String gugun1 = imcha.getGugun();
-			cri.setSido1(sido1);
-			cri.setGugun1(gugun1);
-			log.info("after Board cri : " + cri);
-			
-			model.addAttribute("list", service.afterBoard(cri));
-			int total = service.afterBoardCount(cri);
-			log.info("after Board total:" + total);
-			
-			PageDTO dto = new PageDTO(cri, total);
-			model.addAttribute("pageMaker", dto);
-			log.info("total : " + dto);
-		}
+		log.info("before Board" + cri);
+		model.addAttribute("list", service.boardList(cri));
+		
+		int total = service.boardCount(cri);
+		log.info("before total : " + total);
+		PageDTO dto = new PageDTO(cri, total);
+		model.addAttribute("pageMaker", dto);
+		log.info("total : " + dto);
 		
 		// 공지사항 리스트 
-		List<AlarmBoardVO> ablist = abservice.alarmBoard();
+		List<AlarmBoardVO> ablist = abservice.getAlarmBoardList();
 		model.addAttribute("ablist", ablist);
 		
 		return "/community/list";
@@ -123,17 +101,17 @@ public class BoardController {
 	
 	// 조회 불러오기 
 	@GetMapping("/get")
-	public String get(Long bno, Model model, @ModelAttribute("cri") Criteria cri, String userid, HttpServletRequest request, HttpServletResponse response) {
+	public String get(Long bno, Model model, @ModelAttribute("cri") Criteria cri, String imchaId, HttpServletRequest request, HttpServletResponse response) {
 		// 조회 게시물 정보 넘기기 
 		log.info("get");
-		model.addAttribute("board", service.get(bno));
+		model.addAttribute("board", service.getDetail(bno));
 		
 		// 좋아요 처리 
 		BoardLikesVO likevo = new BoardLikesVO();
 		likevo.setBno(bno);
-		likevo.setUserid(userid);
+		likevo.setUserid(imchaId);
 		log.info(likevo);
-		model.addAttribute("like", service.likeCheck(bno, userid));
+		model.addAttribute("like", service.likeCheck(bno, imchaId));
 		
 		// 조회수 처리 
 		Cookie[] cookies = request.getCookies();
@@ -141,28 +119,28 @@ public class BoardController {
 		
 		if (cookies != null && cookies.length > 0) {
 			for (int i = 0; i < cookies.length; i++) {
-				if (cookies[i].getName().equals("cookie" + bno + userid)) {
+				if (cookies[i].getName().equals("cookie" + bno + imchaId)) {
 					viewCookie = cookies[i];
 				}
 			}
 		}
 		
 		if (viewCookie != null) {
-	        if (!viewCookie.getValue().contains("[" + bno + userid +"]")) {
+	        if (!viewCookie.getValue().contains("[" + bno + imchaId +"]")) {
 	        	boolean result = service.viewsUp(bno);
 				if(result) {
 					log.info("조회수 증가");
 	            }else {
 	            	log.info("조회수 증가 에러");
 	            }
-				viewCookie.setValue(viewCookie.getValue() + "_[" + bno + userid + "]");
+				viewCookie.setValue(viewCookie.getValue() + "_[" + bno + imchaId + "]");
 				viewCookie.setPath("/");
 				viewCookie.setMaxAge(60 * 60 * 24);
 	            response.addCookie(viewCookie);
 	        }
 	    } else {
 	    	service.viewsUp(bno);
-	        Cookie newCookie = new Cookie("cookie" + bno + userid, "[" + bno + userid + "]");
+	        Cookie newCookie = new Cookie("cookie" + bno + imchaId, "[" + bno + imchaId + "]");
 	        newCookie.setPath("/");
 	        newCookie.setMaxAge(60 * 60 * 24);
 	        response.addCookie(newCookie);
@@ -183,22 +161,26 @@ public class BoardController {
 	// 수정테이블 불러오기
 	@GetMapping("/modify")
 	public String modify(Long bno, Model model, @ModelAttribute("cri") Criteria cri) {
-		model.addAttribute("board", service.get(bno));
+		model.addAttribute("board", service.getDetail(bno));
 		return "/community/modify";
 	}
 	
 	// 등록 처리
 	@PostMapping("insertBoard.do")
-	public String register(BoardVO vo, RedirectAttributes rttr) {
+	public String register(BoardVO vo, HttpServletRequest request, RedirectAttributes rttr) {
+//		System.out.println(vo);
 		log.info("=====================================");
-		log.info("register : " + vo);
+		HttpSession session = request.getSession();
+		ImchaVO imcha = (ImchaVO) session.getAttribute("imcha");
 		
 		// 파일 업로드 log
 		if(vo.getAttachList() != null) {
 			vo.getAttachList().forEach(attach -> log.info(attach));
 		}
-		
+		vo.setImchaId(imcha.getImchaId());
+		log.info("register : " + vo);
 		log.info("=====================================");
+		
 		service.register(vo);
 		rttr.addFlashAttribute("result", vo.getBno());
 		return "redirect: /community/list";
@@ -232,11 +214,12 @@ public class BoardController {
 	public String mylist(Model model, HttpServletRequest request, Criteria cri) {
 		HttpSession session = request.getSession();
 		ImchaVO imcha = (ImchaVO) session.getAttribute("imcha");
-		cri.setImchaid(imcha.getImchaId());
+
+		cri.setImchaId(imcha.getImchaId());
 		log.info("mylist: " + cri);
-		model.addAttribute("mylist", service.getMyboard(cri));
+		model.addAttribute("mylist", service.getMyboardList(cri));
 		
-		int total = service.getMyboardCount(cri);
+		int total = service.getMyboardCount(cri.getImchaId());
 		log.info("total : " + total);
 		PageDTO dto = new PageDTO(cri, total);
 		model.addAttribute("mypageMaker", dto);
@@ -253,7 +236,7 @@ public class BoardController {
 		
 		List<BoardAttachFileDTO> list = new ArrayList<>();
 		// folder 만들기
-		String uploadFolder = "/Users/songs/upload";
+		String uploadFolder = "C:\\boardUpload\\";
 		
 		String uploadFolderPath = getFolder();
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
@@ -303,7 +286,7 @@ public class BoardController {
     public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, String fileName) {
 		log.info("click : " + fileName);
 		
-         Resource resource = new FileSystemResource("/Users/songs/upload/" + fileName);
+         Resource resource = new FileSystemResource("C:\\boardUpload\\" + fileName);
          if (resource.exists() == false) {
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
          }
@@ -340,7 +323,7 @@ public class BoardController {
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String fileName) {
 		log.info("fileName : " + fileName);
-		File file = new File("/Users/songs/upload/" + fileName);
+		File file = new File( "C:\\boardUpload\\" + fileName);
 		log.info("file: " + file);
 		ResponseEntity<byte[]> result = null;
 		
@@ -363,7 +346,7 @@ public class BoardController {
 		File file;
 		
 		try {
-			file = new File("/Users/songs/upload/" + URLDecoder.decode(fileName, "UTF-8"));
+			file = new File( "C:\\boardUpload\\" + URLDecoder.decode(fileName, "UTF-8"));
 			file.delete();
 			
 			if(type.equals("image")) {
@@ -418,10 +401,10 @@ public class BoardController {
 		
 		attachList.forEach(attach -> {
 			try {
-				Path file = Paths.get("/Users/songs/upload/" + attach.getUploadPath() + "/" + attach.getUuid() + "_" + attach.getFileName());
+				Path file = Paths.get("C:\\boardUpload\\" + attach.getUploadPath() + "/" + attach.getUuid() + "_" + attach.getFileName());
 				Files.deleteIfExists(file);
 				if(Files.probeContentType(file).startsWith("image")) {
-					Path thumbNail = Paths.get("/Users/songs/upload/" + attach.getUploadPath() + "/s_" + attach.getUuid() + "_" + attach.getFileName());
+					Path thumbNail = Paths.get("C:\\boardUpload\\" + attach.getUploadPath() + "/s_" + attach.getUuid() + "_" + attach.getFileName());
 					Files.delete(thumbNail);
 				}
 			} catch(Exception e) {

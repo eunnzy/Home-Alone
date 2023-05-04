@@ -4,11 +4,10 @@ import java.util.List;
 
 import com.home.alone.vo.AlarmBoardAttachVO;
 import com.home.alone.vo.AlarmBoardVO;
-import com.home.alone.vo.BoardVO;
 
 public interface AlarmBoardService {
 	// 목록 
-	public List<AlarmBoardVO> alarmBoard();
+	public List<AlarmBoardVO> getAlarmBoardList();
 		
 	// 등록 
 	public void abregister(AlarmBoardVO board);

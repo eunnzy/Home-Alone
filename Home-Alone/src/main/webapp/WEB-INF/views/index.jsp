@@ -129,8 +129,8 @@ overflow-x:hidden;
         </section> -->
         
         
-        <header>
+       <footer>
 			<jsp:include page="footer.jsp"></jsp:include>
- 		 </header>
+ 		</footer>
 </body>
 </html>

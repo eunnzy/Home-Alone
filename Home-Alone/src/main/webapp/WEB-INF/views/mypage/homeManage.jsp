@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +15,6 @@
 		.home-img img{
 			height: 100%;
 			object-fit:cover;
-		}
-		.home-card{
 			cursor: pointer;
 		}
     </style>
@@ -38,7 +37,7 @@
     <div class="row">
 	    <c:forEach items="${homeList}" var="homeList">
 	      <div class="col-6">
-	        <div class="home-card card bg-light mt-5 mx-2 py-2" onclick="detailHome(${homeList.homeNum })">
+	        <div class="home-card card bg-light mt-5 mx-2 py-2" >
 	          <h4 class="card-header text-truncate">
 	          		 <c:choose>
 							<c:when test="${ homeList.homeValid == 1}">
@@ -54,7 +53,7 @@
 	          <div class="card-body ">
 		          <div class="row">
 			          <div class="col-5 home-img">
-			          		<img src="/home/getHomeImg?homeImgFile=${homeList.homeImg.homeImgPath}/${homeList.homeImg.homeImgName}" class="img-fluid">
+			          		<img src="/home/getHomeImg?homeImgFile=${fn:replace(homeList.homeImg.homeImgPath, '\\', '//')}/${homeList.homeImg.homeImgUuid}_${homeList.homeImg.homeImgName}"  class="img-fluid" onclick="detailHome(${homeList.homeNum })">
 			          </div>
 			          <div class="col-7">
 			          	 <h4>${homeList.rentType }</h4>
@@ -70,9 +69,12 @@
 			           
 						<p class="text-truncate">${homeList.addr2} ${homeList.addr3}</p>
 						<br>
-			            <a href="/home/manage/modify?homeNum=${homeList.homeNum}" class="card-link">수정</a>
-			            <a href="/home/manage/deleteHome?homeNum=${homeList.homeNum}&lessorId=${homeList.lessorId}" class="card-link">삭제</a>
-			          </div>
+						
+			           <button class="btn btn-primary" onclick="btnClick('modify', ${homeList.homeNum})">수정</button>
+			           <button class="btn btn-primary" onclick="btnClick('delete', ${homeList.homeNum})">삭제</button>
+			           
+			       <%--      <a href="/home/manage/deleteHome?homeNum=${homeList.homeNum}" class="card-link">삭제</a>
+	 --%>		          </div>
 		          </div>
 	          </div>
 	        </div>
@@ -85,6 +87,27 @@
   	function detailHome(homeNum) {
   		location.href = "/home/detail?homeNum=" + homeNum;
   	}
+  	
+  	function btnClick(btn, homeNum) {
+  		switch(btn) {
+  	
+  		case "modify" :
+  			location.href = "/home/manage/modify?homeNum=" + homeNum;
+  			break;
+  			
+  		case "delete" :
+  			if(!confirm("삭제하시겠습니까?")) {
+  				return false;
+  			}
+  			
+  			$.ajax({
+  				
+  			});
+  			break;
+  		}
+  		
+  	}
+  	
   </script>
   
 </body>

@@ -17,5 +17,6 @@ public class HomeImgVO {
 	private int homeNum;		// 매물 번호
 	private String homeImgName;		// 사진 이름
 	private String homeImgPath;	// 사진 경로
+	private String homeImgUuid;	// uuid
 	
 }

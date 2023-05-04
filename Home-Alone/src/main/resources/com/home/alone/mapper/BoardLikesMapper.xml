@@ -4,18 +4,18 @@
 	
 	<!-- 좋아요 체크 -->
 	<select id="likeCheck" parameterType="map"  resultType="int">
-		SELECT COUNT(*) FROM Board_likes where bno = #{bno} and user_id = #{userid}
+		SELECT COUNT(*) FROM Board_Likes_tb where bno = #{bno} and user_id = #{userid}
 	</select>
 	
 	<!-- 좋아요 ON -->
 	<insert id="likesOn" parameterType="map">
-		INSERT INTO Board_likes (likeno, bno, user_id, like_check) 
+		INSERT INTO Board_Likes_tb (likeno, bno, user_id, like_check) 
 		VALUES (SEQ_LIKENO.NEXTVAL, #{bno}, #{userid}, 1)
 	</insert>
 	
 	<!-- 좋아요 OFF -->
 	<delete id="likesOff" parameterType="map">
-		DELETE FROM Board_likes WHERE bno = #{bno} AND user_id = #{userid}
+		DELETE FROM Board_Likes_tb WHERE bno = #{bno} AND user_id = #{userid}
 	</delete>
 	
 </mapper>

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class BoardVO {
 	private Long bno;			//글번호
-	private String imchaid;		//작성자
+	private String imchaId;		//작성자
 	private String title;		//제목
 	private String category;	//카테고리
 	private String content;		//내용

@@ -92,10 +92,10 @@ function showImage(resultArr) {
 	
 	$(resultArr).each(function(i, obj){
 		// encodeURIComponent : 사진 이름이 한글이면 변환 해서 
-		let imgPath = encodeURIComponent(obj.homeImgPath + "/t_" + obj.homeImgName);
+		let imgPath = encodeURIComponent(obj.homeImgPath + "/t_" + obj.homeImgUuid + "_" +obj.homeImgName);
 		console.log("obj: " + obj.homeImgPath);
 		
-		str += "<div class='img-div col-sm-3' data-path='"+ obj.homeImgPath +"' data-imgname='"+obj.homeImgName +"'>";
+		str += "<div class='img-div col-sm-3' data-uuid='"+  obj.homeImgUuid + "' data-path='"+ obj.homeImgPath +"' data-imgname='"+obj.homeImgName +"'>";
 		str += "<div class='imgDelete' data-file='" + imgPath + "'><i class='bi bi-x-lg'></i></div>";
    		str += "<img src='/home/manage/showHomeImg?homeImgName="+ imgPath +"'>";
 		str += "</div>";
@@ -189,14 +189,16 @@ $("#updateBtn").on("click",function(e){
 			console.log("resultImg.each() 함수 실행 ");
 			
 			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgName' value='"+ $(obj).data("imgname") +"'>";
-			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("path") +"'>";	
-	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("uuid") +"'>";	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgUuid' value='"+ $(obj).data("path") +"'>";	
+		
 			let homeImgName = $(obj).data("imgname");
+			let homeImgUuid =  $(obj).data("uuid");
 			let homeImgPath = $(obj).data("path");
-			
+		
 			// homeImgData = { homeImgPath : homeImgPath, homeImgName: homeImgName };
 			
-			let homeImgData = homeImgPath + " " + homeImgName;
+			let homeImgData = homeImgPath + " "+ homeImgUuid + " " + homeImgName;
 			homeImgList.push(homeImgData);
 		}); 
 	

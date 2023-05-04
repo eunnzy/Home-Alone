@@ -21,35 +21,64 @@
 		<jsp:include page="../../header.jsp"></jsp:include>
 	</header>
 
-	<h2 style="text-align: center; font-weight: bold;" class="my-5">1대1 문의</h2>
-  	<table class="table table-hover" style="max-width: 78rem; margin-left: auto; margin-right: auto; text-align: center;">
-	    <thead>
-	      <tr>
-	        <th scope="col">작성자</th>
-	        <th scope="col" colspan="2">제목</th>
-	        <th scope="col">작성 일자</th>
-	        <th scope="col">답변 상태</th>
-	      </tr>
-	    </thead>
-		  <tbody>
-		    <c:forEach items="${inqList }" var="inqList">
-		    <%-- <a href="qna/getBpard?iqNum=${qnaList.iqNum}"> --%>
-		      <tr class="table-secondary">
-		        <th scope="row">${inqList.imchaId }</th>
-		        <td colspan="2"><a href="/qna/getBoard?iqNum=${inqList.iqNum}">${inqList.iqTitle }</a></td>
-		        <td><fmt:formatDate value="${inqList.iqDate}" pattern="yyyy-MM-dd" /></td>
-				<c:choose>
-					<c:when test="${ inqList.ansStatus eq 0 }">
-						<td>답변 대기중</td>
-					</c:when>
-					<c:otherwise>
-						<td> 답변 완료 </td>
-					</c:otherwise>
-				</c:choose>
-		      </tr>
-		    </c:forEach>
-	      </tbody>
-    </table>
+	<div class="cotainer">
+  		<div class="col-lg-10 mx-auto">
+			<h1 class="text-center mt-5 mb-4">1대1 문의</h1>
+			<div class="bs-component mt-2">
+		  		<table class="table table-hover table-border" style="max-width: 78rem; margin-left: auto; margin-right: auto; text-align: center;">
+				    <thead>
+				      <tr>
+				       <!--  <th scope="col">작성자</th> -->
+				        <th scope="col" style="width: 60%;" >제목</th>
+				        <th scope="col" style="width: 20%;">작성 일자</th>
+				        <th scope="col" style="width: 20%;">답변 상태</th>
+				      </tr>
+				    </thead>
+					  <tbody>
+					    <c:forEach items="${inqList }" var="inqList">
+					    <%-- <a href="qna/getBpard?iqNum=${qnaList.iqNum}"> --%>
+					      <tr class="table-secondary table-row">
+					       <%--  <th scope="row">${inqList.imchaId }</th> --%>
+					        <td><a href="/inqury/detail?iqNum=${inqList.iqNum}">${inqList.iqTitle }</a></td>
+					        <td><fmt:formatDate value="${inqList.iqDate}" pattern="yyyy-MM-dd" /></td>
+							<c:choose>
+								<c:when test="${ inqList.ansStatus eq 0 }">
+									<td>답변 대기중</td>
+								</c:when>
+								<c:otherwise>
+									<td> 답변 완료 </td>
+								</c:otherwise>
+							</c:choose>
+					      </tr>
+					    </c:forEach>
+				      </tbody>
+			    </table>
+	    	</div>
+		     <div class="page-div mx-auto">
+		          <ul class="pagination pagination-sm bg-light">
+		          	<c:if test="${pageMaker.prev}">
+		          	  <li class="page-item">
+		                <a class="page-link" href="${pageMaker.startPage -1}">&laquo;</a>
+		              </li>
+		          	</c:if>
+		          	
+		          	<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+		          		<li class="page-item ${pageMaker.cri.pageNum == num ? "active" : ""} " >
+		          		<a class="page-link" href="${num}">${num}</a>
+		          		</li>
+		          	</c:forEach>
+		          	
+		          	<c:if test="${pageMaker.next}">
+		          	  <li class="page-item">
+		                <a class="page-link" href="${pageMaker.endPage +1 }">&raquo;</a>
+		              </li>
+		          	</c:if>
+		          </ul>
+	       	</div>
+		        
+		</div>
+	</div>
+	
 	
 </body>
 </html>

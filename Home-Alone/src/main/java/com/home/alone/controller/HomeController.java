@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,11 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.home.alone.dao.HomeDAO;
 import com.home.alone.service.HomeService;
 import com.home.alone.service.LikeService;
 import com.home.alone.vo.HomeAddInfoVO;
-import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomeReportVO;
 import com.home.alone.vo.ImchaVO;
@@ -40,7 +39,7 @@ import com.home.alone.vo.LikeVO;
 
 @Controller
 @RequestMapping("/home")
-@SessionAttributes("home")
+/* @SessionAttributes("home") */
 public class HomeController {
 	@Autowired
 	private HomeService homeService;
@@ -52,7 +51,7 @@ public class HomeController {
 	@RequestMapping("/detail")	
 	public String detailHome(@RequestParam("homeNum") int homeNum, HttpServletRequest request, Model model) {
 		System.out.println(homeNum);
-		Map<String, Object> home = homeService.selectHomeDetail(homeNum);
+		Map<String, Object> home = homeService.getHomeDetail(homeNum);
 		
 		home.put("deposit", homeService.convertMoneyUnit((int)home.get("deposit")));
 		home.put("monthly", homeService.convertMoneyUnit((int)home.get("monthly")));
@@ -65,8 +64,8 @@ public class HomeController {
 		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
 		System.out.println("imcha " + imcha);
 		
-		int homeLike = 0;
-		if(imcha != null) {
+		int homeLike = 0;	
+		if(imcha != null) {	// 좋아요 표시 했는지 확인
 			LikeVO likeVO = new LikeVO();
 			likeVO.setHomeNum(homeNum);
 			likeVO.setImchaId(imcha.getImchaId());
@@ -142,9 +141,10 @@ public class HomeController {
 	}
 	 
 	// 지도 경계 내의 매물 위치 정보 
-	@RequestMapping(value="/homeInBounds", method = RequestMethod.POST)
+	@RequestMapping(value="/homeInBounds" , method = RequestMethod.POST)
 	@ResponseBody
 	public List<HomePreviewVO> homeInBounds(@RequestParam Map<String, Object> mapBounds) {
+		System.out.println(mapBounds);
 		List<HomePreviewVO> homeInBoundsList = null;
 		homeInBoundsList = homeService.homeInBoundsList(mapBounds);
 		System.out.println(homeInBoundsList);
@@ -166,9 +166,9 @@ public class HomeController {
 	@RequestMapping(value = "/getHomeImg", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getPreviewImg(@RequestParam String homeImgFile) {
 		System.out.println("homeImgFile : " + homeImgFile);
+		
 		ResponseEntity<byte[]> result = null;
 		File imgFile = new File("C:\\homeUpload", homeImgFile);
-		
 		try {
 			HttpHeaders header = new HttpHeaders();
 			header.add("Content-type", Files.probeContentType(imgFile.toPath()));
@@ -181,26 +181,6 @@ public class HomeController {
 		
 		return result;
 	}
-	
-	// 매물 문의
-	@RequestMapping(value="/inqury", method=RequestMethod.POST)
-	@ResponseBody
-	public int inquryHome(HomeInquryVO inqData, HttpServletRequest request) {
-		ImchaVO imcha = (ImchaVO) request.getSession().getAttribute("imcha");
-		
-		if(imcha == null) {
-			return 0;
-		}
-		
-		System.out.println(inqData);
-
-		inqData.setImchaId(imcha.getImchaId());
-		System.out.println(inqData);
-
-		
-		return homeService.inquryHome(inqData);
-	}
-	
 	
 	
 	@RequestMapping(value="/report", method=RequestMethod.POST) 	// 매물 신고
@@ -223,7 +203,6 @@ public class HomeController {
 		
 		return homeService.reportHome(homeReportVO);
 	}
-	
 	
 	
 }
