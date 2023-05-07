@@ -29,7 +29,7 @@
 	</sql>
 	
 	<!-- 커뮤니티 글 목록 -->
-	<select id="selectBoardList" resultType="com.home.alone.vo.BoardVO">
+	<select id="selectBoardList" resultType="com.home.alone.board.vo.BoardVO">
 		<![CDATA[
 		SELECT A.* 
 		FROM (SELECT /*+ INDEX(I Imcha_pk) INDEX_DESC (B board_pk) */ rownum rn, B.*, I.nickname 
@@ -50,7 +50,7 @@
 	
 	
 	<!-- 내가쓴글 -->
-	<select id="selectMyBoardList" resultType="com.home.alone.vo.BoardVO">
+	<select id="selectMyBoardList" resultType="com.home.alone.board.vo.BoardVO">
 		<![CDATA[
 		SELECT A.* 
 		FROM (SELECT /*+ INDEX(I imcha_pk) INDEX_DESC (B board_pk) */ rownum rn, B.*, I.nickname 
@@ -88,14 +88,16 @@
 	 -->
 	
 	<!-- 등록 -->
-	<insert id="insertBoard" parameterType="com.home.alone.vo.BoardVO">
+	<insert id="insertBoard" parameterType="com.home.alone.board.vo.BoardVO">
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long"> SELECT SEQ_BNO.NEXTVAL FROM dual </selectKey>
 		INSERT INTO Board_tb (BNO, IMCHA_ID, TITLE, CATEGORY, CONTENT) VALUES (#{bno}, #{imchaId}, #{title}, #{category}, #{content})
 	</insert>
 	
 	<!-- 조회 -->
-	<select id="selectBoardDetail" resultType="com.home.alone.vo.BoardVO">
-		SELECT * FROM Board_tb WHERE bno = #{bno}
+	<select id="selectBoardDetail" resultType="com.home.alone.board.vo.BoardVO">
+		SELECT b.*,  I.nickname
+		FROM Board_tb b, Imcha_tb I
+		WHERE b.imcha_id = I.imcha_id and bno = #{bno}
 	</select>
 	
 	<!-- 삭제 -->

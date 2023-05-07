@@ -31,7 +31,6 @@
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 	
-	<!-- <context:component-scan base-package="com.guardian.myhome.mapper" /> -->
 	<mybatis-spring:scan base-package="com.home.alone.mapper"/>
 	<context:component-scan base-package="com.home.alone.dao"></context:component-scan>
 	<context:component-scan base-package="com.home.alone.service"></context:component-scan>

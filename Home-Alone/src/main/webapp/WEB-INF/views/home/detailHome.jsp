@@ -286,15 +286,14 @@
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a94d4863c9f7363e85ad81dac027db86"></script>
 	<script>
-		let latitude = ${home.latitude};
-		let longitude = ${home.longitude};
-		let homeNum = ${home.homeNum};
-		let imchaId = "${imcha.imchaId}";
-		let enrollName = $('#enrollName').val();
-		let enrollDate = $('#enrollDate').val();
+		var latitude = ${home.latitude};
+		var longitude = ${home.longitude};
+		var homeNum = ${home.homeNum};
+		var imchaId = "${imcha.imchaId}";
+		var enrollName = $('#enrollName').val();
+		var enrollDate = $('#enrollDate').val();
 		var lessorId = "${home.lessorId}";
-		let homeLike = ${homeLike};
-		console.log(search);
+		var homeLike = ${homeLike};
 	</script>
 	<script src="/js/home/reportHome.js"></script>
 	<script src="/js/home/detailHome.js"></script>
@@ -324,7 +323,7 @@
 				
 				$.ajax({
 					type : 'get',
-					url : '/like/clickLike?homeNum=' + homeNum,
+					url : '/home/like/click?homeNum=' + homeNum,
 					success : function (data) {
 						if (data > 0) {
 							$("#likeBtn").prop("src", "/icon/heart-fill.png");

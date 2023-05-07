@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.home.alone.mapper.BoardReplyMapper">
+
+	<!-- 등록 -->
+	<insert id="insertBoardReply">
+		INSERT INTO Board_Reply_tb (rno, bno, reply, replyer) VALUES (SEQ_REPLY.NEXTVAL, #{bno}, #{reply}, #{replyer})
+	</insert>
+	
+	<!-- 특정 댓글 조회 -->
+ 	<select id="selectBoardReply" resultType="com.home.alone.board.vo.BoardReplyVO">
+		SELECT * FROM Board_Reply_tb WHERE rno = #{rno}
+	</select> 
+	
+	<!-- 삭제 -->
+	<delete id="deleteBoardReply">
+		DELETE FROM Board_Reply_tb WHERE rno = #{rno}
+	</delete>
+	
+	<!-- 수정 -->
+ 	<update id="updateBoardReply">
+		UPDATE Board_Reply_tb SET reply = #{reply}, updatedate = SYSDATE WHERE rno = #{rno}
+	</update> 
+	
+	<!-- 페이징 처리 리스트 -->
+ 	<select id="selectBoardReplyListWithPaging" resultType="com.home.alone.board.vo.BoardReplyVO">
+		SELECT * FROM Board_Reply_tb WHERE bno = #{bno} ORDER BY rno asc
+	</select> 
+</mapper>

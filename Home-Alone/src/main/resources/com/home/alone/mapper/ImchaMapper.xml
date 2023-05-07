@@ -7,7 +7,7 @@
  <mapper namespace="com.home.alone.mapper.ImchaMapper">
  
  	<!-- 회원가입 -->
- 	<insert id="insertImcha" parameterType="com.home.alone.vo.ImchaVO">
+ 	<insert id="insertImcha" parameterType="com.home.alone.member.vo.ImchaVO">
 	insert into Imcha_tb (imcha_id, imcha_pw, name, nickname, phone, user_roll, sido, gugun)          
 	values(#{imchaId}, #{imchaPw}, #{name}, #{nickname}, #{phone}, #{userRoll}, #{sido}, #{gugun})
  	</insert> 
@@ -23,7 +23,7 @@
  	</select>
  	
  	<!-- 로그인 -->
- 	<select id="selectImchaLogin" resultType="com.home.alone.vo.ImchaVO">
+ 	<select id="selectImchaLogin" resultType="com.home.alone.member.vo.ImchaVO">
        select imcha_id AS imchaId, imcha_pw AS imchaPw, name, 
        		  nickname, phone, user_roll AS userRoll, sido, gugun
        from Imcha_tb where imcha_Id = #{imchaId} and imcha_pw = #{imchaPw}
@@ -35,7 +35,7 @@
     </select>
  	 
  	 <!-- 비밀번호 찾기 -->
- 	 <select id="selectImchaPw" resultType="com.home.alone.vo.ImchaVO">
+ 	 <select id="selectImchaPw" resultType="com.home.alone.member.vo.ImchaVO">
  	 	select imcha_pw As imchaPw from imcha_tb where imcha_id = #{imchaId} and phone = #{phone}
  	 </select>
  	 
@@ -51,7 +51,7 @@
  		where imcha_Id=#{imchaId}
  	</update>
  	
- 	<select id="selectImchaInfo" resultType="com.home.alone.vo.ImchaVO">
+ 	<select id="selectImchaInfo" resultType="com.home.alone.member.vo.ImchaVO">
  		select imcha_id AS imchaId, imcha_pw AS imchaPw, name, 
  			   nickname, phone, user_roll AS userRoll, sido, gugun
        from Imcha_tb where imcha_Id=#{imchaId}

@@ -41,6 +41,7 @@ $("#sirenBtn").click(function(){
 					alert("회원만 가능합니다.")
 				}else {
 					alert("신고가 정상적으로 접수되었습니다.");
+					$(".report-modal").css("display", "none");
 				}
 			},
 			error: function(xhr, status, error){console.log(xhr.status, status)}

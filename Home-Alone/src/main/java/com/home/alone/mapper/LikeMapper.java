@@ -6,16 +6,16 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.home.alone.vo.HomeDetailVO;
+import com.home.alone.vo.HomeLikeVO;
 import com.home.alone.vo.HomeVO;
-import com.home.alone.vo.LikeVO;
 
-@Repository
+//@Repository
 public interface LikeMapper {
 
 		// 찜하기 ( 추가 )
-		public int insertLike(LikeVO vo);
+		public int insertLike(HomeLikeVO vo);
 		// 찜 목록 확인
-		public List<LikeVO> getLikeByImchaId(String imchaId);
+		public List<HomeLikeVO> getLikeByImchaId(String imchaId);
 		// 찜 목록 1개 삭제
 		public boolean delete(@Param("homeNum")int homeNum, @Param("imchaId")String imchaId);
 		// 게시물삭제시 전체삭제
@@ -24,7 +24,7 @@ public interface LikeMapper {
 //		public LikeVO getByLikeNumWithImchaId(@Param("vo")LikeVO vo);
 		
 		
-		public int checkLike(LikeVO vo);
+		public int checkLike(HomeLikeVO vo);
 		
-		public HomeDetailVO getLikeDetail(LikeVO vo);
+		public HomeDetailVO getLikeDetail(HomeLikeVO vo);
 }

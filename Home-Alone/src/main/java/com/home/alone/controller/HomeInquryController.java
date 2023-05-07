@@ -20,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.home.alone.member.vo.ImchaVO;
+import com.home.alone.member.vo.LessorVO;
+import com.home.alone.service.HomeInquryService;
 import com.home.alone.service.HomeService;
-import com.home.alone.util.Criteria;
 import com.home.alone.vo.HomeInqAnswerVO;
 import com.home.alone.vo.HomeInquryDetailVO;
 import com.home.alone.vo.HomeInquryVO;
-import com.home.alone.vo.ImchaVO;
-import com.home.alone.vo.LessorVO;
-import com.home.alone.vo.ReplyVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -37,8 +36,7 @@ import lombok.extern.log4j.Log4j;
 public class HomeInquryController {
 	
 	@Autowired
-	HomeService homeService;
-	
+	HomeInquryService homeInquryService;
 	
 	// 매물 문의 등록
 	@RequestMapping(value="/register", method=RequestMethod.POST)
@@ -49,13 +47,13 @@ public class HomeInquryController {
 			return 0;
 		}
 		
-		return homeService.inquryHome(inqData);
+		return homeInquryService.inquryHome(inqData);
 	}
 	
 	
 	@RequestMapping("/detail")	// 문의 상세 페이지
 	public String detail(@RequestParam("iqNum") int iqNum, Model model) {
-		HomeInquryDetailVO homeInqDetail = homeService.getHomeInqDetail(iqNum);
+		HomeInquryDetailVO homeInqDetail = homeInquryService.getHomeInqDetail(iqNum);
 		System.out.println(homeInqDetail);
 		model.addAttribute("inq", homeInqDetail);
 	
@@ -66,14 +64,14 @@ public class HomeInquryController {
 	@GetMapping(value = "/answer/{iqNum}", produces= {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<List<HomeInqAnswerVO>> getList(@PathVariable("iqNum") int iqNum) {
 		log.info("get List.........");
-		return new ResponseEntity<>(homeService.getHomeInqAnswerList(iqNum), HttpStatus.OK);
+		return new ResponseEntity<>(homeInquryService.getHomeInqAnswerList(iqNum), HttpStatus.OK);
 	}
 	
 	// 답변 삭제 
 	@DeleteMapping(value="/answer/delete/{ansNum}", produces= {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> remove(@PathVariable("ansNum") int ansNum) {
 		log.info("remove : " + ansNum);
-		return homeService.deleteHomeInqAnswer(ansNum) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return homeInquryService.deleteHomeInqAnswer(ansNum) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 		
 	
@@ -81,7 +79,7 @@ public class HomeInquryController {
 	@PostMapping(value = "/answer/register", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> create(@RequestBody HomeInqAnswerVO homeInqAnsVO) {
 		log.info("HomeInqAnswerVO : " + homeInqAnsVO);
-		int insertCount = homeService.registerHomeInqAnswer(homeInqAnsVO);
+		int insertCount = homeInquryService.registerHomeInqAnswer(homeInqAnsVO);
 		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
@@ -92,7 +90,7 @@ public class HomeInquryController {
 	@ResponseBody
 	public int lessorIdCheck(HttpServletRequest request) {
 		LessorVO lessor = (LessorVO) request.getSession().getAttribute("lessor");
-		return homeService.homeAnsIdCheck(lessor.getLessorId());	// 
+		return homeInquryService.homeAnsIdCheck(lessor.getLessorId());	// 
 	}
 	
 	
@@ -102,7 +100,7 @@ public class HomeInquryController {
 		LessorVO lessor = (LessorVO) request.getSession().getAttribute("lessor");
 		homeInqAnswer.setLessorId(lessor.getLessorId());
 		System.out.println(homeInqAnswer);
-		return homeService.modifyHomeInqAnswer(homeInqAnswer);
+		return homeInquryService.modifyHomeInqAnswer(homeInqAnswer);
 	}
 	
 }

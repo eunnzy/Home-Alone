@@ -14,7 +14,7 @@
 	</delete>
 	
 	<!-- 게시물의 파일 조회 -->
-	<select id="findByBno" resultType="com.home.alone.vo.BoardAttachVO">
+	<select id="findByBno" resultType="com.home.alone.board.vo.BoardAttachVO">
 		SELECT * FROM Board_Attach_tb WHERE bno = #{bno}
 	</select>
 	
@@ -24,7 +24,7 @@
 	</delete>
 	
 	<!-- 이전 업로드 파일 확인 -->
-	<select id="getOldFiles" resultType="com.home.alone.vo.BoardAttachVO">
+	<select id="getOldFiles" resultType="com.home.alone.board.vo.BoardAttachVO">
 		SELECT * FROM Board_Attach_tb WHERE uploadpath = to_char(SYSDATE -1, 'yyyy/mm/dd')
 	</select>
 	

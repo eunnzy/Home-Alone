@@ -2,8 +2,8 @@ package com.home.alone.mapper;
 
 import java.util.List;
 
+import com.home.alone.member.vo.ImchaVO;
 import com.home.alone.vo.AdminVO;
-import com.home.alone.vo.ImchaVO;
 
 
 public interface AdminMapper {

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.home.alone.mapper.HomeReservMapper">
+ 	
+ 	<!-- 예약 정보 등록 -->
+ 	<insert id="insertHomeReserv" parameterType="com.home.alone.vo.HomeReservVO">	<!--  예약 신청 -->
+  		insert into Home_Reserv_tb (rev_num, lessor_id, imcha_id, home_num, rev_date, rev_time)
+  		values ((select nvl(max(rev_num), 0) + 1 from Home_Reserv_tb), #{lessorId}, #{imchaId}, #{homeNum}, #{revDate}, #{revTime} )
+  	</insert>
+  	
+  	<!-- 해당 날짜에 해당하는 예약 불가능한 시간 리스트 -->
+  	<select id="selectHomeReservInvalidTimeList" parameterType="com.home.alone.vo.HomeReservVO" resultType="java.lang.String">
+  		select rev_time
+  		from Home_Reserv_tb
+  		where home_num = #{homeNum} and rev_date = TO_DATE(#{revDate}) and rev_state &lt; 2
+  		<!-- rev_state < 2 : 대기중(0), 수락(1) 시간대는 예약이 불가능 함 -->
+  	</select>
+  	
+  	
+  	<!-- 예약 삭제 -->
+  	<delete id="deleteHomeReserv">	
+ 		delete from Home_Reserv_tb where rev_num = #{revNum}
+ 	</delete>
+ 	
+ 	<!-- 예약 목록(중개인) -->
+ 	<select id="selectReservByLessor" resultType="com.home.alone.vo.HomeReservVO">
+  		select 
+  		from Home_Reserv_tb where LESSOR_ID = #{lessorId} and revState != 2
+  	</select>
+  	
+  	<!-- 예약 거절 -->
+  	<update id="updateReservStatusByLessor">	
+ 		update Home_Reserv_tb set revState = 2 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<!-- 예약 상태 변경 -->
+ 	<update id="updateRevState">
+ 		update Home_Reserv_tb set revState = 1 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<!-- 예약 목록 리스트 -->
+ 	<select id="selectReservDate" resultType="com.home.alone.vo.HomeReservVO">
+ 		SELECT *
+	    FROM Home_Reserv_tb
+	    WHERE revDate BETWEEN TO_DATE(#{revDate}, 'YYYY-MM-DD') AND TO_DATE(#{revDate})+1
+ 	</select>
+ 	
+ 	<!-- 예약 신청 목록(일반회원) -->
+	<select id="selectHomeReservListByImchaId" resultType="com.home.alone.vo.HomeReservPreviewVO">
+ 		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
+ 			   rev_state as revState, jgs_name as jgsName
+ 		FROM Home_Reserv_tb 
+	 		 join Lessor_tb using(lessor_id)
+ 		WHERE imcha_id = #{imcha_id}
+ 	</select>
+ 	
+ 	<!-- 예약 목록(중개인) -->
+ 	<select id="selectHomeReservListByLessorId" resultType="com.home.alone.vo.HomeReservPreviewVO">
+ 		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
+ 			   rev_state as revState, name as imchaName 
+ 		FROM Home_Reserv_tb 
+	 		 join Imcha_tb using(imcha_id)
+ 		WHERE lessor_id = #{lessorId}
+ 	</select>
+ 	
+ 	<!-- 일반회원 예약 목록 개수 -->
+ 	<select id="selectHomeReservCountImcha">
+ 		select count(*) from Home_Reserv_tb where imcha_id = #{imchaId}
+ 	</select> 
+ 	
+ 	<!-- 예약 거절 -->
+ 	<update id="updateHomeReservReject" >	
+ 		UPDATE Home_Reserv_tb SET rev_state = 2 WHERE rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<!-- 예약 수락 -->
+	<update id="updateHomeReservAccept" >
+ 		UPDATE Home_Reserv_tb SET rev_state = 1 WHERE rev_num = #{revNum}
+ 	</update>
+ 	
+ 	<!-- 예약 취소 -->
+ 	<update id="updateHomeReservCancel" >
+ 		UPDATE Home_Reserv_tb SET rev_state = 3 WHERE rev_num = #{revNum}
+ 	</update>
+ 	
+ </mapper>

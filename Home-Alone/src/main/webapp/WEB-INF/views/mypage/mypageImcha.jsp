@@ -29,13 +29,13 @@
           </button>
         </td>
         <td>
-          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/like/likeList?imchaId=${imcha.imchaId}'">
+          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/home/like/list'">
           	<div class="imcha-div"><img src="/img/heart.png" alt="하트이미지" ></div>
           		찜 목록
           </button>
         </td>
         <td>
-          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/home/reserv/imcha/list?imchaId=${imcha.imchaId}'">
+          <button class="mx-5 imcha-button" type="button" onclick = "location.href = '/home/reserv/imcha/list'">
           	<div class="imcha-div"><img src="/img/booking.png" alt="예약이미지"></div>
           		예약 확인
           </button>

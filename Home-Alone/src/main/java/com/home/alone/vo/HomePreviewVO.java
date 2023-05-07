@@ -42,4 +42,6 @@ public class HomePreviewVO {	// 매물 미리보기 VO
 	private Date homeRegDate;	// 글 등록 날짜
 	private List<String> optionList;
 	private HomeImgVO homeImg;
+	private String depositUnit;
+	private String monthlyUnit;
 }

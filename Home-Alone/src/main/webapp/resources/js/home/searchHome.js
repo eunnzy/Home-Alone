@@ -237,18 +237,18 @@ function displayHomeList(data, i) {
 function getHomeItem(data) {
 	homeImgFile = encodeURIComponent(data.homeImg.homeImgPath + "/" + data.homeImg.homeImgUuid + "_" +data.homeImg.homeImgName);	// 사진경로
 	
-	let monthly = convertMoney(data.monthly);
+	/*let monthly = convertMoney(data.monthly);
 	let deposit = convertMoney(data.deposit);
-	let adminCost = convertMoney(data.adminCost);
+	let adminCost = convertMoney(data.adminCost);*/
 	
 	let homeStr = "";
 	homeStr += "<div class='home-card' onclick='detailHome("+ data.homeNum + ")'> <div class='home-img-wrap'>"
 	homeStr += "<img src='/home/getHomeImg?homeImgFile=" + homeImgFile + "'> </div>"
 	homeStr += "<div class='home-content-wrap text-truncate'> <h4>" + data.rentType + " " ;
 	if(data.rentType == "월세")
-		homeStr  += deposit +  "/" + monthly + "</h4>";
+		homeStr  += data.depositUnit +  "/" +  data.monthlyUnit + "</h4>";
 	else 			
-		homeStr  += deposit +  "</h4>";
+		homeStr  += data.depositUnit +  "</h4>";
 	homeStr += "<p>" + data.homeType +" | " + data.homeArea + "평 | " + data.floor +"층" + "</p>";
 	homeStr += "<p>"+ data.addr2  +"</p>"	
 	homeStr += "<p>"+ data.homeTitle  +"</p> </div> </div>"	
@@ -399,7 +399,7 @@ function removeCategoryMarker() {
 
 // 마커 오버레이 생성
 function getOverlay(data) {
-	let homeImg =  data.homeImg.homeImgPath + "/t_" + data.homeImg.homeImgName;	// 사진경로
+	let homeImg =  encodeURIComponent(data.homeImg.homeImgPath + "/" + data.homeImg.homeImgUuid + "_" +data.homeImg.homeImgName);	// 사진경로
 	console.log(homeImg);
 	
 	
@@ -448,7 +448,7 @@ function removeMarker() {
 }
 
 // 돈(관리비, 월세, 보증금 등) 단위 변환
-function convertMoney(money) {	
+/*function convertMoney(money) {	
 	let convert = ""; 
 	if(money == 0) {
 		convert = "없음";
@@ -463,7 +463,7 @@ function convertMoney(money) {
 	}
 	
 	return convert;
-}
+}*/
 
 // 상세보기 페이지 이동
 function detailHome(homeNum) {

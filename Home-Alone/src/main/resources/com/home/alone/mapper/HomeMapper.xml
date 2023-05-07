@@ -6,7 +6,7 @@
  
  <mapper namespace="com.home.alone.mapper.HomeMapper">
  	
- 	<!-- 매물 등록  -->
+ 	<!-- 매물 기본 정보 삽입  -->
  	 <insert id="insertHome"  parameterType="com.home.alone.vo.HomeVO">
  		insert into Home_tb(home_num, home_type, addr1, addr2, addr3, latitude, longitude, home_area, rent_type, rent_periods,
  						rent_unit, room_count, floor, total_floor ,home_title, home_detail, lessor_id) 
@@ -17,11 +17,13 @@
  		</selectKey>
  	</insert>
  	
+ 	<!-- 매물 옵션 정보 삽입 -->
  	<insert id="insertHomeOption" parameterType="com.home.alone.vo.HomeOptionVO">
  	insert into Home_Option_tb(home_num, option_list)
  		values(#{homeNum}, #{optionList})
  	</insert>
  	
+ 	<!-- 매물 추가 정보 삽입 -->
  	<insert id="insertHomeAddInfo" parameterType="com.home.alone.vo.HomeAddInfoVO">
  		insert into Home_AddInfo_tb(home_num, parking, pet, balcony, elevator, move_date)
  		values(#{homeNum}, #{parking}, 
@@ -34,38 +36,47 @@
  			#{moveDate} ) 
  	</insert>
  	
+ 	<!--  매물 이미지 삽입 -->
  	<insert id="insertHomeImgList" parameterType="java.util.List">
  		<foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
- 		into Home_Img_tb(home_num, home_img_name, home_img_path, home_img_uuid) 
+ 		into Home_Img_tb(img_num, home_num, home_img_name, home_img_path, home_img_uuid) 
  		values
- 			(#{item.homeNum}, #{item.homeImgName}, #{item.homeImgPath}, #{item.homeImgUuid})
+ 		((select nvl(max(img_num), 0) + 1 from Home_Img_tb),#{item.homeNum}, #{item.homeImgName}, #{item.homeImgPath}, #{item.homeImgUuid})
  		</foreach>
  	</insert>
  	
- 	
+ 	<!-- 매물 가격 정보 삽입 -->
  	<insert id="insertHomePrice" parameterType="com.home.alone.vo.HomePriceVO">
  		insert into Home_Price_tb(home_num, deposit, monthly, admin_cost)  
  		values (#{homeNum}, #{deposit}, #{monthly}, #{adminCost})
  	</insert>
+ 		
+	<!-- 매물 사진 삽입  -->
+ 	<insert id="insertHomeImg" parameterType="com.home.alone.vo.HomeImgVO">
+ 		insert into Home_Img_tb(img_num, home_num, home_img_name, home_img_path, home_img_uuid) 
+ 		values((select nvl(max(img_num), 0) + 1 from Home_Img_tb), #{homeNum}, #{homeImgName}, #{homeImgPath}, #{homeImgUuid})
+ 	</insert>
  	
- 	<!-- 매물 신고 삽입 -->
+ 	<!-- 매물 신고 정보 삽입 -->
 	<insert id="insertHomeReport" parameterType="com.home.alone.vo.HomeReportVO">
 		insert into Home_Report_tb(report_num, home_num, imcha_id, report_type, report_content) 
 		values ((select nvl(max(report_num), 0) + 1 from Home_Report_tb), #{homeNum}, #{imchaId}, #{reportType}, #{reportContent} )
 	</insert>
- 	
 	
-	<select id="selectHomeInBoundsList" resultType="com.home.alone.vo.HomePreviewVO" parameterType="hashmap">
-			select  <![CDATA[/*+ INDEX(Home_tb home_pk)*/]]> home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
+	
+	<!-- 지도 경계 내 매물 리스트 반환 -->
+	<select id="selectHomeInBoundsList" resultType="com.home.alone.vo.HomePreviewVO" parameterType="hashmap"> 
+			select  <![CDATA[/*+ INDEX(Home_tb home_pk) */]]> home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
 			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
 			from Home_tb 
 			join Home_AddInfo_tb using(home_num)
 			join Home_Price_tb using(home_num) 
-			where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) 
+			where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) and home_valid=1
 	</select>
 	
-	<select id="selectHomeListByFilter" parameterType="hashmap" resultType="com.home.alone.vo.HomePreviewVO">
+	<!--  매물 필터 검색 -->
+	<select id="selectHomeListByFilter" parameterType="hashmap" resultType="com.home.alone.vo.HomePreviewVO">	
 		select <![CDATA[/*+ INDEX(Home_tb home_pk)*/]]> home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
 			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
@@ -73,7 +84,7 @@
 			join Home_AddInfo_tb using(home_num)
 			join Home_Price_tb using(home_num) 
 			join Home_Option_tb using(home_num) 
-		where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) 
+		where (latitude Between #{swLat} and #{neLat}) and (longitude Between #{swLng} and #{neLng}) and home_valid=1
 		<choose>
 			<when test="homeType.size != 0">
 				and home_type in 
@@ -223,11 +234,10 @@
 					and balcony = #{addInfo.balcony}
 				</if>
 			</when>
-			
 		</choose>
 	</select>
 	
- 	
+ 	<!-- 매물 상세 정보 조회 -->
  	<select id="selectHomeDetail" resultType="com.home.alone.vo.HomeDetailVO">
 		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, rent_unit AS rentUnit, room_count AS roomCount, 
@@ -240,28 +250,24 @@
 		where home_num = #{homeNum}
 	</select>
 	
+	<!-- 매물 옵션 정보 조회 -->
 	<select id="selectHomeOption" resultType="com.home.alone.vo.HomeOptionVO">
  		select option_list as optionList
  		from Home_Option_tb
  		where home_num = #{homeNum}
  	</select>
 	
-	 <!-- <select id="selectHomeOption" resultType="com.home.alone.vo.HomeOptionVO">
- 		select washer, telev, micro_wav AS microWav, gas_range AS gasRange, induction, desk, bed,
-				aircon, fridge, shoes, closet, door_lock AS doorLock, bidet
- 		from Home_Option_tb 
- 		where home_num = #{homeNum}
- 	</select> -->
- 	
- 	<select id="selectHomeAddInfo" resultType="com.home.alone.vo.HomeAddInfoVO">
+ 	<!-- 매물 추가 정보 조회-->
+ 	<select id="selectHomeAddInfo" resultType="com.home.alone.vo.HomeAddInfoVO"> 
  		select parking, pet, balcony, elevator, move_date AS moveDate 
  		from Home_AddInfo_tb
  		where home_num = #{homeNum}
  	</select>
 	
-	 	
- 	<select id="selectHomeImgList" resultType="com.home.alone.vo.HomeImgVO">
- 		select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath, home_img_uuid as homeImgUuid  
+	<!-- 매물 사진 리스트 조회-->
+ 	<select id="selectHomeImgList" resultType="com.home.alone.vo.HomeImgVO">	
+ 		select  <![CDATA[/*+ INDEX(Home_Img_tb home_img_pk) */]]> home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath, 
+ 				home_img_uuid as homeImgUuid  
  		from Home_Img_tb where home_num = #{homeNum}
  	</select>
 	
@@ -273,25 +279,30 @@
  		</foreach>
 	</select>
 	
-	
-	
-	<!-- 매물 사진 등록  -->
- 	<insert id="insertHomeImg" parameterType="com.home.alone.vo.HomeImgVO">
- 		insert into Home_Img_tb(img_num, home_num, home_img_name, home_img_path, home_img_uuid) 
- 		values((select nvl(max(img_num), 0) + 1 from Home_Img_tb), #{homeNum}, #{homeImgName}, #{homeImgPath}, #{homeImgUuid})
- 	</insert>
 
- 	
-	<select id="selectPreviewHomeImg" resultType="com.home.alone.vo.HomeImgVO"> <!-- 미리보기 사진 -->
+ 	<!-- 미리보기 사진으로 쓸 매물 사진 조회 -->
+	<select id="selectPreviewHomeImg" resultType="com.home.alone.vo.HomeImgVO"> 
 			select home_num AS homeNum, home_img_name AS homeImgName, home_img_path AS homeImgPath, home_img_uuid as homeImgUuid   
-			from (select * from Home_Img_tb where home_num = #{homeNum})
+			from (select <![CDATA[/*+ INDEX(Home_Img_tb home_img_pk) */]]>   * from Home_Img_tb where home_num = #{homeNum})
 			where <![CDATA[ rownum <2 ]]>
 	</select>
+	
+	<select id="selectHomeListByLessorId" resultType="com.home.alone.vo.HomePreviewVO">
+ 		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,
+					rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, rent_unit as rentUnit, admin_cost AS adminCost, 
+					home_title AS homeTitle, home_valid AS homeValid, lessor_id AS lessorId
+		from Home_tb
+			join Home_Price_tb using(home_num)
+		where lessor_id=#{lessorId, jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	
+  	<select id="selectReportHomeList" resultType="com.home.alone.vo.HomeReportVO">	<!-- 매물 신고 리스트 -->
+ 		select report_num AS reportNum, home_num AS homeNum, imcha_id AS imchaId, report_type AS reportType, report_content AS reportContent, report_regdate AS reportRegDate, home_valid AS homeValid 
+ 		from Home_Report_tb 
+ 			join Home_tb using(home_num) 
+ 	</select>
 
-
- 	<delete id="deleteHomeImg">
-		delete from Home_Img_tb where home_num = #{homeNum}
-	</delete>
 	
  	<!-- 매물 기본 정보 테이블 수정 -->
  	<update id="updateHome" parameterType="com.home.alone.vo.HomeVO">
@@ -331,86 +342,30 @@
  		update Home_Price_tb set deposit = #{deposit}, monthly = #{monthly}, admin_cost = #{adminCost} where home_num = #{homeNum}
  	</update>
  	
- 	<select id="selectListByLessorId" resultType="com.home.alone.vo.HomePreviewVO">
- 		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,
-					rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, rent_unit as rentUnit, admin_cost AS adminCost, 
-					home_title AS homeTitle, home_valid AS homeValid, lessor_id AS lessorId
-		from Home_tb
-			join Home_Price_tb using(home_num)
-		where lessor_id=#{lessorId, jdbcType=VARCHAR}
- 	</select>
+ 	<!-- 매물 게시 중단 상태 변경 -->
+ 	<update id="updateHomeInvalid" parameterType="com.home.alone.vo.HomePriceVO">	
+ 		update Home_tb set home_valid = 0 where home_num = #{homeNum}
+ 	</update>
  	
+ 	<!-- 매물 게시중 상태 변경 -->
+ 	<update id="updateHomeValid" parameterType="com.home.alone.vo.HomePriceVO">	
+ 		update Home_tb set home_valid = 1 where home_num = #{homeNum}
+ 	</update>
  	
-  	<select id="selectReportHomeList" resultType="com.home.alone.vo.HomeReportVO">	<!-- 매물 신고 리스트 -->
- 		select report_num AS reportNum, home_num AS homeNum, imcha_id AS imchaId, report_type AS reportType, report_content AS reportContent, report_regdate AS reportRegDate, home_valid AS homeValid 
- 		from Home_Report_tb 
- 			join Home_tb using(home_num) 
- 	</select>
+ 	<!-- 매물 신고 받으면 게시 중단 -->
+ 	<update id="updateHomeValidStop" parameterType="com.home.alone.vo.HomePriceVO">	
+ 		update Home_tb set home_valid = 2 where home_num = #{homeNum}
+ 	</update>
  	
- 	<delete id="deleteHome">	<!-- 매물 삭제 -->
+ 	<!-- 매물 사진 삭제 -->
+ 	<delete id="deleteHomeImg">	
+		delete from Home_Img_tb where home_num = #{homeNum}
+	</delete>
+ 	
+ 	<!-- 매물 정보 삭제 외래키 설정으로 해당 매물에 관련 테이불 모두 삭제 -->
+ 	<delete id="deleteHome">	
  		delete from Home_tb where home_num = #{homeNum}
  	</delete>
- 	
- 	
- 	<insert id="insertHomeReserv" parameterType="com.home.alone.vo.HomeReservVO">	<!--  예약 신청 -->
-  		insert into Home_Reserv_tb (rev_num, lessor_id, imcha_id, home_num, rev_date, rev_time)
-  		values ((select nvl(max(rev_num), 0) + 1 from Home_Reserv_tb), #{lessorId}, #{imchaId}, #{homeNum}, #{revDate}, #{revTime} )
-  	</insert>
-  	
-  	<select id="selectHomeReservValidTimeList" parameterType="com.home.alone.vo.HomeReservVO" resultType="java.lang.String">
-  		select rev_time
-  		from Home_Reserv_tb
-  		where home_num = #{homeNum} and rev_date = TO_DATE(#{revDate})
-  	</select>
-  	
-  	
-  	<delete id="deleteHomeReserv">	<!-- 예약 삭제 -->
- 		delete from Home_Reserv_tb where rev_num = #{revNum}
- 	</delete>
- 	
- 	<select id="selectReservByLessor" resultType="com.home.alone.vo.HomeReservVO">
-  		select 
-  		from Home_Reserv_tb where LESSOR_ID = #{lessorId} and revState != 2
-  	</select>
-  	
-  	<update id="updateReservStatusByLessor">	<!-- 거절 -->
- 		update Home_Reserv_tb set revState = 2 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
- 	</update>
- 	
- 	<update id="updateRevState">
- 		update Home_Reserv_tb set revState = 1 where IMCHA_ID = #{imchaId} and home_num = #{homeNum} and rev_num = #{revNum}
- 	</update>
- 	
- 	<select id="selectReservDate" resultType="com.home.alone.vo.HomeReservVO">
- 		SELECT *
-	    FROM Home_Reserv_tb
-	    WHERE revDate BETWEEN TO_DATE(#{revDate}, 'YYYY-MM-DD') AND TO_DATE(#{revDate})+1
- 	</select>
- 	
-	<select id="selectHomeReservListByImchaId" resultType="com.home.alone.vo.HomeReservPreviewVO">
- 		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
- 			   rev_state as revState, jgs_name as jgsName
- 		FROM Home_Reserv_tb 
-	 		 join Lessor_tb using(lessor_id)
- 		WHERE imcha_id = #{imcha_id}
- 	</select>
- 	
- 	<select id="selectHomeReservListByLessorId" resultType="com.home.alone.vo.HomeReservPreviewVO">
- 		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
- 			   rev_state as revState, name as imchaName 
- 		FROM Home_Reserv_tb 
-	 		 join Imcha_tb using(imcha_id)
- 		WHERE lessor_id = #{lessorId}
- 	</select>
- 	
- 	<update id="updateHomeReservReject" >	<!-- 예약 거절 -->
- 		UPDATE Home_Reserv_tb SET rev_state = 2 WHERE revNum = #{revNum}
- 	</update>
- 	
-	<update id="updateHomeReservAccept" >	<!-- 예약 수락 -->
- 		UPDATE Home_Reserv_tb SET rev_state = 1 WHERE revNum = #{revNum}
- 	</update>
- 	
  	
  </mapper>
  

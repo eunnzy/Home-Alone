@@ -11,9 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.home.alone.mapper.AdminMapper;
+import com.home.alone.member.vo.ImchaVO;
 import com.home.alone.service.AdminService;
 import com.home.alone.vo.AdminVO;
-import com.home.alone.vo.ImchaVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

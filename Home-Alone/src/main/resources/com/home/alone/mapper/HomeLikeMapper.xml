@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.home.alone.mapper.HomeLikeMapper">
+ 
+ 	<insert id="insertHomeLike" parameterType="com.home.alone.vo.HomeLikeVO">
+ 		insert into Home_Like_tb (like_num, IMCHA_ID, home_num) values ((select nvl(max(like_num), 0) + 1 from Home_Like_tb), #{imchaId}, #{homeNum})
+ 	</insert>
+ 	
+ 	<select id="selectHomeLikeList" resultType="com.home.alone.vo.HomePreviewVO">
+ 		select imcha_id as imchaId, home_num as homeNum, home_type AS homeType, addr1, addr2, addr3,
+ 			   rent_type AS rentType, home_title AS homeTitle, monthly, deposit
+	 	from Home_Like_tb 
+	 		 join Home_tb using(home_num)
+             join Home_price_tb using(home_num)
+	 	where IMCHA_ID = #{imchaId}
+ 	</select>
+ 	
+ 	<select id="selectHomeLikeCheck" parameterType="com.home.alone.vo.HomeLikeVO" resultType="int"> <!--좋아요 눌렀는지 확인 -->
+ 		select <![CDATA[count(*)]]>  
+ 		from Home_Like_tb 
+ 		where imcha_id = #{imchaId} and home_num = #{homeNum}
+ 	</select>
+ 	
+ 	
+ 	<delete id="deleteHomeLike">
+ 		delete from Home_Like_tb where imcha_id = #{imchaId} and home_num = #{homeNum}
+ 	</delete>
+ 	
+ 	<delete id="deleteAllByHomeNum" >
+ 		delete from Home_Like_tb where home_num = #{homeNum}
+ 	</delete>
+ 	
+    <!-- <select id="getByLikeNumWithImchaId" resultMap="likeMap" resultType="com.home.alone.vo.LikeVO">
+ 		select * from Home_Like_tb where IMCHA_ID=#{imchaId}
+ 	</select>  -->
+ 	
+ 	<select id = "getLikeDetail" parameterType="com.home.alone.vo.HomeDetailVO" resultType="com.home.alone.vo.HomeDetailVO">
+ 		select ht.Home_Num as homeNum,ht.addr1,ht.addr2,ht.addr3,ht.home_type as rentType,hp.deposit,hp.monthly,ht.rent_periods 
+ 		from Home_Price_tb hp , Home_tb ht  where hp.Home_Num = ht.Home_Num and ht.Home_Num = #{homeNum} 
+ 	</select>
+ 	
+ </mapper>
