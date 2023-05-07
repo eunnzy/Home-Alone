@@ -7,7 +7,7 @@
  <mapper namespace="com.home.alone.mapper.LessorMapper">
  
  	<!-- 회원가입 -->
- 	<insert id="lessorJoin" parameterType="com.home.alone.vo.LessorVO">
+ 	<insert id="lessorJoin" parameterType="com.home.alone.member.vo.LessorVO">
 	insert into lessor_tb (lessor_id, lessor_pw, lessor_nickname, phone,name,birthDate,jgs_name,jgs_num, user_roll, lessor_addr1, lessor_addr2, lessor_addr3)          
 	values(#{lessorId}, #{lessorPw}, #{lessorNickName}, #{phone},#{name},#{birthDate},#{jgsName},#{jgsNum},#{userRoll}, #{lessorAddr1}, #{lessorAddr2}, #{lessorAddr3})
  	</insert> 
@@ -23,7 +23,7 @@
  	</select>
  	
  	<!-- 로그인 -->
- 	<select id="lessorLogin" resultType="com.home.alone.vo.LessorVO">
+ 	<select id="lessorLogin" resultType="com.home.alone.member.vo.LessorVO">
        select lessor_id AS lessorId, lessor_pw AS lessorPw, lessor_nickname AS lessorNickName, name, phone, user_roll AS userRoll,status,
              lessor_addr1 AS lessorAddr1, lessor_addr2 AS lessorAddr2, lessor_addr3 AS lessorAddr3
        from lessor_tb where lessor_Id = #{lessorId} and lessor_pw = #{lessorPw}
@@ -36,7 +36,7 @@
     </select>
  	 
  	 <!-- 비밀번호 찾기 -->
- 	 <select id="findLessorPw" resultType="com.home.alone.vo.LessorVO">
+ 	 <select id="findLessorPw" resultType="com.home.alone.member.vo.LessorVO">
  	 	select lessor_pw As lessorPw from lessor_tb where lessor_id = #{lessorId} and phone = #{phone}
  	 </select>
  	 
@@ -45,7 +45,7 @@
  	 	update lessor_tb set lessor_pw = #{lessorPw} where lessor_id = #{lessorId}
  	 </update>
     
-    <select id="getLessor" resultType="com.home.alone.vo.LessorVO">
+    <select id="getLessor" resultType="com.home.alone.member.vo.LessorVO">
  		select lessor_id AS lessorId, lessor_pw AS lessorPw, lessor_nickname AS lessorNickName, phone, user_roll AS userRoll, birthDate AS birthDate,
              lessor_addr1 AS lessorAddr1, lessor_addr2 AS lessorAddr2, lessor_addr3 AS lessorAddr3, jgs_name AS jgsName, jgs_num AS jgsNum, name AS name
        from lessor_tb where lessor_Id=#{lessorId}
@@ -60,7 +60,7 @@
  	</update>
  	
  	<!-- 중개인 목록 -->
- 	<select id="lessorList" resultType="com.home.alone.vo.LessorVO">
+ 	<select id="lessorList" resultType="com.home.alone.member.vo.LessorVO">
  		select lessor_id AS lessorId, name, lessor_nickname AS lessorNickName, jgs_name AS jgsName, jgs_num AS jgsNum,enroll_Date AS enrollDate,status from lessor_tb 
  	</select>
  	
@@ -76,7 +76,7 @@
 		insert into lessor_img_tb(lessor_Id, fileName, uploadPath, uuid) values(#{lessorId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>
  	
- 	<select id="selectImg" resultType="com.home.alone.vo.LessorImgVO">
+ 	<select id="selectImg" resultType="com.home.alone.member.vo.LessorImgVO">
  		select lessor_id AS lessorId, fileName, uploadPath, uuid from lessor_img_tb where lessor_id= #{lessorId}
  	</select>
  </mapper>

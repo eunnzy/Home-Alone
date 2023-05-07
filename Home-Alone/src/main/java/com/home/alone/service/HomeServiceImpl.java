@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.home.alone.dao.HomeDAO;
 import com.home.alone.dao.HomeInquryDAO;
+import com.home.alone.member.vo.LessorVO;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeImgVO;
@@ -23,19 +24,15 @@ import com.home.alone.vo.HomeReportVO;
 import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
-import com.home.alone.vo.LessorVO;
 
 @Service
 public class HomeServiceImpl implements HomeService{
 	@Autowired
 	private HomeDAO homeDAO;
 	
-	@Autowired
-	private HomeInquryDAO homeInquryDAO;
-	
 	@Override
 	public int registerHome(Map<String, Object> insertMap) {	// 매물 등록
-		System.out.println("\n============ HomeService insertHome 실행 =============\n");
+		System.out.println("\n============ HomeService registerHome 실행 =============\n");
 		if(insertMap == null)
 			 return 0;
 		
@@ -83,9 +80,16 @@ public class HomeServiceImpl implements HomeService{
 		
 		for(int i=0; i<homeInBoundsList.size(); i++) {
 			int homeNum = homeInBoundsList.get(i).getHomeNum();
+			int deposit = homeInBoundsList.get(i).getDeposit();
+			int monthly = homeInBoundsList.get(i).getMonthly();
+			
 			HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);	// 매물 옵션 정보 저장
 			homeInBoundsList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));	// 매물 사진 미리보기 저장
+			
+			homeInBoundsList.get(i).setDepositUnit(convertMoneyUnit(deposit));
+			homeInBoundsList.get(i).setMonthlyUnit(convertMoneyUnit(monthly));
 		}
+		
 		return homeInBoundsList;
 	}
 	
@@ -98,9 +102,13 @@ public class HomeServiceImpl implements HomeService{
 		
 		for(int i=0; i<homeList.size(); i++) {
 			int homeNum = homeList.get(i).getHomeNum();
-			
+			int deposit = homeList.get(i).getDeposit();
+			int monthly = homeList.get(i).getMonthly();
 			HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);
+			
 			homeList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
+			homeList.get(i).setDepositUnit(convertMoneyUnit(deposit));
+			homeList.get(i).setMonthlyUnit(convertMoneyUnit(monthly));
 		}
 		
 		System.out.println("homeListByFilter");
@@ -119,12 +127,6 @@ public class HomeServiceImpl implements HomeService{
 		HomeOptionVO homeOptionVO = homeDAO.selectHomeOption(homeNum);
 		
 		List<String> optionList = Arrays.asList(homeOptionVO.getOptionList().split(", "));
-//		
-//		for(HomeImgVO homeImgVO: homeDetailVO.getHomeImgList()) 
-//		{
-//			String changePath = changeHomeImgPath(homeImgVO.getHomeImgPath());
-//			homeImgVO.setHomeImgPath(changePath);
-//		}
 		
 		System.out.println("optionList : ");
 		System.out.println(optionList);
@@ -164,26 +166,6 @@ public class HomeServiceImpl implements HomeService{
 		home.put("optionList", optionList);
 		
 		return home;
-	}
-	
-	// 매물 상세 보기시 화면 단에서 가격 정보 단위 표시하기 위해
-	@Override
-	public String convertMoneyUnit(long money) {
-		String convert = "";
-		
-		if(money == 0) {
-			convert = "없음";
-		}else if(money >= 10000) {
-			convert += money / 10000 + "억 ";
-			
-			if(money % 10000 != 0) {
-				money = money % 10000;
-				convert += money + "만원";
-			}
-		}else {
-			convert +=  money + "만원";	
-		}
-		return convert;
 	}
 	
 
@@ -245,12 +227,16 @@ public class HomeServiceImpl implements HomeService{
 	public List<HomePreviewVO> getListByLessorId(LessorVO vo) {
 		System.out.println(vo);
 		List<HomePreviewVO> homeList = null;
-		homeList = homeDAO.getListByLessorId(vo);
+		homeList = homeDAO.selectHomeListByLessorId(vo);
 		
 		// 미리보기 사진 가져오기
 		for(int i=0; i<homeList.size(); i++) {
 			int homeNum = homeList.get(i).getHomeNum();
+			int deposit = homeList.get(i).getDeposit();
+			int monthly = homeList.get(i).getMonthly();
 			homeList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
+			homeList.get(i).setDepositUnit(convertMoneyUnit(deposit));
+			homeList.get(i).setMonthlyUnit(convertMoneyUnit(monthly));
 		}
 		
 		return homeList;
@@ -261,129 +247,34 @@ public class HomeServiceImpl implements HomeService{
 		return homeDAO.deleteHome(homeNum);
 	}
 
+	// 매물 상세 보기시 화면 단에서 가격 정보 단위 표시하기 위해
 	@Override
-	public int reservHome(HomeReservVO homeReservVO) {	// 매물 예약
-		return homeDAO.insertHomeReserv(homeReservVO);
-	}
-
-	@Override
-	public List<String> getValidTimeList(HomeReservVO homeReservVO) {	// 이미 예약된 매물 시간대 리스트 
-		return homeDAO.selectHomeReservValidTimeList(homeReservVO);
-	}
-
-	@Override
-	public int inquryHome(HomeInquryVO homeInquryVO) {	// 매물 문의
-		return homeInquryDAO.insertHomeInqury(homeInquryVO);
-	}
-
-	@Override
-	public List<HomeInquryVO> getHomeInqListByImcha(String imchaId) {	// 매물 문의 목록(일반회원)
-		return homeInquryDAO.selectInquryListByImcha(imchaId);
-	}
-
-	@Override
-	public List<HomeInquryVO> getHomeInqListByLessor(String lessorId) {	// 매물 문의 목록(중개인)
-		return homeInquryDAO.selectInquryListByLeessor(lessorId);
-	}
-
-	@Override
-	public HomeInquryDetailVO getHomeInqDetail(int iqNum) {	// 문의 상세보기
-		HomeInquryDetailVO homeInqDetail = homeInquryDAO.selectHomeInquryDetail(iqNum);
-		homeInqDetail.setHomeImg(homeDAO.selectPreviewHomeImg(homeInqDetail.getHomeNum()));
-		return homeInqDetail;
-	}
-
-	@Override
-	public List<HomeInqAnswerVO> getHomeInqAnswerList(int iqNum) {	// 문의 답변 목록
-		return homeInquryDAO.selectInqAnswerList(iqNum);
-	}
-
-	@Override
-	public int registerHomeInqAnswer(HomeInqAnswerVO homeInqAnswerVO) {		// 문의 답변 등록
-		int result = homeInquryDAO.insertHomeInqAnswer(homeInqAnswerVO);
-		System.out.println(result);
+	public String convertMoneyUnit(long money) {
+		String convert = "";
 		
-		if(result == 1) {
-			return homeInquryDAO.updateHomeInqAnsCom(homeInqAnswerVO.getIqNum());	// 답변 상태 변경
+		if(money == 0) {
+			convert = "없음";
+		}else if(money >= 10000) {
+			convert += money / 10000 + "억 ";
+			
+			if(money % 10000 != 0) {
+				money = money % 10000;
+				convert += money + "만원";
+			}
+		}else {
+			convert +=  money + "만원";	
 		}
-		return 0;
-	}
-	
-	@Override
-	public int homeAnsIdCheck(String lessorId) {	// 문의 답변 상태
-		return homeInquryDAO.selectInqAnswerIdCheck(lessorId);
+		return convert;
 	}
 
 	@Override
-	public int modifyHomeInqAnswer(HomeInqAnswerVO homeInqAnswerVO) {	
-		return homeInquryDAO.updateHomeInqAnswer(homeInqAnswerVO);
-	}
-
-	// 일반 회원이 예약한 매물 목록
-	@Override
-	public List<HomeReservPreviewVO> getReservListByImcha(String imchaId) {	// 예약 목록 (일반회원)
-		List<HomeReservPreviewVO> reservList = null;
-		reservList = homeDAO.selectHomeReservListByImchaId(imchaId);
-		
-		for(int i=0; i<reservList.size(); i++) {
-			int homeNum = reservList.get(i).getHomeNum();
-			reservList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
-		}
-		
-		return reservList;
-	}
-
-	// 예약 신청 목록
-	@Override
-	public List<HomeReservPreviewVO> getReservListByLessor(String lessorId) {	// 예약 목록(임대인)
-		List<HomeReservPreviewVO> reservList = null;
-		reservList = homeDAO.selectHomeReservListByLessorId(lessorId);
-		
-		
-		for(int i=0; i<reservList.size(); i++) {
-			int homeNum = reservList.get(i).getHomeNum();
-			reservList.get(i).setHomeImg(homeDAO.selectPreviewHomeImg(homeNum));
-		}
-		
-		return reservList;
-	}
-
-	// 문의 답변 내용
-	@Override
-	public HomeInqAnswerVO getHomeInqAnswer(int ansNum) {
-		return homeInquryDAO.selectHomeInqAnswer(ansNum);
-	}
-
-	// 답변 삭제
-	@Override
-	public int deleteHomeInqAnswer(int ansNum) {
-		HomeInqAnswerVO homeInqAnsVO = homeInquryDAO.selectHomeInqAnswer(ansNum);	// 문의 답변 번호에 해당하는 정보 가져오기
-		homeInquryDAO.updateHomeInqAnsWait(homeInqAnsVO.getIqNum());	// 답변 상태를 대기중으로 수정하고
-		return homeInquryDAO.deleteHomeInqAnswer(ansNum); // 답변 삭제
-		
-	}
-
-	
-	@Override
-	public int modifyHomeInqAnsStatusCom(int iqNum) {
-		return homeInquryDAO.updateHomeInqAnsCom(iqNum);
-	}
-	
-	@Override
-	public int modifyHomeInqAnsStatusWait(int iqNum) {
-		return homeInquryDAO.updateHomeInqAnsWait(iqNum);
+	public int changeHomeStatusStop(int homeNum) {
+		return homeDAO.updateHomeInvalid(homeNum);
 	}
 
 	@Override
-	public int homeReservReject(int revNum) {
-		return homeDAO.updateHomeReservReject(revNum);
+	public int changeHomeStatusPost(int homeNum) {
+		return homeDAO.updateHomeValid(homeNum);
 	}
-
-//	@Override
-//	public String changeHomeImgPath(String homeImgPath) {
-//		return homeImgPath.replace("\\", "//");
-//	}
-
-
 	
 }

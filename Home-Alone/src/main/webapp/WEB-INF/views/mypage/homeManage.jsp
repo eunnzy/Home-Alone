@@ -9,11 +9,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./bootstrap.min.css" rel="stylesheet"></link>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>매물 관리</title>
     <link href="/css/homeManage.css"  type="text/css" rel="stylesheet" >
 	<style>
 		.home-img img{
-			height: 100%;
+			width:100%;
+			height: 13rem;
 			object-fit:cover;
 			cursor: pointer;
 		}
@@ -44,7 +47,7 @@
 								<span class="badge bg-success"> 게시중 </span>
 							</c:when>
 							<c:otherwise>
-								<span class="badge bg-info"></span>
+								<span class="badge bg-info">게시중단</span>
 							</c:otherwise>
 					</c:choose>
 	          		${homeList.homeTitle}
@@ -59,22 +62,30 @@
 			          	 <h4>${homeList.rentType }</h4>
 			          	 <c:choose>
 							<c:when test="${homeList.rentType == '월세'}">
-								<h5>보증금 : ${homeList.deposit } / 월세 : ${homeList.monthly} </h5>
+								<h5>보증금 : ${homeList.depositUnit } / ${homeList.monthlyUnit} </h5>
 							</c:when>
 							<c:otherwise>
-								<h5>보증금 : ${homeList.deposit } </h5>
+								<h5>보증금 : ${homeList.depositUnit } </h5>
 							</c:otherwise>
 						</c:choose>
 			            <h6>${homeList.homeType }</h6>
 			           
 						<p class="text-truncate">${homeList.addr2} ${homeList.addr3}</p>
 						<br>
-						
 			           <button class="btn btn-primary" onclick="btnClick('modify', ${homeList.homeNum})">수정</button>
 			           <button class="btn btn-primary" onclick="btnClick('delete', ${homeList.homeNum})">삭제</button>
-			           
-			       <%--      <a href="/home/manage/deleteHome?homeNum=${homeList.homeNum}" class="card-link">삭제</a>
-	 --%>		          </div>
+			           <c:choose>
+							<c:when test="${homeList.homeValid == 1}">	<!-- 게시중이라면 -->
+								  <button class="btn btn-primary" onclick="btnClick('invalid', ${homeList.homeNum})"> 게시중단 </button>
+							</c:when>
+							<c:when test="${homeList.homeValid == 2}">	<!-- 신고처리된 매물이라면 -->
+								  <span> 신고처리된 매물입니다. </span>
+							</c:when>
+							<c:otherwise>	<!-- 게시중단 상태라면 -->
+								<button class="btn btn-primary" onclick="btnClick('valid', ${homeList.homeNum})"> 게시하기 </button>	
+							</c:otherwise>
+						</c:choose>
+	        			</div>	
 		          </div>
 	          </div>
 	        </div>
@@ -82,32 +93,56 @@
 		</c:forEach>
     </div>
   </div>
+  
+  <form id="form" action="/home/manage/changeStatus" >
+  	<input type="hidden" name="change" id="change">
+  	<input type="hidden" name="homeNum" id="homeNum">
+  </form>
+  
 
   <script type="text/javascript">
-  	function detailHome(homeNum) {
+
+  function detailHome(homeNum) {
   		location.href = "/home/detail?homeNum=" + homeNum;
   	}
   	
-  	function btnClick(btn, homeNum) {
-  		switch(btn) {
+  	function btnClick(change, homeNum) {
+  		switch(change) {
   	
   		case "modify" :
   			location.href = "/home/manage/modify?homeNum=" + homeNum;
   			break;
-  			
   		case "delete" :
   			if(!confirm("삭제하시겠습니까?")) {
   				return false;
   			}
-  			
-  			$.ajax({
-  				
-  			});
+  			break;
+  		case "valid":
+  			formSubmit(change, homeNum);
+  			break;
+  		case "invalid":
+  			formSubmit(change, homeNum);
   			break;
   		}
   		
   	}
   	
+  	function formSubmit(change, homeNum) {
+  		let	e = window.event;
+  		e.preventDefault();
+  		
+  		let formData = $("#form");
+  		
+  		$("#change").attr("value", change);
+  		$("#homeNum").attr("value", homeNum);
+  		
+  		console.log($("#change").val());
+  		console.log($("#homeNum").val());
+  		formData.attr("action", "/home/manage/changeStatus");
+  		formData.attr("method", "post");
+  		
+  		formData.submit();
+  	}
   </script>
   
 </body>

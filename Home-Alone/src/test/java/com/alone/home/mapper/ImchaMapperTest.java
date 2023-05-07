@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.home.alone.mapper.ImchaMapper;
-import com.home.alone.vo.ImchaVO;
+import com.home.alone.member.vo.ImchaVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

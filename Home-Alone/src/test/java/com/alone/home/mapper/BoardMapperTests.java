@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.home.alone.dao.BoardDAO;
+import com.home.alone.board.dao.BoardDAO;
+import com.home.alone.board.vo.BoardVO;
 import com.home.alone.mapper.BoardMapper;
 import com.home.alone.util.Criteria;
-import com.home.alone.vo.BoardVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;

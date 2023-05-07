@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.home.alone.member.vo.LessorVO;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeImgVO;
@@ -17,7 +18,6 @@ import com.home.alone.vo.HomeReportVO;
 import com.home.alone.vo.HomeReservPreviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
-import com.home.alone.vo.LessorVO;
 
 @Repository
 public class HomeDAOImpl implements HomeDAO{
@@ -55,11 +55,6 @@ public class HomeDAOImpl implements HomeDAO{
 		return sqlSession.insert(HOMEMAPPER + "insertHomeReport", homeReportVO);
 	}
 	
-	@Override
-	public int insertHomeReserv(HomeReservVO homeReservVO) {	// 매물 예약 정보 insert
-		return sqlSession.insert(HOMEMAPPER + "insertHomeReserv", homeReservVO);
-	}
-
 	
 	@Override
 	public List<HomePreviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds) {
@@ -124,9 +119,9 @@ public class HomeDAOImpl implements HomeDAO{
 	}
 	
 	@Override
-	public List<HomePreviewVO> getListByLessorId(LessorVO vo) {
+	public List<HomePreviewVO> selectHomeListByLessorId(LessorVO vo) {
 		System.out.println(vo.getLessorId());
-		return sqlSession.selectList(HOMEMAPPER+ "selectListByLessorId", vo);
+		return sqlSession.selectList(HOMEMAPPER+ "selectHomeListByLessorId", vo);
 	}
 
 	@Override
@@ -151,29 +146,20 @@ public class HomeDAOImpl implements HomeDAO{
 	}
 
 	@Override
-	public List<HomeReservPreviewVO> selectHomeReservListByImchaId(String imchaId) {
-		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservListByImchaId", imchaId);
+	public int updateHomeInvalid(int homeNum) {
+		return sqlSession.update(HOMEMAPPER + "updateHomeInvalid", homeNum);
 	}
 
 	@Override
-	public List<String> selectHomeReservValidTimeList(HomeReservVO homeReservVO) {
-		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservValidTimeList", homeReservVO);
-	}
-	
-
-	@Override
-	public List<HomeReservPreviewVO> selectHomeReservListByLessorId(String lessorId) {
-		return sqlSession.selectList(HOMEMAPPER +"selectHomeReservListByLessorId", lessorId);
+	public int updateHomeValid(int homeNum) {
+		return sqlSession.update(HOMEMAPPER + "updateHomeValid", homeNum);
 	}
 
 	@Override
-	public int updateHomeReservReject(int revNum) {
-		return sqlSession.update(HOMEMAPPER + "updateHomeReservReject", revNum);
+	public int updateHomeValidStop(int homeNum) {
+		return sqlSession.update(HOMEMAPPER + "updateHomeValidStop", homeNum);
 	}
 
-	@Override
-	public int updateHomeReservAccept(int revNum) {
-		return sqlSession.update(HOMEMAPPER + "updateHomeReservAccept", revNum);
-	}
+
 
 }

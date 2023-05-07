@@ -11,9 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.home.alone.mapper.LessorMapper;
-import com.home.alone.service.LessorService;
-import com.home.alone.vo.LessorImgVO;
-import com.home.alone.vo.LessorVO;
+import com.home.alone.member.service.LessorService;
+import com.home.alone.member.vo.LessorImgVO;
+import com.home.alone.member.vo.LessorVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

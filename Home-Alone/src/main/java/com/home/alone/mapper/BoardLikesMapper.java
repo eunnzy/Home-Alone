@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.home.alone.vo.BoardLikesVO;
+import com.home.alone.board.vo.BoardLikesVO;
 
 public interface BoardLikesMapper {
 	

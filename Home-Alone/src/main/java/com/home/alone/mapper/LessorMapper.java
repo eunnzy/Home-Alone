@@ -1,7 +1,7 @@
 package com.home.alone.mapper;
 
-import com.home.alone.vo.LessorImgVO;
-import com.home.alone.vo.LessorVO;
+import com.home.alone.member.vo.LessorImgVO;
+import com.home.alone.member.vo.LessorVO;
 
 public interface LessorMapper {
 

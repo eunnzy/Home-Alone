@@ -35,7 +35,7 @@
           </button>
         </td>
         <td>
-          <button class="mx-5 lessor-button" type="button" onclick = "location.href = '/home/reserv/lessor/list?lessorId=${lessor.lessorId}'">
+          <button class="mx-5 lessor-button" type="button" onclick = "location.href = '/home/reserv/lessor/list'">
 	          <div class="lessor-div"><img src="/img/booking.png" alt="달력이미지"></div>
 	          	예약 확인
           </button>

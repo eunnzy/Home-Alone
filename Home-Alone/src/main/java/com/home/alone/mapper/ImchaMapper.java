@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.home.alone.vo.ImchaVO;
+import com.home.alone.member.vo.ImchaVO;
 
 public interface ImchaMapper {
 

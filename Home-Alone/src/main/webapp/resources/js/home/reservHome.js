@@ -11,12 +11,13 @@ $("#reservModalBtn").click(function() {
 	$("#revDate").on("change", function(e){	// 날짜 선택할 때
 		revTimeInit();
 		
-		let revValid = { "revDate": $("#revDate").val(), "homeNum" : homeNum};
-		console.log(revValid);
+		let revInvalid = { "revDate": $("#revDate").val(), "homeNum" : homeNum};
+		console.log(revInvalid);
+		console.log(typeof revInvalid.revDate)
 		
 		$.ajax({
-			url: '/home/reserv/validTimeCheck',
-			data: revValid,
+			url: '/home/reserv/invalidTimeCheck',
+			data: revInvalid,
 			type: 'POST',
 			success: function(data){
 				console.log(data);

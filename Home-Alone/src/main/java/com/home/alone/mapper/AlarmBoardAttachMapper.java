@@ -2,8 +2,8 @@ package com.home.alone.mapper;
 
 import java.util.List;
 
+import com.home.alone.board.vo.BoardAttachVO;
 import com.home.alone.vo.AlarmBoardAttachVO;
-import com.home.alone.vo.BoardAttachVO;
 
 public interface AlarmBoardAttachMapper {
 	// 등록

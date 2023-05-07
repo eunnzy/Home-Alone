@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.home.alone.board.vo.BoardVO;
 import com.home.alone.util.Criteria;
-import com.home.alone.vo.BoardVO;
 
 public interface BoardMapper {
 	// 로그인 전 

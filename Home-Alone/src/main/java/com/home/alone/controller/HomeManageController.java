@@ -27,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.home.alone.dao.HomeDAO;
 import com.home.alone.mapper.HomeMapper;
+import com.home.alone.member.vo.LessorVO;
 import com.home.alone.service.HomeService;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeImgVO;
@@ -43,7 +45,6 @@ import com.home.alone.vo.HomeOptionVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeVO;
-import com.home.alone.vo.LessorVO;
 
 import net.coobird.thumbnailator.Thumbnailator;
 
@@ -534,5 +535,22 @@ public class HomeManageController {
         out.println("<script>alert('삭제가 완료되었습니다.');location.href='/home/manage/list?lessorId='+lessorId;</script>");
         out.flush();
 		return "redirect:/home/manage/list?lessorId="+lessorVO.getLessorId();
+	}
+	
+	@PostMapping("/changeStatus")
+	public String changeStatus(String change, int homeNum, HttpServletRequest request) {
+		
+		System.out.println("change Status ");
+		System.out.println("change: " + change + " " + homeNum);
+//		HttpSession session =  request.getSession();
+//		LessorVO lessorVO = (LessorVO) session.getAttribute("lessor");
+		
+		if(change.equals("valid")) {
+			homeService.changeHomeStatusPost(homeNum);
+		}else if(change.equals("invalid")) {
+			homeService.changeHomeStatusStop(homeNum);
+		}
+		
+		return "redirect: /home/manage/list";
 	}
 }

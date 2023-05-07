@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.home.alone.board.vo.BoardReplyVO;
 import com.home.alone.mapper.ReplyMapper;
 import com.home.alone.util.Criteria;
-import com.home.alone.vo.ReplyVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -37,7 +37,7 @@ public class ReplyMapperTests {
 	//@Test
 	public void testCreate() {
 		IntStream.rangeClosed(1, 10).forEach(i -> {
-			ReplyVO vo = new ReplyVO();
+			BoardReplyVO vo = new BoardReplyVO();
 			
 			vo.setBno(bnoArr[ i % 5 ]);
 			vo.setReply("댓글테스트" + i);
@@ -51,7 +51,7 @@ public class ReplyMapperTests {
 	//@Test
 	public void testRead() {
 		Long targetRno = 3L;
-		ReplyVO vo = mapper.read(targetRno);
+		BoardReplyVO vo = mapper.read(targetRno);
 		log.info(vo);
 	}
 	
@@ -66,7 +66,7 @@ public class ReplyMapperTests {
 	//@Test
 	public void testUpdate() {
 		Long targetRno = 3L;
-		ReplyVO vo = mapper.read(targetRno);
+		BoardReplyVO vo = mapper.read(targetRno);
 		vo.setReply("Update Reply");
 		int count = mapper.update(vo);
 		log.info("UPDATE COUNT : " + count);
@@ -75,7 +75,7 @@ public class ReplyMapperTests {
 	@Test
 	public void testList() {
 		Criteria cri = new Criteria();
-		List<ReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[0]);
+		List<BoardReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[0]);
 		replies.forEach(reply -> log.info(reply));
 	}
 	

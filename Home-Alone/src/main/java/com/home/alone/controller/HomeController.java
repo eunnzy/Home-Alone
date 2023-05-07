@@ -25,13 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.home.alone.member.vo.ImchaVO;
 import com.home.alone.service.HomeService;
-import com.home.alone.service.LikeService;
+import com.home.alone.service.HomeLikeService;
 import com.home.alone.vo.HomeAddInfoVO;
+import com.home.alone.vo.HomeLikeVO;
 import com.home.alone.vo.HomePreviewVO;
 import com.home.alone.vo.HomeReportVO;
-import com.home.alone.vo.ImchaVO;
-import com.home.alone.vo.LikeVO;
 
 /*
 	매물 관련 - 상세보기, 검색 등.
@@ -44,7 +44,7 @@ public class HomeController {
 	@Autowired
 	private HomeService homeService;
 	@Autowired
-	private LikeService likeService;
+	private HomeLikeService homeLikeService;
 	
 	
 	// 매물 상세보기
@@ -66,11 +66,11 @@ public class HomeController {
 		
 		int homeLike = 0;	
 		if(imcha != null) {	// 좋아요 표시 했는지 확인
-			LikeVO likeVO = new LikeVO();
+			HomeLikeVO likeVO = new HomeLikeVO();
 			likeVO.setHomeNum(homeNum);
 			likeVO.setImchaId(imcha.getImchaId());
 			
-			homeLike = likeService.checkLike(likeVO);
+			homeLike = homeLikeService.checkLike(likeVO);
 			
 			System.out.println("homeLike: " + homeLike);
 			
@@ -181,6 +181,7 @@ public class HomeController {
 		
 		return result;
 	}
+	
 	
 	
 	@RequestMapping(value="/report", method=RequestMethod.POST) 	// 매물 신고
