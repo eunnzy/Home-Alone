@@ -25,12 +25,6 @@ public class HomeVO {
 	private int rentPeriods;	// 임대 기간
 	private String rentUnit;	// 임대 단위(월, 년)
 	private int roomCount;		// 방 개수
-//	private int parking;		// 주차 몇대?
-//	private String pet;			// 반려동물
-//	private String elevator;	// 엘리베이터
-//	private String balcony;	// 엘리베이터
-//	@DateTimeFormat(pattern = "yyyy-MM-dd")
-//	private Date moveDate;	// 입주가능일
 	private int floor;			// 해당 층
 	private int totalFloor;		// 전체 층 
 	private String homeTitle;	// 글 제목	

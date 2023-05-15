@@ -1,8 +1,10 @@
 package com.home.alone.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,6 @@ public class HomeReservVO {
 	private String lessorId;
 	private String imchaId;
 	private int homeNum;
-//	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date revDate;	// 예약 날짜
 	private String revTime;	// 예약 시간대

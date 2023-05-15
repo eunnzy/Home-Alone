@@ -9,7 +9,7 @@
  		insert into Home_Like_tb (like_num, IMCHA_ID, home_num) values ((select nvl(max(like_num), 0) + 1 from Home_Like_tb), #{imchaId}, #{homeNum})
  	</insert>
  	
- 	<select id="selectHomeLikeList" resultType="com.home.alone.vo.HomePreviewVO">
+ 	<select id="selectHomeLikeList" resultType="com.home.alone.vo.HomeOverviewVO">
  		select imcha_id as imchaId, home_num as homeNum, home_type AS homeType, addr1, addr2, addr3,
  			   rent_type AS rentType, home_title AS homeTitle, monthly, deposit
 	 	from Home_Like_tb 

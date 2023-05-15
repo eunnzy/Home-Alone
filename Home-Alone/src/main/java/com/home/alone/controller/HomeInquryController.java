@@ -47,6 +47,10 @@ public class HomeInquryController {
 			return 0;
 		}
 		
+		inqData.setImchaId(imcha.getImchaId());
+		
+		System.out.println(inqData);
+		
 		return homeInquryService.inquryHome(inqData);
 	}
 	

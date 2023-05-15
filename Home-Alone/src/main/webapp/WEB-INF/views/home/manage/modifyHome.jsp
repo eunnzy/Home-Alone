@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -183,7 +185,7 @@
 							   		<input class="form-control" type="text" name="rentPeriods" value="${home.rentPeriods }">
 						    	</div>
 					    		<div class="col-3">
-						   			<select class="form-select" name="rentUnit">
+						   			<select class="form-select" id="rentUnit" name="rentUnit">
 									  <option selected>기간</option>
 									  <option value="개월">개월</option>
 									  <option value="년">년</option>
@@ -387,11 +389,11 @@
 					       	</div>
 				       		<input type="file" class="form-control" name="homeImg" id="homeImg" multiple="multiple">
 					       	<div class="row resultImg">
-					       		<%-- <c:forEach items="${home.homeImgList}" var="imgFile" >
+					       		<%--  <c:forEach items="${home.homeImgList}" var="imgFile" >
 					       			<div class="img-div col-sm-3" data-path="${imgFile.homeImgPath}" data-imgname="${imgFile.homeImgName}">
 					       				<div class="imgDelete" data-file="${imgFile.homeImgPath}">
 					       				<i class="bi bi-x-lg"></i></div>
-					       				<img src="/home/manage/showHomeImg?homeImgName=/${imgFile.homeImgPath}/${imgFile.homeImgName}">
+					       				<img src="/home/manage/showHomeImg?homeImgName=${fn:replace(imgFile.homeImgPath, '\\', '//')}/${imgFile.homeImgUuid}_${imgFile.homeImgName}">
 					       			</div>
 					       		</c:forEach> --%>
 					       	</div>
@@ -441,6 +443,8 @@
 				this.checked = true;
 		});	
 		
+		$("#rentUnit").val("${home.rentUnit}").prop("selected", true);
+		
 		// 정규식을 이용해 받아온 옵션값 [] 제거 후 배열로 변경
 		let optionList = "${home.optionList}".replace(/[[\]]/g, "").split(", ");	
 		console.log(optionList);
@@ -456,14 +460,16 @@
 		
 		let homeImgDiv = $( ".resultImg");
 		let imgStr = "";
-	//	let imgPath = encodeURIComponent("${imgFile.homeImgPath}/t_${imgFile.homeImgUuid}_${imgFile.homeImgName}");
 		
-		imgStr += "<c:forEach items='${home.homeImgList}' var='imgFile'>"
-		imgStr += "<div class='img-div col-sm-3' data-uuid='${imgFile.homeImgUuid}' data-path='${imgFile.homeImgPath}' data-imgname='${imgFile.homeImgName}'>";
-		imgStr  += "<div class='imgDelete' data-file='${imgFile.homeImgPath}'><i class='bi bi-x-lg'></i></div>";
-		imgStr  += "<img src='/home/manage/showHomeImg?homeImgName=${imgFile.homeImgPath}/t_${imgFile.homeImgUuid}_${imgFile.homeImgName}'>";
-		imgStr  += "</div></c:forEach>";
-		
+		imgStr += "<c:forEach items='${home.homeImgList}' var='imgFile' varStatus='status'>"
+		imgStr += "<div class='img-div col-sm-3' data-uuid='${imgFile.homeImgUuid}' data-path='${fn:replace(imgFile.homeImgPath, '\\', '\\\\')}' data-imgname='${imgFile.homeImgName}'>";
+		imgStr += "<div class='imgDelete' data-file='${fn:replace(imgFile.homeImgPath, '\\', '\\\\')}'><i class='bi bi-x-lg'></i></div>";
+		imgStr += "<img src='/home/manage/showHomeImg?homeImgName=${fn:replace(imgFile.homeImgPath, '\\', '//')}/${imgFile.homeImgUuid}_${imgFile.homeImgName}'>";
+		imgStr += "</div>";
+		imgStr += "<input type='hidden' name='homeImgList[${status.index}].homeImgName' value='${imgFile.homeImgName}'>";
+		imgStr += "<input type='hidden' name='homeImgList[${status.index}].homeImgPath' value='${imgFile.homeImgPath}'>";	
+		imgStr += "<input type='hidden' name='homeImgList[${status.index}].homeImgUuid' value='${imgFile.homeImgUuid}'></c:forEach>";	
+
 		homeImgDiv.append(imgStr);
 		
 	});

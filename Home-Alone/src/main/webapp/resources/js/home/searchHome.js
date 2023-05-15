@@ -235,11 +235,7 @@ function displayHomeList(data, i) {
 
 // 매물 정보 추가 
 function getHomeItem(data) {
-	homeImgFile = encodeURIComponent(data.homeImg.homeImgPath + "/" + data.homeImg.homeImgUuid + "_" +data.homeImg.homeImgName);	// 사진경로
-	
-	/*let monthly = convertMoney(data.monthly);
-	let deposit = convertMoney(data.deposit);
-	let adminCost = convertMoney(data.adminCost);*/
+	homeImgFile = encodeURIComponent(data.homeImg.homeImgPath + "/t_" + data.homeImg.homeImgUuid + "_" +data.homeImg.homeImgName);	// 사진경로
 	
 	let homeStr = "";
 	homeStr += "<div class='home-card' onclick='detailHome("+ data.homeNum + ")'> <div class='home-img-wrap'>"
@@ -340,8 +336,8 @@ function displayPlaces(places) {
 		return;
 	
 	if(categoryStatus === true) {
-			removeCategoryMarker();
-			categoryDisplay(places);
+		removeCategoryMarker();
+		categoryDisplay(places);
 	}
 	
 	
@@ -446,24 +442,6 @@ function removeMarker() {
     }   
     homeMarker = [];
 }
-
-// 돈(관리비, 월세, 보증금 등) 단위 변환
-/*function convertMoney(money) {	
-	let convert = ""; 
-	if(money == 0) {
-		convert = "없음";
-	}else if(money >= 10000) {
-		convert += Math.floor(money/10000) + "억 ";
-		if(money % 10000 != 0 ) {
-			money = money % 10000;
-			convert +=  money + "만";
-		}
-	}else {
-		convert = money + "만";
-	}
-	
-	return convert;
-}*/
 
 // 상세보기 페이지 이동
 function detailHome(homeNum) {

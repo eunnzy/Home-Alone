@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.home.alone.board.vo.AlarmBoardAttachVO;
+import com.home.alone.board.vo.AlarmBoardVO;
 import com.home.alone.dao.AlarmBoardDAO;
 import com.home.alone.mapper.AlarmBoardAttachMapper;
 import com.home.alone.mapper.AlarmBoardMapper;
-import com.home.alone.vo.AlarmBoardAttachVO;
-import com.home.alone.vo.AlarmBoardVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;

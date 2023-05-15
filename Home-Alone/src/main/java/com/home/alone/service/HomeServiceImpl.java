@@ -1,5 +1,6 @@
 package com.home.alone.service;
 
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +19,10 @@ import com.home.alone.vo.HomeInqAnswerVO;
 import com.home.alone.vo.HomeInquryDetailVO;
 import com.home.alone.vo.HomeInquryVO;
 import com.home.alone.vo.HomeOptionVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
-import com.home.alone.vo.HomeReservPreviewVO;
+import com.home.alone.vo.HomeReservOverviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 
@@ -74,8 +75,8 @@ public class HomeServiceImpl implements HomeService{
 	
 	// 지도 경계 내에 매물 리스트 가져오기
 	@Override 
-	public List<HomePreviewVO> homeInBoundsList(Map<String, Object> mapBounds) {
-		List<HomePreviewVO> homeInBoundsList = null;
+	public List<HomeOverviewVO> homeInBoundsList(Map<String, Object> mapBounds) {
+		List<HomeOverviewVO> homeInBoundsList = null;
 		homeInBoundsList = homeDAO.selectHomeInBoundsList(mapBounds);
 		
 		for(int i=0; i<homeInBoundsList.size(); i++) {
@@ -95,8 +96,8 @@ public class HomeServiceImpl implements HomeService{
 	
 	// 매물 필터 검색
 	@Override
-	public List<HomePreviewVO> homeListByFilter(Map<String, Object> filterData) {	// 매물 필터 검색
-		List<HomePreviewVO> homeList = null;
+	public List<HomeOverviewVO> homeListByFilter(Map<String, Object> filterData) {	// 매물 필터 검색
+		List<HomeOverviewVO> homeList = null;
 		homeList = homeDAO.selectHomeListByFilter(filterData);
 		
 		
@@ -224,9 +225,9 @@ public class HomeServiceImpl implements HomeService{
 
 	// 임대인이 등록한 매물 리스트 
 	@Override
-	public List<HomePreviewVO> getListByLessorId(LessorVO vo) {
+	public List<HomeOverviewVO> getListByLessorId(LessorVO vo) {
 		System.out.println(vo);
-		List<HomePreviewVO> homeList = null;
+		List<HomeOverviewVO> homeList = null;
 		homeList = homeDAO.selectHomeListByLessorId(vo);
 		
 		// 미리보기 사진 가져오기

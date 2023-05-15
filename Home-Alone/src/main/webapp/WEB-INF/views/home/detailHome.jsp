@@ -230,7 +230,7 @@
 											${home.totalFloor }층  중 ${home.floor}층
 										</c:when>
 										<c:otherwise>
-											 지하 
+											 지하 ${home.floor}층
 										</c:otherwise>
 									</c:choose></td>
 							</tr>
@@ -272,7 +272,8 @@
 
 			</div>
 		</div>
-
+	</div>
+	</div>
 		
 	 <footer>
 			<jsp:include page="../footer.jsp"></jsp:include>

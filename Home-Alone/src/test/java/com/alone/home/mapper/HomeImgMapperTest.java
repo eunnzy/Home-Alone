@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.home.alone.dao.HomeDAO;
 import com.home.alone.mapper.HomeMapper;
 import com.home.alone.vo.HomeImgVO;
 
@@ -23,7 +24,16 @@ public class HomeImgMapperTest {
 	@Autowired
 	private HomeMapper homeMapper;
 	@Autowired
+	private HomeDAO homeDAO;
 	
+	
+	@Test 
+	public void homeImgSelect() {
+		List<HomeImgVO> list = new ArrayList<>();
+		
+		list = homeDAO.selectHomeImgList(4);
+		System.out.println(list);
+	}
 	
 	
 	public void homeImg() throws Exception {
@@ -42,7 +52,7 @@ public class HomeImgMapperTest {
 //		System.out.println(homeImg);
 	}
 	
-	@Test
+//	@Test
 	public void homePreview() throws Exception {
 		int homeNum = 2;
 		System.out.println(homeMapper.selectHomeImgList(homeNum));

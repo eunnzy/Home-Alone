@@ -90,12 +90,6 @@ public class ImchaController {
 	// 로그인
 	@RequestMapping(value = "/imchaLogin", method = RequestMethod.POST)
 	public String loginPOST(HttpServletRequest request, ImchaVO imcha, RedirectAttributes rttr) throws Exception {
-		
-//		System.out.println("login 메서드 진입");
-//		System.out.println("전달된 데이터 :" + member);
-//
-//		return null;
-		
 		HttpSession session = request.getSession();
 		ImchaVO vo = imchaService.imchaLogin(imcha);
 		
@@ -139,14 +133,9 @@ public class ImchaController {
 		
 		if (findIdVo == null) {
 			return 0;
-//			model.addAttribute("check",1);
-//			return "/member/msg";
 		}else {
-//			model.addAttribute("check",0);
-//			model.addAttribute("lessorId", findLessorIdVo.getLessorId());
 			model.addAttribute("imchaId", findIdVo);
 			return 1;
-//			return "/member/resultLessorId";
 		}
 	}
 	
@@ -154,12 +143,6 @@ public class ImchaController {
 	@RequestMapping(value="/resultId", method=RequestMethod.GET)
 	public String resultIdGET(HttpServletRequest request, Model model, @RequestParam(required=false,value="nickname")
 	String phone,String nickname,ImchaVO searchVO) throws Exception{
-		
-//				searchVO.setLessorNickName(lessorNickName);
-//				searchVO.setPhone(phone);
-//				LessorVO findLessorId = lessorservice.findLessorId(searchVO);
-		
-//				model.addAttribute("searchVO", findLessorId);
 		
 		return "/member/resultId";
 	}

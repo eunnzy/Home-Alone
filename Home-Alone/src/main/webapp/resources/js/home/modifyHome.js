@@ -62,15 +62,13 @@ $("#area").on("propertychange keyup paste input", function() {
 
 let index = 0;
 let homeForm = $("#homeForm");
-let homeImgList = [];    
-
 
 let regex = new RegExp("(.*?)\.(jpg|png|gif|jpeg)$");	// 파일 확장자 -> jpg / pn / gif / jpeg만 가능
 let maxSize = 1048576;	
-function imgExtentionCheck(fileName, fileSize){	// 파일 확장자 및 크기 체크 
+function imgCheck(fileName, fileSize){	// 파일 확장자 및 크기 체크 
 
 	if(fileSize >= maxSize){
-		alert("파일 사이즈 초과");
+		alert("사진 사이즈 초과입니다. 사진 크기는 1MB까지 가능합니다.");
 		return false;
 	}
 		  
@@ -114,6 +112,8 @@ $(document).on("change", "input[type=file]", function(e){
 	let fileInput = $("input[name=homeImg]");
 	let fileList = fileInput[0].files;
 	
+	console.log(fileList.length);
+	
 	if(fileList.length > 10) {
 		alert("사진은 최대 10장까지 첨부가능합니다.");
 		return false;
@@ -122,7 +122,7 @@ $(document).on("change", "input[type=file]", function(e){
 	console.log("fileList : " + fileList);
 	
 	for(var i=0; i<fileList.length; i++) {
-		if(!imgExtentionCheck(fileList[i].name, fileList[i].size)){	// 파일 확장자 및 크기 검사
+		if(!imgCheck(fileList[i].name, fileList[i].size)){	// 파일 확장자 및 크기 검사
 			return false;
 		}
 		formData.append("homeImg", fileList[i]);
@@ -179,6 +179,8 @@ $(".resultImg").on("click", ".imgDelete", function(e){
 $("#updateBtn").on("click",function(e){	
 	e.preventDefault();
 	
+	let homeImgList = [];
+	
 	let optionList = [];	// 옵션 체크 한 것 배열로 넘기기.
 	$("input[name=optionList]:checked").each(function() {
 		optionList.push($(this).val());
@@ -189,8 +191,8 @@ $("#updateBtn").on("click",function(e){
 			console.log("resultImg.each() 함수 실행 ");
 			
 			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgName' value='"+ $(obj).data("imgname") +"'>";
-			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("uuid") +"'>";	
-			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgUuid' value='"+ $(obj).data("path") +"'>";	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("path") +"'>";	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgUuid' value='"+ $(obj).data("uuid") +"'>";	
 		
 			let homeImgName = $(obj).data("imgname");
 			let homeImgUuid =  $(obj).data("uuid");
@@ -310,6 +312,13 @@ $("#updateBtn").on("click",function(e){
 	if(homeImgList.length < 2) {
 		e.preventDefault();
 		alert("사진은 최소 2장 첨부해야 합니다.");
+		return false;
+	}
+	
+	console.log(homeImgList.length);
+	
+	if(homeImgList.length > 10) {
+		alert("사진은 최대 10장까지만 가능합니다.")
 		return false;
 	}
 	

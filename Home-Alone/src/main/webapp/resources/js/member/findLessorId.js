@@ -3,8 +3,8 @@ $(document).ready(function(){
 	   let formData = $("#findLessorId");
       $('#findId').click(function(){
          // alert("성공!");
-         if($('#lessorNickName').val() == ''){
-            alert("닉네임을 입력하세요.");
+         if($('#jgsNum').val() == ''){
+            alert("공인중개사 등록번호를 입력하세요.");
             return false;
          }
          
@@ -14,7 +14,7 @@ $(document).ready(function(){
          }
          
          let lessor = {
-        		 "lessorNickName" : $('#lessorNickName').val(),  "phone" : $('#phone').val()
+        		 "jgsNum" : $('#jgsNum').val(),  "phone" : $('#phone').val()
         	}
          $.ajax({
         	data: lessor,
@@ -36,12 +36,9 @@ $(document).ready(function(){
 			}
          })
          
-         
          formData.submit();
          
-       
       });
-      
       
       
    });

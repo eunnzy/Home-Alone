@@ -27,7 +27,7 @@
 	<div class="container">
 		<div class="row">
 			<c:forEach items="${reservList}" var="reservList">
-				<div class="col-6">
+				<div class="col-6 mb-3">
 					<div class="card bg-light">
 						<div class="card-body">
 							<div class="row">
@@ -42,17 +42,21 @@
 									<c:choose>
 						    			<c:when test="${reservList.revState ==  0}">
 						    				<h6>예약 상태: 대기중 </h6>
-						    				<button class="btn btn-secondary" type="button" onclick="btnClick(,${reservList.revNum})">취소</button>	
+						    				<button class="btn btn-secondary" type="button" onclick="changeReservStatus('cancel',${reservList.revNum})">취소</button>	
 										</c:when>
 										<c:when test="${reservList.revState ==  1}">
 											<h6>예약 상태: 예약 확정 </h6>
-											<button class="btn btn-secondary" type="button" onclick="btnClick(,${reservList.revNum})">취소</button>	
+											<button class="btn btn-secondary" type="button" onclick="changeReservStatus('cancel',${reservList.revNum})">취소</button>	
+										</c:when>
+										<c:when test="${reservList.revState ==  2}">
+											<h6>예약 상태: 예약 거절 </h6>
+											<button class="btn btn-secondary" type="button" onclick="changeReservStatus('delete',${reservList.revNum})">삭제</button>	
 										</c:when>
 										<c:otherwise>
-											<h6>예약 상태: 예약 거절 </h6>
+											<h6>예약 상태: 예약 취소 </h6>
+											<button class="btn btn-secondary" type="button" onclick="changeReservStatus('delete',${reservList.revNum})">삭제</button>	
 										</c:otherwise> 
 						    		</c:choose>
-						    		
 								</div>
 							</div>
 						</div>
@@ -64,34 +68,27 @@
 	a
 	<form id="form" >
   	<input type="hidden" name="change" id="change">
-  	<input type="hidden" name="homeNum" id="homeNum">
+  	<input type="hidden" name="revNum" id="revNum">
   </form>
 	
 	<script type="text/javascript">
-		function btnClick(revNum) {
-			console.log(revNum);
-			$.ajax({
-				type: 'POST',
-				data: {revNum: revNum},
-				url: '/home/reserv/cancel',
-				success : function(data) {
-					console.log()
-				},
-				error: function(xhr, status, error){console.log(xhr.status, status)}
-			});
+		function changeReservStatus(change, revNum) {
+			let	e = window.event;
+	  		e.preventDefault();
+	  		
+	  		let formData = $("#form");
+	  		
+	  		$("#change").attr("value", change);
+	  		$("#revNum").attr("value", revNum);
+	  		
+	  		console.log($("#change").val());
+	  		console.log($("#revNum").val());
+	  		formData.attr("action", "/home/reserv/imcha/changeStatus");
+	  		formData.attr("method", "post");
+	  		
+	  		formData.submit();
 		}
 		
-	/* 	$("#cancelBtn").click(function() {
-			
-			console.log(revNum);
-			$.ajax({
-				type: 'put',
-				url: '/home/reserv/cancel',
-				
-			})
-			
-		})
-	 */
 	</script>
 
 

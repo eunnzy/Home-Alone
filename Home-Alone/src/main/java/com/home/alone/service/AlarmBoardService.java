@@ -2,8 +2,8 @@ package com.home.alone.service;
 
 import java.util.List;
 
-import com.home.alone.vo.AlarmBoardAttachVO;
-import com.home.alone.vo.AlarmBoardVO;
+import com.home.alone.board.vo.AlarmBoardAttachVO;
+import com.home.alone.board.vo.AlarmBoardVO;
 
 public interface AlarmBoardService {
 	// 목록 

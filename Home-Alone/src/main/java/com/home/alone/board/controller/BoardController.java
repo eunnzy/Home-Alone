@@ -41,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.home.alone.board.service.BoardService;
+import com.home.alone.board.vo.AlarmBoardVO;
 import com.home.alone.board.vo.BoardAttachFileDTO;
 import com.home.alone.board.vo.BoardAttachVO;
 import com.home.alone.board.vo.BoardLikesVO;
@@ -49,7 +50,6 @@ import com.home.alone.member.vo.ImchaVO;
 import com.home.alone.service.AlarmBoardService;
 import com.home.alone.util.Criteria;
 import com.home.alone.util.PageDTO;
-import com.home.alone.vo.AlarmBoardVO;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -64,10 +64,9 @@ public class BoardController {
 	@Autowired
 	private AlarmBoardService abservice;
 	
-	// 로그인 여부에 따른 목록 리스트 
-	@GetMapping("/list")
+	
+	@GetMapping("/list")	// 커뮤니티 리스트
 	public String list(Model model, HttpServletRequest request, Criteria cri) {
-//		System.out.println(cri);
 		HttpSession session = request.getSession();
 		ImchaVO imcha = (ImchaVO) session.getAttribute("imcha");
 		if(cri.getTypeArr() == null) {
@@ -103,15 +102,17 @@ public class BoardController {
 	@GetMapping("/get")
 	public String get(Long bno, Model model, @ModelAttribute("cri") Criteria cri, String imchaId, HttpServletRequest request, HttpServletResponse response) {
 		// 조회 게시물 정보 넘기기 
-		log.info("get");
 		model.addAttribute("board", service.getDetail(bno));
+		log.info("get");
 		
 		// 좋아요 처리 
-		BoardLikesVO likevo = new BoardLikesVO();
-		likevo.setBno(bno);
-		likevo.setUserid(imchaId);
-		log.info(likevo);
+		BoardLikesVO boardLikesVO = new BoardLikesVO();
+		boardLikesVO.setBno(bno);
+		boardLikesVO.setUserid(imchaId);
+		log.info(boardLikesVO);
 		model.addAttribute("like", service.likeCheck(bno, imchaId));
+//		model.addAttribute("like", service.likeCheck(boardLikesVO));
+		
 		
 		// 조회수 처리 
 		Cookie[] cookies = request.getCookies();
@@ -350,7 +351,7 @@ public class BoardController {
 			file.delete();
 			
 			if(type.equals("image")) {
-				String largeFileName = file.getAbsolutePath().replace("s_", "");
+				String largeFileName = file.getAbsolutePath().replace("t_", "");
 				log.info("largeFileName : " + largeFileName);
 				file = new File(largeFileName);
 				file.delete();
@@ -404,7 +405,7 @@ public class BoardController {
 				Path file = Paths.get("C:\\boardUpload\\" + attach.getUploadPath() + "/" + attach.getUuid() + "_" + attach.getFileName());
 				Files.deleteIfExists(file);
 				if(Files.probeContentType(file).startsWith("image")) {
-					Path thumbNail = Paths.get("C:\\boardUpload\\" + attach.getUploadPath() + "/s_" + attach.getUuid() + "_" + attach.getFileName());
+					Path thumbNail = Paths.get("C:\\boardUpload\\" + attach.getUploadPath() + "/t_" + attach.getUuid() + "_" + attach.getFileName());
 					Files.delete(thumbNail);
 				}
 			} catch(Exception e) {

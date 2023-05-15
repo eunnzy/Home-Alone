@@ -55,12 +55,12 @@
             <form  method="post" name="findLessorId">
                <div class="row">
                   <div class="col-12 mb-4">
-                     <label for="lessor_name">닉네임 </label> 
-                     <input type="text" name="lessorNickName" class="form-control" id="lessorNickName" value="" placeholder="닉네임을 입력하세요.">
+                     <label for="lessor_name">공인중개사 등록번호 </label> 
+                     <input type="text" name="jgsNum" class="form-control" id="jgsNum" placeholder="중개사 번호를 입력하세요.">
                   </div>
                <div class="col-12 mb-4">
                      <label for="lessor_phone">전화번호 </label> 
-                     <input type="text" name="phone" class="form-control" id="phone" value="" placeholder="010-0000-0000"><br>
+                     <input type="text" name="phone" class="form-control" id="phone" placeholder="010-0000-0000"><br>
                   <br>
                </div>
                         

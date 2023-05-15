@@ -30,7 +30,7 @@ import com.home.alone.service.HomeService;
 import com.home.alone.service.HomeLikeService;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeLikeVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 import com.home.alone.vo.HomeReportVO;
 
 /*
@@ -84,12 +84,12 @@ public class HomeController {
 	// 필터 검색
 	@RequestMapping(value="/homeFilter")	
 	@ResponseBody
-	public List<HomePreviewVO> homeFilter(@RequestBody HashMap<String, Object> filterData) {
+	public List<HomeOverviewVO> homeFilter(@RequestBody HashMap<String, Object> filterData) {
 		System.out.println("homeFilter controller");
 		System.out.println(filterData);
 		
 		Map<String, Object> filterMap = new HashMap<>();
-		List<HomePreviewVO> homeList = null;
+		List<HomeOverviewVO> homeList = null;
 		
 		System.out.println("filterData.homeType : " + (List<String>)filterData.get("homeType"));
 		
@@ -143,9 +143,9 @@ public class HomeController {
 	// 지도 경계 내의 매물 위치 정보 
 	@RequestMapping(value="/homeInBounds" , method = RequestMethod.POST)
 	@ResponseBody
-	public List<HomePreviewVO> homeInBounds(@RequestParam Map<String, Object> mapBounds) {
+	public List<HomeOverviewVO> homeInBounds(@RequestParam Map<String, Object> mapBounds) {
 		System.out.println(mapBounds);
-		List<HomePreviewVO> homeInBoundsList = null;
+		List<HomeOverviewVO> homeInBoundsList = null;
 		homeInBoundsList = homeService.homeInBoundsList(mapBounds);
 		System.out.println(homeInBoundsList);
 		

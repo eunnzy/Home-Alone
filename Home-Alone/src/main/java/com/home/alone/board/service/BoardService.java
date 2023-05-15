@@ -1,7 +1,6 @@
 package com.home.alone.board.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.home.alone.board.vo.BoardAttachVO;
 import com.home.alone.board.vo.BoardLikesVO;
@@ -21,8 +20,11 @@ public interface  BoardService{
 	boolean remove(Long bno); // 삭제
 	boolean likesUp(Long bno); 	// 좋아요 UP
 	boolean likesDown(Long bno);	// 좋아요 DOWN
-	void likesOn(Long bno, String userid); // 좋아요 ON 
-	void likesOff(Long bno, String userid); // 좋아요 OFF 
+	int likesOn(BoardLikesVO boardLikesVO); // 좋아요 ON 
+	int likesOff(BoardLikesVO boardLikesVO); // 좋아요 OFF 
+//	void likesOn(Long bno, String userid); // 좋아요 ON 
+//	void likesOff(Long bno, String userid); // 좋아요 OFF 
+//	int likeCheck(BoardLikesVO boardLikesVO);  // 좋아요 체크 여부 
 	int likeCheck(Long bno, String userid); // 좋아요 체크 여부 
 	boolean viewsUp(Long bno); // 조회수 
 	void replysUp(Long bno); // 댓글수 증가

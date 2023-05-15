@@ -15,7 +15,7 @@
   	<select id="selectHomeReservInvalidTimeList" parameterType="com.home.alone.vo.HomeReservVO" resultType="java.lang.String">
   		select rev_time
   		from Home_Reserv_tb
-  		where home_num = #{homeNum} and rev_date = TO_DATE(#{revDate}) and rev_state &lt; 2
+  		where home_num = #{homeNum} and rev_date = TO_CHAR(#{revDate}, 'YYYY-MM-DD') and rev_state &lt; 2
   		<!-- rev_state < 2 : 대기중(0), 수락(1) 시간대는 예약이 불가능 함 -->
   	</select>
   	
@@ -49,21 +49,23 @@
  	</select>
  	
  	<!-- 예약 신청 목록(일반회원) -->
-	<select id="selectHomeReservListByImchaId" resultType="com.home.alone.vo.HomeReservPreviewVO">
+	<select id="selectHomeReservListByImchaId" resultType="com.home.alone.vo.HomeReservOverviewVO">
  		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
  			   rev_state as revState, jgs_name as jgsName
  		FROM Home_Reserv_tb 
 	 		 join Lessor_tb using(lessor_id)
  		WHERE imcha_id = #{imcha_id}
+ 		ORDER BY rev_num DESC
  	</select>
  	
  	<!-- 예약 목록(중개인) -->
- 	<select id="selectHomeReservListByLessorId" resultType="com.home.alone.vo.HomeReservPreviewVO">
+ 	<select id="selectHomeReservListByLessorId" resultType="com.home.alone.vo.HomeReservOverviewVO">
  		select imcha_id as imchaId, rev_num as revNum, home_num as homeNum, rev_date as revDate, rev_time as revTime, 
  			   rev_state as revState, name as imchaName 
  		FROM Home_Reserv_tb 
 	 		 join Imcha_tb using(imcha_id)
  		WHERE lessor_id = #{lessorId}
+ 		ORDER BY rev_num DESC
  	</select>
  	
  	<!-- 일반회원 예약 목록 개수 -->

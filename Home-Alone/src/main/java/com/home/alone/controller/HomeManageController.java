@@ -42,7 +42,7 @@ import com.home.alone.service.HomeService;
 import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeImgVO;
 import com.home.alone.vo.HomeOptionVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeVO;
 
@@ -59,41 +59,29 @@ public class HomeManageController {
 	@Autowired
 	HomeService homeService;
 	
-	@Autowired
-	HomeMapper homeMapper;
-	
-	@Autowired
-	HomeDAO homeDAO;
-	
-	@RequestMapping("/list")
+
+	@RequestMapping("/list") 	// 매물 관리 페이지
 	public String getHomeList(Model model,  HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		LessorVO lessorVO = (LessorVO) session.getAttribute("lessor");	// 로그인 한 아이디 
 		
 		System.out.println(lessorVO.getLessorId());
-		List<HomePreviewVO> homeList = homeService.getListByLessorId(lessorVO);
+		List<HomeOverviewVO> homeList = homeService.getListByLessorId(lessorVO);
 		
 		for(int i=0; i<homeList.size(); i++) {
 			String deposit = homeService.convertMoneyUnit(homeList.get(i).getDeposit());
 			String monthly = homeService.convertMoneyUnit(homeList.get(i).getMonthly());
 			String adminCost = homeService.convertMoneyUnit(homeList.get(i).getAdminCost());
-			
 		}
 		
-		
 		System.out.println("homeList: " + homeList);
-//		System.out.println(manageList);
-//		for (int i=0; i<manageList.size(); i++) {
-//			List<HomeImgVO> img = homeDAO.selectHomeImgList(manageList.get(i).getHomeNum());
-//			manageList.get(i).setHomeImg(img.get(0));
-//		}
 		model.addAttribute("homeList", homeList);
 		return "mypage/homeManage";
 	}
 	
 	
 	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@RequestMapping(value = "/register", method = RequestMethod.GET)	// 매물 등록 페이지
 	public String registerForm() {
 		return "home/manage/registerHome";
 	}
@@ -242,10 +230,6 @@ public class HomeManageController {
 		LessorVO lessorVO = (LessorVO) request.getSession().getAttribute("lessor");	
 		Map<String, Object> home = homeService.getHomeDetail(homeNum);	// 원래 정보 가져오기
 		System.out.println("detailHome: " + home);
-		
-//		home.put("deposit", (int)home.get("deposit"));
-//		home.put("monthly", (int)home.get("monthly"));
-//		home.put("adminCost", (int)home.get("adminCost"));
 		model.addAttribute("home", home);
 		return "home/manage/modifyHome";
 	}
@@ -525,6 +509,8 @@ public class HomeManageController {
 		return new ResponseEntity<String>("success", HttpStatus.OK);	// 성공했다고 리턴.
 	}
 	
+	
+	// 매물 삭제
 	@RequestMapping("/deleteHome")
 	public String deleteHome(int homeNum, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session =  request.getSession();
@@ -537,18 +523,22 @@ public class HomeManageController {
 		return "redirect:/home/manage/list?lessorId="+lessorVO.getLessorId();
 	}
 	
+	// 매물 게시 상태 변경
 	@PostMapping("/changeStatus")
 	public String changeStatus(String change, int homeNum, HttpServletRequest request) {
 		
 		System.out.println("change Status ");
 		System.out.println("change: " + change + " " + homeNum);
-//		HttpSession session =  request.getSession();
-//		LessorVO lessorVO = (LessorVO) session.getAttribute("lessor");
-		
-		if(change.equals("valid")) {
+		switch(change) {
+		case "valid" :
 			homeService.changeHomeStatusPost(homeNum);
-		}else if(change.equals("invalid")) {
-			homeService.changeHomeStatusStop(homeNum);
+			break;
+		case "invalid" :
+			homeService.changeHomeStatusPost(homeNum);
+			break;
+		case "delete" :
+			homeService.deleteHome(homeNum);
+			break;
 		}
 		
 		return "redirect: /home/manage/list";

@@ -28,7 +28,7 @@
 	<div class="container">
 		<div class="row">
 			<c:forEach items="${reservList}" var="reservList">
-				<div class="col-6">
+				<div class="col-6 mb-3">
 					<div class="card bg-light">
 						<div class="card-body">
 							<div class="row">
@@ -82,7 +82,7 @@
   		
   		console.log($("#change").val());
   		console.log($("#revNum").val());
-  		formData.attr("action", "/home/reserv/changeStatus");
+  		formData.attr("action", "/home/reserv/lessor/changeStatus");
   		formData.attr("method", "post");
   		
   		formData.submit();

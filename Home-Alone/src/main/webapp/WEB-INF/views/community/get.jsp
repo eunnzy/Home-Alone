@@ -91,14 +91,11 @@
 
 		<!-- 페이지이동 Form -->
 		<form id="operForm" action="/community/modify" method="get">
-			<input type="hidden" id="bno" name="bno"
-				value="<c:out value="${board.bno}" />"> <input
-				type="hidden" name="pageNum"
-				value="<c:out value="${cri.pageNum }" />"> <input
-				type="hidden" name="amount" value="<c:out value="${cri.amount }" />">
-			<input type="hidden" name="keyword"
-				value="<c:out value="${cri.keyword }" />"> <input
-				type="hidden" name="type" value="<c:out value="${cri.type }" />">
+			<input type="hidden" id="bno" name="bno" value="${board.bno}"> 
+			<input type="hidden" name="pageNum" value="${cri.pageNum }"> 
+			<input type="hidden" name="amount" value="${cri.amount }">
+			<input type="hidden" name="keyword"	value="${cri.keyword }"> 
+			<input type="hidden" name="type" value="${cri.type }">
 		</form>
 		<div>
 			<br>
@@ -123,7 +120,7 @@
 				$(arr).each(function(i, attach){
 					if(attach.fileType){
 						var fileCallPath = encodeURIComponent(attach.uploadPath + "/" + attach.uuid + "_" + attach.fileName);
-						imgstr += "<div data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "'>";
+						imgstr += "<div data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "' class='px-4'>";
 						imgstr += "<img src='/community/display?fileName=" + fileCallPath + "'>";
 						imgstr + "</div>";
 					} else {

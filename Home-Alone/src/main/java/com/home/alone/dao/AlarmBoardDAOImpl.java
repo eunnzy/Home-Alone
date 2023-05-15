@@ -6,8 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.home.alone.vo.AlarmBoardAttachVO;
-import com.home.alone.vo.AlarmBoardVO;
+import com.home.alone.board.vo.AlarmBoardAttachVO;
+import com.home.alone.board.vo.AlarmBoardVO;
 
 @Repository
 public class AlarmBoardDAOImpl implements AlarmBoardDAO{

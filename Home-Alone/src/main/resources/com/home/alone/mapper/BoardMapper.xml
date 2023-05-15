@@ -67,25 +67,6 @@
 		WHERE imcha_id = #{imchaId}
 	</select>
 	
-		<!-- 내가쓴글 갯수 -->
- <!-- 	<select id="selectMyBoardCount" resultType="int">
- 		SELECT COUNT(*)
-		FROM Board_tb join Imcha_tb using(imcha_id)
-		WHERE imcha_id = #{imchaId}
- 		SELECT COUNT(*) 
- 		FROM (SELECT B.*
- 			  FROM Board_tb B, Imcha_tb I 
- 			  WHERE B.IMCHA_ID = I.IMCHA_ID AND I.IMCHA_ID = #{imchaId}
- 			  ) A 
-		WHERE BNO > 0 
-	</select> -->
-	
-	<!-- <select id="selectMyCount" resultType="int">
-		SELECT COUNT(*) 
- 		FROM Board_tb
-		WHERE imcha_id=#{imchaId}
-	</select>
-	 -->
 	
 	<!-- 등록 -->
 	<insert id="insertBoard" parameterType="com.home.alone.board.vo.BoardVO">
@@ -134,5 +115,50 @@
 	<update id="updateReplysDown">
 		UPDATE Board_tb SET replys = replys-1 WHERE bno = #{bno}
 	</update>
+	
+	<!-- 파일 업로드 등록 -->
+	<insert id="insertBoardAttach">
+		INSERT INTO Board_Attach_tb (uuid, uploadPath, fileName, filetype, bno)
+		VALUES (#{uuid}, #{uploadPath}, #{fileName}, #{fileType}, #{bno})
+	</insert>
+	
+	<!-- 업로드 중 취소 --> 
+	<delete id="deleteBoardAttach">
+		DELETE FROM Board_Attach_tb WHERE uuid = #{uuid}
+	</delete>
+	
+	<!-- 게시물의 파일 조회 -->
+	<select id="selectBoardAttachfindByBno" resultType="com.home.alone.board.vo.BoardAttachVO">
+		SELECT * FROM Board_Attach_tb WHERE bno = #{bno}
+	</select>
+	
+	<!-- 게시물의 모든 파일 삭제 -->
+	<delete id="deleteBoardAttachAll">
+		DELETE Board_Attach_tb WHERE bno = #{bno}
+	</delete>
+	
+	<!-- 이전 업로드 파일 확인 -->
+	<select id="getOldFiles" resultType="com.home.alone.board.vo.BoardAttachVO">
+		SELECT * FROM Board_Attach_tb WHERE uploadpath = to_char(SYSDATE -1, 'yyyy/mm/dd')
+	</select>
+	
+	<!-- 좋아요 체크 -->
+	<select id="selectLikeCheck" parameterType="com.home.alone.board.vo.BoardLikesVO">
+		select count(*)
+		from board_likes_tb
+		where bno = #{bno} and user_id = #{userid}
+	</select>
+	
+	
+	<!-- 좋아요 ON -->
+	<insert id="insertBoardLike" parameterType="com.home.alone.board.vo.BoardLikesVO">
+		INSERT INTO Board_Likes_tb (likeno, bno, user_id, like_check) 
+		VALUES (SEQ_LIKENO.NEXTVAL, #{bno}, #{userid}, 1)
+	</insert>
+	
+	<!-- 좋아요 OFF -->
+	<delete id="deleteBoardLike" parameterType="com.home.alone.board.vo.BoardLikesVO">
+		DELETE FROM Board_Likes_tb WHERE bno = #{bno} AND user_id = #{userid}
+	</delete>
 	
 </mapper>

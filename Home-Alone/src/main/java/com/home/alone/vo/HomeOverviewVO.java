@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Data	
 @NoArgsConstructor
-public class HomePreviewVO {	// 매물 미리보기 VO
+public class HomeOverviewVO {	// 매물 미리보기 VO
 	
 	private int homeNum;		// 매물 번호	
 	private String lessorId;	// 중개인 아이디 (작성자)

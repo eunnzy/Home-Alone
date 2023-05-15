@@ -15,7 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.home.alone.mapper.HomeImgMapper;
 import com.home.alone.mapper.HomeMapper;
 import com.home.alone.vo.HomeDetailVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 import com.home.alone.vo.HomeVO;
 
 // home db 연결 테스트

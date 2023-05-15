@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.home.alone.vo.HomeLikeVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 
 @Repository
 public class HomeLikeDAOImpl implements HomeLikeDAO {
@@ -22,7 +22,7 @@ public class HomeLikeDAOImpl implements HomeLikeDAO {
 	}
 
 	@Override
-	public List<HomePreviewVO> selectHomeLikeList(String imchaId) {
+	public List<HomeOverviewVO> selectHomeLikeList(String imchaId) {
 		return sqlSession.selectList(HOMELIKEMAPPER + "selectHomeLikeList", imchaId);
 	}
 
