@@ -32,9 +32,8 @@ public class NewsServiceImpl implements NewsService{
 			String url = "https://news.naver.com/main/list.naver?mode=LS2D&sid2=260&sid1=101&mid=shm&"
 					+ "date=" + date + "&page=" + Integer.toString(page); // 크롤링 해 올 url
 			
-			System.out.println(url); 
 
-			Document data = Jsoup.connect(url).get();
+			Document data = Jsoup.connect(url).get();	
 			Elements elements = data.select("div.list_body li dl");
 			System.out.println();
 			

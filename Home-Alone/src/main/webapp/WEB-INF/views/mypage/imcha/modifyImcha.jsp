@@ -73,10 +73,10 @@
 							<label for="exampleSelect1" class="form-label mt-4">주소</label>
 							<div class="row">
 								<div class="col-6">
-									<select class="form-select" id="exampleSelect1" name="sido" id="sido" ></select>
+									<select class="form-select" name="sido" id="sido" ></select>
 								</div>
 								<div class="col-6">
-									<select class="form-select" id="exampleSelect1" name="gugun" id="gugun"></select>
+									<select class="form-select" name="gugun" id="gugun"></select>
 								</div>
 							</div>
 						</div>
@@ -142,6 +142,7 @@
 			 }
 		});
 
+		 
 
 	});			
 	</script>

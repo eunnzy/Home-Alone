@@ -12,10 +12,10 @@ import com.home.alone.vo.HomeAddInfoVO;
 import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeImgVO;
 import com.home.alone.vo.HomeOptionVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
-import com.home.alone.vo.HomeReservPreviewVO;
+import com.home.alone.vo.HomeReservOverviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 
@@ -57,12 +57,12 @@ public class HomeDAOImpl implements HomeDAO{
 	
 	
 	@Override
-	public List<HomePreviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds) {
+	public List<HomeOverviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds) {
 		return sqlSession.selectList(HOMEMAPPER + "selectHomeInBoundsList", mapBounds);
 	}
 
 	@Override
-	public List<HomePreviewVO> selectHomeListByFilter(Map<String, Object> filterData) {
+	public List<HomeOverviewVO> selectHomeListByFilter(Map<String, Object> filterData) {
 		return sqlSession.selectList(HOMEMAPPER + "selectHomeListByFilter", filterData);
 	}
 	
@@ -119,14 +119,14 @@ public class HomeDAOImpl implements HomeDAO{
 	}
 	
 	@Override
-	public List<HomePreviewVO> selectHomeListByLessorId(LessorVO vo) {
+	public List<HomeOverviewVO> selectHomeListByLessorId(LessorVO vo) {
 		System.out.println(vo.getLessorId());
 		return sqlSession.selectList(HOMEMAPPER+ "selectHomeListByLessorId", vo);
 	}
 
 	@Override
 	public int deleteHome(int homeNum) {
-		return  sqlSession.selectOne(HOMEMAPPER+ "deleteHome", homeNum);
+		return  sqlSession.delete(HOMEMAPPER+ "deleteHome", homeNum);
 	}
 	
 	@Override

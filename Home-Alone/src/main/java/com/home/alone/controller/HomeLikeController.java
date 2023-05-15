@@ -17,7 +17,7 @@ import com.home.alone.mapper.LikeMapper;
 import com.home.alone.member.vo.ImchaVO;
 import com.home.alone.service.HomeLikeService;
 import com.home.alone.vo.HomeLikeVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 
 @Controller
 @RequestMapping(value = "/home/like")
@@ -57,7 +57,7 @@ public class HomeLikeController {
 		ImchaVO imchaVO = (ImchaVO)request.getSession().getAttribute("imcha");
 		String imchaId =  imchaVO.getImchaId();
 
-		List<HomePreviewVO> likeList = homeLikeService.getLikeByImchaId(imchaId);	// 일반회원 찜 목록 
+		List<HomeOverviewVO> likeList = homeLikeService.getLikeByImchaId(imchaId);	// 일반회원 찜 목록 
 		
 		model.addAttribute("likeList",likeList);
 		return "mypage/likeList";

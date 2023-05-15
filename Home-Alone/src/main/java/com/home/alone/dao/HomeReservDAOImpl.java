@@ -6,7 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.home.alone.vo.HomeReservPreviewVO;
+import com.home.alone.vo.HomeReservOverviewVO;
 import com.home.alone.vo.HomeReservVO;
 
 @Repository
@@ -26,12 +26,12 @@ public class HomeReservDAOImpl implements HomeReservDAO {
 	}
 	
 	@Override
-	public List<HomeReservPreviewVO> selectHomeReservListByImchaId(String imchaId) {
+	public List<HomeReservOverviewVO> selectHomeReservListByImchaId(String imchaId) {
 		return sqlSession.selectList(HOMERESERVMAPPER + "selectHomeReservListByImchaId", imchaId);
 	}
 
 	@Override
-	public List<HomeReservPreviewVO> selectHomeReservListByLessorId(String lessorId) {
+	public List<HomeReservOverviewVO> selectHomeReservListByLessorId(String lessorId) {
 		return sqlSession.selectList(HOMERESERVMAPPER + "selectHomeReservListByLessorId", lessorId);
 	}
 	

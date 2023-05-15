@@ -57,7 +57,7 @@ $(document).ready(function() {
 		}else if(deposit == 2){
 			deposit = 10000;
 		}else {
-			deposit = 99999999;
+			deposit = 1000000000;
 		}
 		
 		monthly = $("#monthly").val();
@@ -66,7 +66,7 @@ $(document).ready(function() {
 		}else if(monthly == 2){
 			monthly = 100;
 		}else {
-			monthly = 99999999;
+			monthly = 1000000000;
 		}
 		
 		getHomeListByFilter();	// 필터 검색 함수 호출 

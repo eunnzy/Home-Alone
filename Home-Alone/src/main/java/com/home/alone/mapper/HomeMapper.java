@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeImgVO;
 import com.home.alone.vo.HomeOptionVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
 import com.home.alone.vo.HomeVO;
@@ -24,7 +24,7 @@ public interface HomeMapper {
 	int insertHomeOptionList(List<HomeOptionVO> homeOptionList);	// 매물 옵션 테이블에 삽입
 	int insertHomeReport(HomeReportVO homeReportVO);	// 매물 신고 정보 삽입
 	
-	List<HomePreviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds);	// 현재 지도 경계내 매물 리스트 반환(미리보기 리스트)
+	List<HomeOverviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds);	// 현재 지도 경계내 매물 리스트 반환(미리보기 리스트)
 	HomeImgVO selectPreviewHomeImg(int homeNum);	// 매물 미리보기시 나올 사진
 	HomeDetailVO selectHomeDetail(int homeNum);	// 매물 정보 반환
 	List<HomeImgVO> selectHomeImgList(int homeNum); // 해당 매물 사진들 반환
@@ -37,7 +37,7 @@ public interface HomeMapper {
 	int deleteHomeOption(int homeNum);	// 매물 옵션 삭제
 	int deleteHomeImg(int homeNum);	// 매물 사진 정보 삭제
 	
-	public List<HomePreviewVO> getListByLessorId(String lessorId);
+	public List<HomeOverviewVO> getListByLessorId(String lessorId);
 	public void deleteHome(@Param("homeNum")int homeNum, @Param("lessorId")String lessorId);
 	
 } 

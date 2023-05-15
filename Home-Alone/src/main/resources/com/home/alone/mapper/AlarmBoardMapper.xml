@@ -3,7 +3,7 @@
 <mapper namespace="com.home.alone.mapper.AlarmBoardMapper">
 
 	<!-- 리스트 -->
-	<select id="selectAlarmBoardList" resultType="com.home.alone.vo.AlarmBoardVO">
+	<select id="selectAlarmBoardList" resultType="com.home.alone.board.vo.AlarmBoardVO">
 		SELECT * FROM Alarm_Board_tb 
 	</select>
 	
@@ -15,7 +15,7 @@
 	</insert>
 	
 	<!-- 조회 -->
-	<select id="selectAlarmBoardDetail" parameterType="map" resultType="com.home.alone.vo.AlarmBoardVO">
+	<select id="selectAlarmBoardDetail" parameterType="map" resultType="com.home.alone.board.vo.AlarmBoardVO">
 		SELECT * FROM Alarm_Board_tb  WHERE ano = #{ano}
 	</select>
 	

@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.home.alone.board.vo.BoardAttachVO;
+import com.home.alone.board.vo.BoardLikesVO;
 import com.home.alone.board.vo.BoardVO;
 import com.home.alone.util.Criteria;
 
@@ -79,6 +81,46 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public int deleteBoard(Long bno) {
 		return sqlSession.delete(BOARDMAPPER + "deleteBoard", bno);
+	}
+
+	@Override
+	public int insertBoardAttach(BoardAttachVO board) {
+		return sqlSession.insert(BOARDMAPPER+ "insertBoardAttach", board);
+	}
+
+	@Override
+	public List<BoardAttachVO> selectBoardAttachfindByBno(Long bno) {
+		return sqlSession.selectList(BOARDMAPPER + "selectBoardAttachfindByBno", bno);
+	}
+
+	@Override
+	public int deleteBoardAttach(String uuid) {
+		return sqlSession.delete(BOARDMAPPER + "deleteBoardAttach", uuid);
+	}
+
+	@Override
+	public int deleteBoardAttachAll(Long bno) {
+		return sqlSession.delete(BOARDMAPPER + "deleteBoardAttachAll", bno);
+	}
+
+	@Override
+	public List<BoardAttachVO> getOldFiles() {
+		return sqlSession.selectList(BOARDMAPPER + "getOldFiles");
+	}
+
+	@Override
+	public int selectLikeCheck(BoardLikesVO boardLikesVO) {
+		return sqlSession.selectOne(BOARDMAPPER + "selectLikeCheck" + boardLikesVO);
+	}
+
+	@Override
+	public int insertBoardLike(BoardLikesVO boardLikesVO) {
+		return sqlSession.insert(BOARDMAPPER + "insertBoardLike", boardLikesVO);
+	}
+
+	@Override
+	public int deleteBoardLike(BoardLikesVO boardLikesVO) {
+		return sqlSession.delete(BOARDMAPPER + "deleteBoardLike", boardLikesVO);
 	}
 
 

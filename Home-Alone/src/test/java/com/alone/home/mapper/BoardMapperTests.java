@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.home.alone.board.dao.BoardDAO;
+import com.home.alone.board.vo.BoardLikesVO;
 import com.home.alone.board.vo.BoardVO;
 import com.home.alone.mapper.BoardMapper;
 import com.home.alone.util.Criteria;
@@ -42,7 +43,17 @@ public class BoardMapperTests {
 //		list.forEach(board -> log.info(board));
 //	}
 	
-	@Test
+
+//	@Test
+//	public void getLikes() {
+//		BoardLikesVO likesVO = new BoardLikesVO();
+//		likesVO.setBno((long)12);
+//		likesVO.setUserid("test");
+//		
+//		log.info(boardDAO.selectBoardLikeCheck(likesVO));
+//		
+//	}
+	
 	public void getMyList() {
 	//	log.info(boardDAO.selectMyBoardCount(cri));
 		

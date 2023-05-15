@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.home.alone.dao.HomeDAO;
 import com.home.alone.dao.HomeReservDAO;
-import com.home.alone.vo.HomeReservPreviewVO;
+import com.home.alone.vo.HomeReservOverviewVO;
 import com.home.alone.vo.HomeReservVO;
 
 @Service
@@ -29,8 +29,8 @@ public class HomeReservServiceImpl implements HomeReservService {
 	}
 
 	@Override
-	public List<HomeReservPreviewVO> getReservListByImcha(String imchaId) {
-		List<HomeReservPreviewVO> homeList = homeReservDAO.selectHomeReservListByImchaId(imchaId);
+	public List<HomeReservOverviewVO> getReservListByImcha(String imchaId) {
+		List<HomeReservOverviewVO> homeList = homeReservDAO.selectHomeReservListByImchaId(imchaId);
 		
 		for(int i=0; i<homeList.size(); i++) {
 			int homeNum = homeList.get(i).getHomeNum();
@@ -41,8 +41,8 @@ public class HomeReservServiceImpl implements HomeReservService {
 	}
 
 	@Override
-	public List<HomeReservPreviewVO> getReservListByLessor(String lessorId) {
-		List<HomeReservPreviewVO> homeList = homeReservDAO.selectHomeReservListByLessorId(lessorId);
+	public List<HomeReservOverviewVO> getReservListByLessor(String lessorId) {
+		List<HomeReservOverviewVO> homeList = homeReservDAO.selectHomeReservListByLessorId(lessorId);
 		
 		for(int i=0; i<homeList.size(); i++) {
 			int homeNum = homeList.get(i).getHomeNum();

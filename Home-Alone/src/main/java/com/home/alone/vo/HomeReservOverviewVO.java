@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
-public class HomeReservPreviewVO {
+public class HomeReservOverviewVO {
 	private int revNum;		// 예약 번호	
 	private String lessorId;	// 중개인 이름
 	private String jgsName; 	// 중개사이름	

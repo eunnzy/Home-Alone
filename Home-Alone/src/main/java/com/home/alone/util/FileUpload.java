@@ -23,6 +23,7 @@ public class FileUpload {
 		return uploadFolder;
 	}
 	
+	
 	// 업로드된 사진 삭제
 	public int deleteUploadFile(String uploadPath, String fileName) {
 		try {

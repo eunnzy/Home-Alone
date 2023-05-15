@@ -53,8 +53,10 @@
  		
 	<!-- 매물 사진 삽입  -->
  	<insert id="insertHomeImg" parameterType="com.home.alone.vo.HomeImgVO">
+ 		<foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
  		insert into Home_Img_tb(img_num, home_num, home_img_name, home_img_path, home_img_uuid) 
- 		values((select nvl(max(img_num), 0) + 1 from Home_Img_tb), #{homeNum}, #{homeImgName}, #{homeImgPath}, #{homeImgUuid})
+ 		values((select nvl(max(img_num), 0) + 1 from Home_Img_tb), #{item.homeNum}, #{item.homeImgName}, #{item.homeImgPath}, #{item.homeImgUuid})
+ 		</foreach>
  	</insert>
  	
  	<!-- 매물 신고 정보 삽입 -->
@@ -65,7 +67,7 @@
 	
 	
 	<!-- 지도 경계 내 매물 리스트 반환 -->
-	<select id="selectHomeInBoundsList" resultType="com.home.alone.vo.HomePreviewVO" parameterType="hashmap"> 
+	<select id="selectHomeInBoundsList" resultType="com.home.alone.vo.HomeOverviewVO" parameterType="hashmap"> 
 			select  <![CDATA[/*+ INDEX(Home_tb home_pk) */]]> home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
 			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
@@ -76,7 +78,7 @@
 	</select>
 	
 	<!--  매물 필터 검색 -->
-	<select id="selectHomeListByFilter" parameterType="hashmap" resultType="com.home.alone.vo.HomePreviewVO">	
+	<select id="selectHomeListByFilter" parameterType="hashmap" resultType="com.home.alone.vo.HomeOverviewVO">	
 		select <![CDATA[/*+ INDEX(Home_tb home_pk)*/]]> home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,  home_area AS homeArea, 
 			   rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, room_count AS roomCount, admin_cost AS adminCost, 
 			   parking, pet, elevator, balcony, move_date as moveDate, floor, home_title AS homeTitle, home_detail AS homeDetail, lessor_id AS lessorId
@@ -287,7 +289,7 @@
 			where <![CDATA[ rownum <2 ]]>
 	</select>
 	
-	<select id="selectHomeListByLessorId" resultType="com.home.alone.vo.HomePreviewVO">
+	<select id="selectHomeListByLessorId" resultType="com.home.alone.vo.HomeOverviewVO">
  		select  home_num AS homeNum, home_type AS homeType, addr1, addr2, addr3, latitude, longitude,
 					rent_type AS rentType, deposit, monthly, rent_periods AS rentPeriods, rent_unit as rentUnit, admin_cost AS adminCost, 
 					home_title AS homeTitle, home_valid AS homeValid, lessor_id AS lessorId

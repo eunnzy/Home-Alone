@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.home.alone.vo.AlarmBoardVO;
+import com.home.alone.board.vo.AlarmBoardVO;
 
 public interface AlarmBoardMapper {
 	// 목록 

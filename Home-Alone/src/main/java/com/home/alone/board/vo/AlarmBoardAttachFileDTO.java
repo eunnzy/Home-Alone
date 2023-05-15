@@ -1,4 +1,4 @@
-package com.home.alone.vo;
+package com.home.alone.board.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -27,27 +27,29 @@
 		<jsp:include page="../header.jsp"></jsp:include>
   </header>
 
-  <!-- body -->
-	<div>
-		<div style="bottom: 30px; width: 78rem; margin-left: auto; margin-right: auto;">
-	  	
-	  	<h2 style="text-align: center; font-weight: bold; padding-left:85px" class="my-5">매물 관리 
-	  	<button type="button" class="btn btn-secondary mr-2 my-2" style="float: right;" onclick = "location.href = '/home/manage/register' ">매물 등록</button></h2>
-	  </div>
-	</div>
-	
   <div class="container">
+		<div class="mb-3 mt-5 mx-auto">
+	  		<h2 class="text-center" class="my-5"> <b>매물 관리</b> </h2>
+		  	<div class="row">
+		  		<div class="col">
+			  	<button type="button" class="btn btn-secondary float-end" onclick = "location.href = '/home/manage/register' ">매물 등록</button>
+		  		</div>
+			</div>
+	  	</div>
     <div class="row">
 	    <c:forEach items="${homeList}" var="homeList">
 	      <div class="col-6">
-	        <div class="home-card card bg-light mt-5 mx-2 py-2" >
+	        <div class="home-card card bg-light mt-3" >
 	          <h4 class="card-header text-truncate">
 	          		 <c:choose>
+							<c:when test="${ homeList.homeValid == 0}">
+								<span class="badge bg-info">게시중단</span>
+							</c:when>
 							<c:when test="${ homeList.homeValid == 1}">
 								<span class="badge bg-success"> 게시중 </span>
 							</c:when>
 							<c:otherwise>
-								<span class="badge bg-info">게시중단</span>
+								<span class="badge bg-danger">신고매물</span>
 							</c:otherwise>
 					</c:choose>
 	          		${homeList.homeTitle}
@@ -72,17 +74,20 @@
 			           
 						<p class="text-truncate">${homeList.addr2} ${homeList.addr3}</p>
 						<br>
-			           <button class="btn btn-primary" onclick="btnClick('modify', ${homeList.homeNum})">수정</button>
-			           <button class="btn btn-primary" onclick="btnClick('delete', ${homeList.homeNum})">삭제</button>
+			      
 			           <c:choose>
-							<c:when test="${homeList.homeValid == 1}">	<!-- 게시중이라면 -->
-								  <button class="btn btn-primary" onclick="btnClick('invalid', ${homeList.homeNum})"> 게시중단 </button>
+							<c:when test="${homeList.homeValid == 0}">	<!-- 게시중단 상태면 -->
+								  <button class="btn btn-primary" onclick="btnClick('valid', ${homeList.homeNum})"> 게시하기 </button>
+								  <button class="btn btn-primary" onclick="btnClick('modify', ${homeList.homeNum})">수정</button>
+			          			  <button class="btn btn-primary" onclick="btnClick('delete', ${homeList.homeNum})">삭제</button>	
 							</c:when>
-							<c:when test="${homeList.homeValid == 2}">	<!-- 신고처리된 매물이라면 -->
-								  <span> 신고처리된 매물입니다. </span>
+							<c:when test="${homeList.homeValid == 1}">	<!-- 게시중 이라면 -->
+								  <button class="btn btn-primary" onclick="btnClick('invalid', ${homeList.homeNum})"> 게시중단 </button>
+								  <button class="btn btn-primary" onclick="btnClick('modify', ${homeList.homeNum})">수정</button>
+			          			  <button class="btn btn-primary" onclick="btnClick('delete', ${homeList.homeNum})">삭제</button>
 							</c:when>
 							<c:otherwise>	<!-- 게시중단 상태라면 -->
-								<button class="btn btn-primary" onclick="btnClick('valid', ${homeList.homeNum})"> 게시하기 </button>	
+			          			<button class="btn btn-primary" onclick="btnClick('delete', ${homeList.homeNum})">삭제</button>	
 							</c:otherwise>
 						</c:choose>
 	        			</div>	
@@ -113,7 +118,9 @@
   			location.href = "/home/manage/modify?homeNum=" + homeNum;
   			break;
   		case "delete" :
-  			if(!confirm("삭제하시겠습니까?")) {
+  			if(confirm("삭제하시겠습니까?")) {
+  				formSubmit(change, homeNum);
+  			}else {
   				return false;
   			}
   			break;

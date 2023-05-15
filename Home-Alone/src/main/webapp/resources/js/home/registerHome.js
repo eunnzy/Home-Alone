@@ -1,6 +1,5 @@
 let index = 0;
 let homeForm = $("#homeForm");
-let homeImgList = [];    
 
 // 사진 확장자 및 크기 체크 
 function imgCheck(fileName, fileSize){	
@@ -54,11 +53,6 @@ $(document).on("change", "input[type=file]", function(e){
 		
 	let fileInput = $("input[name=homeImg]");
 	let fileList = fileInput[0].files;
-	
-	if(fileList.length > 9) {
-		alert("사진은 최대 10장까지 첨부가능합니다.");
-		return false;
-	}
 	
 	console.log("fileList : " + fileList);
 	
@@ -117,6 +111,7 @@ $(".resultImg").on("click", ".imgDelete", function(e){
 $("#addBtn").on("click",function(e){	
 	e.preventDefault();
 	
+	let homeImgList = [];
 	let optionList = [];	// 옵션 체크 한 것 배열로 넘기기.
 	$("input[name=optionList]:checked").each(function() {
 		optionList.push($(this).val());
@@ -127,8 +122,8 @@ $("#addBtn").on("click",function(e){
 			console.log("resultImg.each() 함수 실행 ");
 			
 			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgName' value='"+ $(obj).data("imgname") +"'>";
-			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("uuid") +"'>";	
-			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgUuid' value='"+ $(obj).data("path") +"'>";	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgPath' value='"+ $(obj).data("path") +"'>";	
+			str += "<input type='hidden' name='homeImgList[" + i + "].homeImgUuid' value='"+ $(obj).data("uuid") +"'>";	
 	
 	
 			let homeImgName = $(obj).data("imgname");
@@ -206,6 +201,11 @@ $("#addBtn").on("click",function(e){
 		return false;
 	}
 	
+	if(rentUnit == "") {
+		alert("임대 기간 단위를 선택해주세요.");
+		return false;
+	}
+	
 	if(roomCount == "") {
 		alert("방 개수를 입력해주세요.");
 		return false;
@@ -252,6 +252,12 @@ $("#addBtn").on("click",function(e){
 		return false;
 	}
 	
+	if(homeImgList.length > 10) {
+		alert("사진은 최대 10장까지만 가능합니다.")
+		return false;
+	}
+	
+	
 	if(homeTitle == "") {
 		alert("게시글 제목을 입력해주세요");
 		return false;
@@ -261,6 +267,7 @@ $("#addBtn").on("click",function(e){
 		alert("게시글 상세정보를 입력해주세요");
 		return false;
 	}
+	
 	
 	
 	let homeData= {

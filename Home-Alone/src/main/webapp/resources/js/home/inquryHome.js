@@ -17,6 +17,16 @@ $("#inqModalBtn").click(function() {
 			alert("로그인을 해주세요!");
 			return false;
 		}
+		
+		if(iqTitle == "") {
+			alert("문의 제목을 입력해주세요!");
+			return false;
+		}
+		
+		if(iqContent == "") {
+			alert("문의 내용을 입력해주세요!");
+			return false;
+		}
 			
 		let inqData = {
 			"homeNum" : homeNum,
@@ -30,6 +40,8 @@ $("#inqModalBtn").click(function() {
 			type: 'POST',
 			success: function(data){
 				console.log(data);
+				alert('문의가 등록되었습니다.');
+				$(".inq-modal").css("display", "none");
 			}
 		});
 	

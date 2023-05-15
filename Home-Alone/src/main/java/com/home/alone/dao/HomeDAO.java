@@ -10,10 +10,10 @@ import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeImgVO;
 import com.home.alone.vo.HomeLikeVO;
 import com.home.alone.vo.HomeOptionVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 import com.home.alone.vo.HomePriceVO;
 import com.home.alone.vo.HomeReportVO;
-import com.home.alone.vo.HomeReservPreviewVO;
+import com.home.alone.vo.HomeReservOverviewVO;
 import com.home.alone.vo.HomeReservVO;
 import com.home.alone.vo.HomeVO;
 
@@ -26,8 +26,8 @@ public interface HomeDAO {
 	int insertHomePrice(HomePriceVO homePriceVO);	// 매물 가격 insert
 	int insertHomeReport(HomeReportVO homeReportVO);	// 매물 신고 정보 insert
 	
-	List<HomePreviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds);	// 현재 지도 경계내 매물 리스트 반환(미리보기 리스트)
-	List<HomePreviewVO> selectHomeListByFilter(Map<String, Object> filterData);
+	List<HomeOverviewVO> selectHomeInBoundsList(Map<String, Object> mapBounds);	// 현재 지도 경계내 매물 리스트 반환(미리보기 리스트)
+	List<HomeOverviewVO> selectHomeListByFilter(Map<String, Object> filterData);
 	HomeImgVO selectPreviewHomeImg(int homeNum);	// 매물 미리보기시 나올 사진
 	HomeDetailVO selectHomeDetail(int homeNum);		// 매물 정보 
 	HomeAddInfoVO selectHomeAddInfo(int homeNum);	// 매물 추가 정보
@@ -46,7 +46,7 @@ public interface HomeDAO {
 	int deleteHome(int homeNum);	// 매물 삭제
 	int deleteHomeReserv(int reservNum);	// 예약 삭제
 	
-	List<HomePreviewVO> selectHomeListByLessorId(LessorVO vo);
+	List<HomeOverviewVO> selectHomeListByLessorId(LessorVO vo);
 	List<HomeReportVO> selectReportHomeList();	// 매물 신고 목록
 	
 }

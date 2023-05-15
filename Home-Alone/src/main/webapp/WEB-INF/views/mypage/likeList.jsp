@@ -28,7 +28,7 @@
 		<h2 class="text-center my-5"><b>찜 목록</b></h2>
 		<div class="row">
 			<c:forEach items="${likeList}" var="list">
-				<div class="col-6">
+				<div class="col-6 mb-3">
 					<div class="card bg-light">
 						<div class="card-body">
 							 <div class="text-truncate"> 

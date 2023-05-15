@@ -41,72 +41,7 @@ public class NewsController {
         	newsList.add(getNewsList.get(i));
         }
 		
-		
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-//		Date currentTime = new Date();
-//		String date = sdf.format(currentTime);
-//		
-//		int page = 1;
-//		
-//		System.out.println(date);
-//		while(true) { 
-//			String url = "https://news.naver.com/main/list.naver?mode=LS2D&sid2=260&sid1=101&mid=shm&"
-//					+ "date=" + date + "&page=" + Integer.toString(page); // 크롤링 해 올 url
-//			
-//			System.out.println(url); 
-//			
-//
-//			Document data = Jsoup.connect(url).get();
-//			Elements elements = data.select("div.list_body li dl");
-//			
-//		//	System.out.println(elements);
-//			
-//			for(Element element : elements) {
-//				NewsVO newsVO = new NewsVO();
-//				newsVO.setUrl(element.select("dt a").attr("abs:href"));
-//				newsVO.setTitle(element.select("dt a").text());
-//				newsVO.setImgUrl(element.select("dt a img").attr("abs:src"));
-//				newsVO.setContent(element.select("dd span.lede").text());
-//				newsVO.setPublication(element.select("dd span.writing").text());
-//			//	System.out.println(newsVO);
-//				crawlNewsList.add(newsVO);
-//			}
-//			
-//			
-//			elements = data.select("ul.type06 li dl");
-//			
-//			if(elements != null) {
-//				for(Element element : elements) {
-//					NewsVO newsVO = new NewsVO();
-//					newsVO.setUrl(element.select("dt a").attr("abs:href"));
-//					newsVO.setTitle(element.select("dt a").text());
-//					newsVO.setImgUrl(element.select("dt a img").attr("abs:src"));
-//					newsVO.setContent(element.select("dd span.lede").text());
-//					newsVO.setPublication(element.select("dd span.writing").text());
-//				//	System.out.println(newsVO);
-//					crawlNewsList.add(newsVO);
-//				
-//				}
-//			}
-//			
-//			Element nextPage = data.select("div.paging strong").next().first();			
-//			// Element nextPage = data.select("div.paging strong").after("a").first();
-//			System.out.println(nextPage);
-//			
-//			if(nextPage == null) {	// 다음 페이지가 없으면 크롤링 종료
-//				break;
-//			}else {
-//				page++;
-//			}
-//		}
-//		
-//		int pageSize = 20; 	// 한 페이지 당 20개 
-//		int totalPage = (int) Math.ceil(getNewsList.size() / (double) pageSize);	// 총 페이지 수 계산
-//		int start = currPage * pageSize;
-//		int end = Math.min(start + pageSize, getNewsList.size());
-//		
-//		List<NewsVO> newsList = getNewsList.subList(start, end);
-        
+        // 페이징 처리
         int pageNum = 10;	// 보여질 페이지 번호 개수
         int startPage = Math.max(1, currPage - pageNum/2);	// 시작페이지
         int endPage = Math.min(totalPage, startPage + pageNum - 1);	// 종료페이지

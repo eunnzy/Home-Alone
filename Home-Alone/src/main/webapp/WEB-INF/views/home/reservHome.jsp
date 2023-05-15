@@ -42,7 +42,7 @@
 		</div>
 		<div class="d-grid gap-3 mx-auto">
 			<input type="hidden" id="homeNum" name="homeNum" value="${home.homeNum}">
-			<button type="submit" class="btn btn-md btn-success" id="reservBtn">예약하기</button>
+			<button type="button" class="btn btn-md btn-success" id="reservBtn">예약하기</button>
 		</div>
 
 	</div>

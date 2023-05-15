@@ -10,7 +10,7 @@ import com.home.alone.dao.HomeDAO;
 import com.home.alone.dao.HomeLikeDAO;
 import com.home.alone.vo.HomeDetailVO;
 import com.home.alone.vo.HomeLikeVO;
-import com.home.alone.vo.HomePreviewVO;
+import com.home.alone.vo.HomeOverviewVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,8 +30,8 @@ public class HomeLikeServiceImpl implements HomeLikeService {
 	
 	@Transactional
 	@Override
-	public List<HomePreviewVO> getLikeByImchaId(String imchaId) {	// 찜 목록 리스트
-		List<HomePreviewVO> likeList = homeLikeDAO.selectHomeLikeList(imchaId);
+	public List<HomeOverviewVO> getLikeByImchaId(String imchaId) {	// 찜 목록 리스트
+		List<HomeOverviewVO> likeList = homeLikeDAO.selectHomeLikeList(imchaId);
 		
 		for(int i=0; i<likeList.size(); i++) {
 			int homeNum = likeList.get(i).getHomeNum();

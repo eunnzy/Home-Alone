@@ -57,7 +57,7 @@
 										<button id="${list.homeNum }" type="button" value="신고처리" class="success" style="background-color: #ff4500;">신고처리</button>
 									</td>
 								</c:when>
-								<c:when test="${list.homeValid == 0 }">
+								<c:when test="${list.homeValid == 2 }">
 									<td>
 										신고처리완료
 									</td>
@@ -77,21 +77,21 @@
 			  var thisRow = $(this).closest('tr'); 
 			  
 			  //주소 input 값 가져오기
-			  var successNum = thisRow.find('td:eq(1)').text();
+			  var homeNum = thisRow.find('td:eq(1)').text();
 			  
 			 
 			  console.log(successNum);
 			  
 		$.ajax({
 			type : 'post',
-			url : "/admin/successNum",
+			url : "/admin/report",
 			data : {
-				homeNum : successNum,
+				homeNum : homeNum,
 			},
 			success : function(data){
 				if(data == 1) {
 					console.log(data)
-					alert(successNum + "번 매물, 신고처리를 하였습니다.");
+					alert(homeNum + "번 매물, 신고처리를 하였습니다.");
 					thisRow.find('td:eq(6)').html("신고처리 완료")
 				} else {
 					alert("실패하였습니다.")

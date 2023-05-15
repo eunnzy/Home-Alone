@@ -75,10 +75,9 @@
 //	
 //});
 	// 아이디 중복검사
-	$('.form-id').on("propertychange change keyup paste input", function(){
+	$('#lessorId').on("propertychange change keyup paste input", function(){
 		
-//		console.log("keyup 테스트");
-		var lessorId = $('.form-id').val();
+		var lessorId = $('#lessorId').val();
 		var data  = {lessorId : lessorId}
 		
 		$.ajax({
@@ -86,6 +85,7 @@
 			url : "/member/lessorIdChk",
 			data : data,
 			success : function(result) {
+				console.log(result);
 				if(result != 'fail') {
 					$('.id_input_re_1').css("display","inline-block");
 					$('.id_input_re_2').css("display","none");
@@ -169,10 +169,10 @@
 	}
 	
 	// 비밀번호 확인
-	$('.form-passwordCheck').on("propertychange change keyup paste input", function(){
+	$('#pwck').on("propertychange change keyup paste input", function(){
 		
-		var lessorPw = $('.form-password').val();
-		var pwck    = $('.form-passwordCheck').val();
+		var lessorPw = $('#lessorPw').val();
+		var pwck  = $('#pwck').val();
 		$('.final_pwck_ck').css('display','none');
 		
 		if (lessorPw == pwck) {

@@ -58,19 +58,19 @@
           
           	<c:if test="${mypageMaker.prev}">
           	  <li class="page-item">
-                <a class="page-link" href="${mypageMaker.startPage -1}">&laquo;</a>
+                <a class="page-link bg-light" href="${mypageMaker.startPage -1}">&laquo;</a>
               </li>
           	</c:if>
           	
           	<c:forEach var="num" begin="${mypageMaker.startPage}" end="${mypageMaker.endPage}">
           		<li class="page-item ${mypageMaker.cri.pageNum == num ? "active" : ""} " >
-          		<a class="page-link" href="${num}">${num}</a>
+          		<a class="page-link bg-light" href="${num}">${num}</a>
           		</li>
           	</c:forEach>
           	
           	<c:if test="${mypageMaker.next}">
           	  <li class="page-item">
-                <a class="page-link" href="${mypageMaker.endPage +1 }">&raquo;</a>
+                <a class="page-link bg-light" href="${mypageMaker.endPage +1 }">&raquo;</a>
               </li>
           	</c:if>
           </ul>

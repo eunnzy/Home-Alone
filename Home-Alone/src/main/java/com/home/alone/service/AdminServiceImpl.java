@@ -35,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
 	
 	// 신고목록
 	@Override
-	public int successNum(int homeNum) throws Exception {
+	public int report(int homeNum) throws Exception {
 		return adminmapper.successNum(homeNum);
 		
 	}

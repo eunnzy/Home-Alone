@@ -14,7 +14,7 @@
 	</delete>
 	
 	<!-- 게시물의 파일 조회 -->
-	<select id="selectAlarmAttachList" resultType="com.home.alone.vo.AlarmBoardAttachVO">
+	<select id="selectAlarmAttachList" resultType="com.home.alone.board.vo.AlarmBoardAttachVO">
 		SELECT * FROM Alarm_Attach_tb WHERE ano = #{ano}
 	</select>
 	
@@ -24,7 +24,7 @@
 	</delete>
 	
 	<!-- 이전 업로드 파일 확인 -->
-	<select id="abgetOldFiles" resultType="com.home.alone.vo.AlarmBoardAttachVO">
+	<select id="abgetOldFiles" resultType="com.home.alone.board.vo.AlarmBoardAttachVO">
 		SELECT * FROM Alarm_Attach_tb WHERE uploadpath = to_char(SYSDATE -1, 'yyyy/mm/dd')
 	</select>
 	

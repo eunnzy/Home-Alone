@@ -8,10 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.home.alone.board.dao.BoardDAO;
 import com.home.alone.board.vo.BoardAttachVO;
+import com.home.alone.board.vo.BoardLikesVO;
 import com.home.alone.board.vo.BoardVO;
-import com.home.alone.mapper.BoardAttachMapper;
 import com.home.alone.mapper.BoardLikesMapper;
-import com.home.alone.mapper.BoardMapper;
 import com.home.alone.util.Criteria;
 
 import lombok.Setter;
@@ -24,11 +23,6 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardDAO boardDAO;
 	
-	@Setter(onMethod_ = @Autowired)
-	private BoardMapper mapper;
-	
-	@Setter(onMethod_ = @Autowired)
-	private BoardAttachMapper attachMapper;
 	
 	@Setter(onMethod_ = @Autowired)
 	private BoardLikesMapper likesMapper;
@@ -72,7 +66,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 		board.getAttachList().forEach(attach -> {
 			attach.setBno(board.getBno());
-			attachMapper.insert(attach);
+			boardDAO.insertBoardAttach(attach);
 		});
 	}
 
@@ -87,7 +81,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardAttachVO> getAttachList(Long bno) {
 		log.info("get Attach list by bno" + bno);
-		return attachMapper.findByBno(bno);
+		return boardDAO.selectBoardAttachfindByBno(bno);
 	}
 
 	// 수정
@@ -95,12 +89,12 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean modify(BoardVO board) {
 		log.info("modify........" + board);
-		attachMapper.deleteAll(board.getBno());
+		boardDAO.deleteBoardAttachAll(board.getBno());
 		boolean modifyResult = boardDAO.updateBoard(board) == 1;
 		if(modifyResult && board.getAttachList() != null && board.getAttachList().size() > 0) {
 			board.getAttachList().forEach(attach -> {
 				attach.setBno(board.getBno());
-				attachMapper.insert(attach);
+				boardDAO.insertBoardAttach(attach);
 			});
 		}
 		return modifyResult;
@@ -111,20 +105,20 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean remove(Long bno) {
 		log.info("remove........" + bno);
-		attachMapper.deleteAll(bno);
+		boardDAO.deleteBoardAttachAll(bno);
 		return boardDAO.deleteBoard(bno) == 1;
 	}
 	
 	// 좋아요 On
 	@Override
-	public void likesOn(Long bno, String userid) {
-		likesMapper.likesOn(bno, userid);
+	public int likesOn(BoardLikesVO boardLikesVO) {
+		return boardDAO.insertBoardLike(boardLikesVO);
 	}
 		
 	// 좋아요 Off
 	@Override
-	public void likesOff(Long bno, String userid) {
-		likesMapper.likesOff(bno, userid);
+	public int likesOff(BoardLikesVO boardLikesVO) {
+	return boardDAO.deleteBoardLike(boardLikesVO);
 	}
 		
 	// 좋아요 Up

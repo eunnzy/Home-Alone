@@ -12,6 +12,7 @@ $(document).ready(function(){
 		let sido = $("#sido").val();
 	
 		if(imchaId == "") {
+			
 			$('.id_ck').css('display', 'block');
 			return false;
 		} else {
@@ -27,6 +28,7 @@ $(document).ready(function(){
 		
 		if(pwck == "") {
 			$('.pwck_ck').css('display', 'block');
+			alter("비밀번호 확인을 입력해주세요");
 			return false;
 		} else {
 			$('.pwck_ck').css('display', 'none');
@@ -50,6 +52,7 @@ $(document).ready(function(){
 			alter("주소 입력해주세요.");
 			return false;
 		}
+		
 		
 		$("#imcha-form").attr("action", "/mypage/imcha/modify");
 		$("#imcha-form").submit();

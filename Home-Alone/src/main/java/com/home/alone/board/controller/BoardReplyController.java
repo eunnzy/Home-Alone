@@ -84,7 +84,8 @@ public class BoardReplyController {
 	@PostMapping(value = "/likeUp", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> likeUp(@RequestBody BoardLikesVO likevo) {
 		log.info("좋아요");
-		boardservice.likesOn(likevo.getBno(), likevo.getUserid());
+		boardservice.likesOn(likevo);
+		// boardservice.likesOn(likevo.getBno(), likevo.getUserid());
 		return boardservice.likesUp(likevo.getBno()) ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
@@ -92,7 +93,8 @@ public class BoardReplyController {
 	@PostMapping(value = "/likeDown", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> likeDown(@RequestBody BoardLikesVO likevo) {
 		log.info("좋아요 취소");
-		boardservice.likesOff(likevo.getBno(), likevo.getUserid());
+		boardservice.likesOff(likevo);
+//		boardservice.likesOff(likevo.getBno(), likevo.getUserid());
 		return boardservice.likesDown(likevo.getBno()) ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	

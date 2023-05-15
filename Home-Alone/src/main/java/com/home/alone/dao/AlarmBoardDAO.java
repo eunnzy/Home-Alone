@@ -2,8 +2,8 @@ package com.home.alone.dao;
 
 import java.util.List;
 
-import com.home.alone.vo.AlarmBoardAttachVO;
-import com.home.alone.vo.AlarmBoardVO;
+import com.home.alone.board.vo.AlarmBoardAttachVO;
+import com.home.alone.board.vo.AlarmBoardVO;
 
 public interface AlarmBoardDAO {
 	List<AlarmBoardVO> selectAlarmBoardList();	// 공지사항 목록

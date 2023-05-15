@@ -32,7 +32,7 @@
 		            <span class="category_bg pharmacy" ></span>
 		            약국
 		        </li>  
-		        <li id="OL7" data-order="3" > 
+				<li id="OL7" data-order="3" > 
 		            <span class="category_bg oil"  ></span>
 		            주유소
 		        </li>  
@@ -44,6 +44,10 @@
 		            <span class="category_bg store"></span>
 		            편의점
 		        </li> 
+		      <!--    <li id="HP8" data-order="6" > 
+		            <span class="category_bg hospital"></span>
+		            병원
+		        </li>  -->
 		    </ul> 
 		</div>
 		<div class="search-div">
@@ -107,7 +111,7 @@
        				<div class="range-div mt-3 mb-4">
 				        <label for="customRange1" class="form-label d-grid">보증금</label>
 				        <input type="range" id="deposit" min="0" max="3">
-				        <ul class="deposit-range-ul">
+				        <ul class="deposit-range-ul mb-2">
 				        	<li> 0 </li>
 				        	<li> 5000만</li>
 				        	<li> 1억 </li>
@@ -116,7 +120,7 @@
 				        <label for="customRange3" class="form-label d-grid">월세</label>
 				        <input type="range" id="monthly" min="0" max="3" > 
 				        <ul class="monthly-range-ul">
-				        	<li> 0 </li>
+				        	<li class="text-start"> 0 </li>
 				        	<li> 50만</li>
 				        	<li> 100만 </li>
 				        	<li> 최대 </li>
@@ -229,8 +233,6 @@
 	</script>
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a94d4863c9f7363e85ad81dac027db86&libraries=services,clusterer,drawing"></script>
-	<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a94d4863c9f7363e85ad81dac027db86"></script>
-	 -->
 	<script src="/js/home/searchHome.js" ></script>
 	<script src="/js/home/searchFilter.js" ></script>
 	

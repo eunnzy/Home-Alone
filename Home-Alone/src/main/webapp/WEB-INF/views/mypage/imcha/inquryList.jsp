@@ -54,7 +54,7 @@
 				      </tbody>
 			    </table>
 	    	</div>
-		     <div class="page-div mx-auto">
+		     <%-- <div class="page-div mx-auto">
 		          <ul class="pagination pagination-sm bg-light">
 		          	<c:if test="${pageMaker.prev}">
 		          	  <li class="page-item">
@@ -74,7 +74,7 @@
 		              </li>
 		          	</c:if>
 		          </ul>
-	       	</div>
+	       	</div> --%>
 		        
 		</div>
 	</div>

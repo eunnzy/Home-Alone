@@ -6,14 +6,14 @@ import com.home.alone.vo.AdminVO;
 public interface AdminService {
 
 	// 회원가입
-	public void adminJoin(AdminVO admin) throws Exception;
+	void adminJoin(AdminVO admin) throws Exception;
 	
 	// 아이디 중복검사
-	public int idCheck(String adminId) throws Exception;
+	int idCheck(String adminId) throws Exception;
 	
 	// 로그인
-	public AdminVO adminLogin(AdminVO admin) throws Exception;
+	AdminVO adminLogin(AdminVO admin) throws Exception;
 	
-	public int successNum(int homeNum) throws Exception;
+	int report(int homeNum) throws Exception;	// 신고처리
 	
 }
